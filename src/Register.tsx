@@ -1,8 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import configAxios from "./api/configAxios";
-import { AxiosError } from "axios";
+import axios from "./api/axios";
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -55,7 +54,7 @@ const Register = () => {
             return;
         }
         try {
-            const response = await configAxios.post(REGISTER_URL,
+            const response = await axios.post(REGISTER_URL,
                 JSON.stringify({ user, pwd }),
                 {
                     headers: { "Content-Type": "application/json" },
@@ -71,7 +70,7 @@ const Register = () => {
             setUser("");
             setPwd("");
             setMatchPwd("");
-        } catch (err: AxiosError) {
+        } catch (err: any) {
             if (!err?.response) {
                 setErrMsg("Pas de réponse serveur");
             } else if (err.response?.status === 409) {
