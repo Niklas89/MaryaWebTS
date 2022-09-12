@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  # Serveur node.js lts
+  reactjs:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    container_name: web-reactjs
+    ports:
+      - "3000:3000"
