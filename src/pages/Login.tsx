@@ -1,16 +1,16 @@
 import { useRef, useState, useEffect, useContext } from "react";
-import AuthContext from "./context/AuthProvider";
-import useAuth from "./hooks/useAuth";
+import AuthContext from "../context/AuthProvider";
+import useAuth from "../hooks/useAuth";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
-import axios from "./api/axios";
+import axios from "../api/axios";
 const LOGIN_URL = "/user/login"; // login endpoint in backend nodejs api
 
 
 
 
 const Login = () => {
-    const  {setAuth}  = useAuth();
+    const { setAuth } = useAuth();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -28,8 +28,8 @@ const Login = () => {
 
     // when component loads set focus on first input field / user field
     useEffect(() => {
-        if(userRef.current !== null)
-        userRef.current.focus();
+        if (userRef.current !== null)
+            userRef.current.focus();
     }, [])
 
     // make error message disapear when ajusting fields 
@@ -56,11 +56,11 @@ const Login = () => {
             const role = response?.data?.idRole;
             console.log(role);
             // auth state stored in our global context with the usecontext hook :
-            setAuth({ user, pwd, role, accessToken }); 
+            setAuth({ user, pwd, role, accessToken });
 
             // clear components after submit complete
             setUser("");
-            setPwd(""); 
+            setPwd("");
             // after the form is submited, navigate to the location where the user wanted to go before they were sent to the login page
             navigate(from, { replace: true });
         } catch (err: any) {
@@ -73,7 +73,7 @@ const Login = () => {
             } else {
                 setErrMsg("Login Failed");
             }
-            if(errRef.current !== null)
+            if (errRef.current !== null)
                 errRef.current.focus();
         }
     }
