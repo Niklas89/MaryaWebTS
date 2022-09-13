@@ -2,10 +2,13 @@ import React, { useRef, useState, useEffect } from "react";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "./api/axios";
+import { Link } from "react-router-dom";
 
-const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
-const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-const REGISTER_URL = "/register";
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/; 
+const PWD_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*#?&\/]{6,50}$/;
+
+// endpoint for our registration in our backend api
+const REGISTER_URL = '/user/register';
 
 const Register = () => {
     const userRef = useRef<HTMLInputElement>(null);
@@ -32,7 +35,7 @@ const Register = () => {
     }, [])
 
     useEffect(() => {
-        setValidName(USER_REGEX.test(user));
+        setValidName(EMAIL_REGEX.test(user));
     }, [user])
 
     useEffect(() => {
@@ -47,7 +50,7 @@ const Register = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // if button enabled with JS hack
-        const v1 = USER_REGEX.test(user);
+        const v1 = EMAIL_REGEX.test(user);
         const v2 = PWD_REGEX.test(pwd);
         if (!v1 || !v2) {
             setErrMsg("Invalid Entry");
@@ -55,9 +58,9 @@ const Register = () => {
         }
         try {
             const response = await axios.post(REGISTER_URL,
-                JSON.stringify({ user, pwd }),
+                JSON.stringify({ firstName: "test", lastName: "test", email: user, password: pwd, idRole: 1 }),
                 {
-                    headers: { "Content-Type": "application/json" },
+                    headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
                 }
             );
@@ -74,9 +77,9 @@ const Register = () => {
             if (!err?.response) {
                 setErrMsg("Pas de réponse serveur");
             } else if (err.response?.status === 409) {
-                setErrMsg("Username Taken");
+                setErrMsg("Email déjà utilisé");
             } else {
-                setErrMsg("Registration Failed")
+                setErrMsg("Inscription pas réussi")
             }
             if(errRef.current !== null)
             errRef.current.focus();
@@ -84,6 +87,7 @@ const Register = () => {
 
     }
 
+    // if success sign up, then show sign in link and success message. Otherwize show sign up form.
     return (
         <>
             {success ? (
@@ -97,25 +101,30 @@ const Register = () => {
                 <section>
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
                     <h1>Register</h1>
-                    <form onSubmit={handleSubmit}>
-                        <label htmlFor="username">
-                            Username:
+                    <form onSubmit={handleSubmit}> {/* submit event for the form */}
+                        <label htmlFor="email"> {/* htmlFor needs to match the id of the input */}
+                            Email:
+                            {/*  if valid user: show faCheck icon, else hide */}
                             <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
+                            {/*  if valid user or user state false (nothing in input): hide faTimes icon, else display red X next to label */}
                             <FontAwesomeIcon icon={faTimes} className={validName || !user ? "hide" : "invalid"} />
                         </label>
                         <input
                             type="text"
-                            id="username"
-                            ref={userRef}
-                            autoComplete="off"
-                            onChange={(e) => setUser(e.target.value)}
+                            id="email" // should match htmlFor in the label
+                            ref={userRef} // reference to set focus on the input
+                            autoComplete="off" // we don't want previous values selected for this field
+                            onChange={(e) => setUser(e.target.value)} // ties the input to the user state
                             value={user}
                             required
-                            aria-invalid={validName ? "false" : "true"}
-                            aria-describedby="uidnote"
-                            onFocus={() => setUserFocus(true)}
-                            onBlur={() => setUserFocus(false)}
+                            aria-invalid={validName ? "false" : "true"} // if user email is valid : false  - helps required
+                            aria-describedby="uidnote" // requirements of the input
+                            onFocus={() => setUserFocus(true)} // focus true when enter input field
+                            onBlur={() => setUserFocus(false)} // focus to false if we leave the input field
                         />
+
+                        {/* if input user field is focused and user state is not empty (we have entered something in the field)
+                        and if field is not valid we will show this message. If valid ? offscreen: taken off the screen with an absolute position in css */}
                         <p id="uidnote" className={userFocus && user && !validName ? "instructions" : "offscreen"}>
                             <FontAwesomeIcon icon={faInfoCircle} />
                             4 to 24 characters.<br />
@@ -130,7 +139,8 @@ const Register = () => {
                             <FontAwesomeIcon icon={faTimes} className={validPwd || !pwd ? "hide" : "invalid"} />
                         </label>
                         <input
-                            type="password"
+                            // no focus on pass field when page loads
+                            type="password" // autocomplete not supported on type="password"
                             id="password"
                             onChange={(e) => setPwd(e.target.value)}
                             value={pwd}
@@ -140,6 +150,7 @@ const Register = () => {
                             onFocus={() => setPwdFocus(true)}
                             onBlur={() => setPwdFocus(false)}
                         />
+                        {/*  display pass note when we set focus on password field and password regex not valid */}
                         <p id="pwdnote" className={pwdFocus && !validPwd ? "instructions" : "offscreen"}>
                             <FontAwesomeIcon icon={faInfoCircle} />
                             8 to 24 characters.<br />
@@ -150,6 +161,7 @@ const Register = () => {
 
                         <label htmlFor="confirm_pwd">
                             Confirm Password:
+                            {/*  must have valid match regex and matchpwd state must be true for faCheck icon to show */}
                             <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ? "valid" : "hide"} />
                             <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPwd ? "hide" : "invalid"} />
                         </label>
@@ -169,13 +181,14 @@ const Register = () => {
                             Must match the first password input field.
                         </p>
 
+                        {/*  button disabled until all the fields are validated  */}
                         <button disabled={!validName || !validPwd || !validMatch ? true : false}>Sign Up</button>
                     </form>
                     <p>
                         Already registered?<br />
                         <span className="line">
-                            {/*put router link here*/}
-                            <a href="#">Sign In</a>
+                            {/*  react router link for sign in form */}
+                            <Link to="/">Sign In</Link>
                         </span>
                     </p>
                 </section>
