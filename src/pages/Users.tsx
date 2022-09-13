@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import useAxiosPrivate from "./hooks/useAxiosPrivate";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
 // import useRefreshToken from "../hooks/useRefreshToken";
 
@@ -24,7 +24,7 @@ const Users = () => {
                 console.log(response.data);
                 isMounted && setUsers(response.data);
             } catch (err) {
-                console.error(err); 
+                console.error(err);
                 // if refresh token has expired, logout to login. Redirect to current page after login
                 navigate('/login', { state: { from: location }, replace: true });
             }
@@ -44,13 +44,7 @@ const Users = () => {
     return (
         <article>
             <h2>Users List</h2>
-            {users?.length // list out the users that are in the users state 
-                ? (
-                    <ul> {/* each user and their index in the array: list firstname and lastname */}
-                        {users.map((user, i) => <li key={i}>{user?.firstName} {user?.lastName}</li>)}
-                    </ul>
-                ) : <p>No users to display</p>
-            }
+
             {/* <button onClick={() => refresh()}>Refresh</button> */}
         </article>
     );

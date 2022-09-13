@@ -1,10 +1,10 @@
 import React, { useRef, useState, useEffect } from "react";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "./api/axios";
+import axios from "../api/axios";
 import { Link } from "react-router-dom";
 
-const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/; 
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 const PWD_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*#?&\/]{6,24}$/;
 
 // endpoint for our registration in our backend api
@@ -81,8 +81,8 @@ const Register = () => {
             } else {
                 setErrMsg("Inscription pas réussi")
             }
-            if(errRef.current !== null)
-            errRef.current.focus();
+            if (errRef.current !== null)
+                errRef.current.focus();
         }
 
     }
@@ -185,7 +185,7 @@ const Register = () => {
                         <button disabled={!validName || !validPwd || !validMatch ? true : false}>Sign Up</button>
                     </form>
                     <p>
-                    Déjà inscrit?<br />
+                        Déjà inscrit?<br />
                         <span className="line">
                             {/*  react router link for sign in form */}
                             <Link to="/">Se connecter</Link>

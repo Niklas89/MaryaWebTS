@@ -1,6 +1,6 @@
 import { useNavigate, Link } from "react-router-dom";
 import { useContext } from "react";
-import AuthContext from "./context/AuthProvider";
+import AuthContext from "../context/AuthProvider";
 import * as React from 'react';
 import Button from '@mui/material/Button';
 
@@ -19,7 +19,7 @@ const Home = () => {
         <section>
             <h1>Accueil</h1>
             <br />
-            <p>Vous êtes connecté</p> 
+            <p>Vous êtes connecté</p>
             <br />
             <Link to="/editor">Aller à la page Editeur</Link>
             <br />
