@@ -1,10 +1,11 @@
-import React from 'react';
+import React from "react";
+import Register from "./Register";
 
 function App() {
   return (
-    <div>
-      <h1>Bienvenue</h1>
-    </div>
+    <main className="App">
+      <Register />
+    </main>
   );
 }
 
