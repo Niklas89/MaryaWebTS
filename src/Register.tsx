@@ -5,7 +5,7 @@ import axios from "./api/axios";
 import { Link } from "react-router-dom";
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/; 
-const PWD_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*#?&\/]{6,50}$/;
+const PWD_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*#?&\/]{6,24}$/;
 
 // endpoint for our registration in our backend api
 const REGISTER_URL = '/user/register';
@@ -92,15 +92,15 @@ const Register = () => {
         <>
             {success ? (
                 <section>
-                    <h1>Success!</h1>
+                    <h1>Succès !</h1>
                     <p>
-                        <a href="#">Sign In</a>
+                        <a href="#">Connexion</a>
                     </p>
                 </section>
             ) : (
                 <section>
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-                    <h1>Register</h1>
+                    <h1>Inscription</h1>
                     <form onSubmit={handleSubmit}> {/* submit event for the form */}
                         <label htmlFor="email"> {/* htmlFor needs to match the id of the input */}
                             Email:
@@ -127,14 +127,14 @@ const Register = () => {
                         and if field is not valid we will show this message. If valid ? offscreen: taken off the screen with an absolute position in css */}
                         <p id="uidnote" className={userFocus && user && !validName ? "instructions" : "offscreen"}>
                             <FontAwesomeIcon icon={faInfoCircle} />
-                            4 to 24 characters.<br />
-                            Must begin with a letter.<br />
-                            Letters, numbers, underscores, hyphens allowed.
+                            4 à 24 caractères.<br />
+                            Doit commencer par une lettre<br />
+                            Lettres, chiffres, underscore, traits d'union autorisés.
                         </p>
 
 
                         <label htmlFor="password">
-                            Password:
+                            Mot de passe:
                             <FontAwesomeIcon icon={faCheck} className={validPwd ? "valid" : "hide"} />
                             <FontAwesomeIcon icon={faTimes} className={validPwd || !pwd ? "hide" : "invalid"} />
                         </label>
@@ -153,14 +153,14 @@ const Register = () => {
                         {/*  display pass note when we set focus on password field and password regex not valid */}
                         <p id="pwdnote" className={pwdFocus && !validPwd ? "instructions" : "offscreen"}>
                             <FontAwesomeIcon icon={faInfoCircle} />
-                            8 to 24 characters.<br />
-                            Must include uppercase and lowercase letters, a number and a special character.<br />
-                            Allowed special characters: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
+                            6 à 24 caractères<br />
+                            Doit inclure des lettres majuscules, minuscules et un chiffre<br />
+                            Caractères spéciaux autorisés : <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
                         </p>
 
 
                         <label htmlFor="confirm_pwd">
-                            Confirm Password:
+                            Confirmer le mot de passe:
                             {/*  must have valid match regex and matchpwd state must be true for faCheck icon to show */}
                             <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ? "valid" : "hide"} />
                             <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPwd ? "hide" : "invalid"} />
@@ -178,17 +178,18 @@ const Register = () => {
                         />
                         <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
                             <FontAwesomeIcon icon={faInfoCircle} />
-                            Must match the first password input field.
+                            Doit correspondre au premier champ de saisie du mot de passe.
                         </p>
 
                         {/*  button disabled until all the fields are validated  */}
                         <button disabled={!validName || !validPwd || !validMatch ? true : false}>Sign Up</button>
                     </form>
                     <p>
-                        Already registered?<br />
+                    Déjà inscrit?<br />
                         <span className="line">
                             {/*  react router link for sign in form */}
-                            <Link to="/">Sign In</Link>
+                            {/*  <Link to="/">Sign In</Link> */}
+                            <a href="#">Se connecter</a>
                         </span>
                     </p>
                 </section>
