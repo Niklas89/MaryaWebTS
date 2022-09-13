@@ -1,10 +1,10 @@
-import React from 'react';
+import Footer from './components/Footer';
+import Navigation from './components/Navigation';
+import "./styles/App.css"
 
 function App() {
   return (
-    <div>
-      <h1>Bienvenue</h1>
-    </div>
+    <div>Yo</div>
   );
 }
 
