@@ -1,5 +1,4 @@
 
-import React from "react";
 import { Route, Routes } from 'react-router-dom';
 import Navbar from "./components/Navbar";
 import Layout from './pages/Layout';
@@ -22,6 +21,7 @@ const ROLES = {
 function App() {
   return (
     <main>
+      <Navigation />
       <Routes>
           {/* public routes */}
           <Route path="/profile" element={<Profile />} />
@@ -41,6 +41,7 @@ function App() {
             <Route path="profile" element={<Profile />} />
           </Route>
       </Routes>
+      <Footer />
     </main>
   );
 }
