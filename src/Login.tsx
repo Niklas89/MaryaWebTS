@@ -1,22 +1,16 @@
 import { useRef, useState, useEffect, useContext } from "react";
 import AuthContext from "./context/AuthProvider";
-//import useAuth from "../hooks/useAuth";
+import useAuth from "./hooks/useAuth";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import axios from "./api/axios";
 const LOGIN_URL = "/user/login"; // login endpoint in backend nodejs api
 
-export interface IUserData {
-    user?: string
-    pwd?: string
-    role?: number
-    accessToken?: string
-}
+
 
 
 const Login = () => {
-    //const { setAuth } = useAuth();
-    const setAuth: IUserData = useContext(AuthContext);
+    const  {setAuth}  = useAuth();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -43,7 +37,7 @@ const Login = () => {
         setErrMsg("");
     }, [user, pwd])
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); // prevent default behavior of the page which would reload of the page
 
         try {
@@ -114,8 +108,7 @@ const Login = () => {
             <p>
                 Besoin d"un compte?<br />
                 <span className="line">
-                    {/*<Link to="/register">Inscription</Link>*/}
-                    <a href="#">Inscription</a>
+                    <Link to="/register">Inscription</Link>
                 </span>
             </p>
         </section>

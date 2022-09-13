@@ -1,8 +1,13 @@
 import { createContext, useState } from "react";
+import { IUserData } from "../interfaces/interfaces";
 
-const AuthContext = createContext({});
+const AuthContext = createContext<any | IUserData>({});
 
-export const AuthProvider : React.FC<{ children: JSX.Element }> = ({ children }) => {
+interface props {
+    children: JSX.Element | JSX.Element[]
+}
+
+export const AuthProvider = ({ children }: props) => {
     const [auth, setAuth] = useState({});
 
     return (

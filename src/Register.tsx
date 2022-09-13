@@ -188,8 +188,7 @@ const Register = () => {
                     Déjà inscrit?<br />
                         <span className="line">
                             {/*  react router link for sign in form */}
-                            {/*  <Link to="/">Sign In</Link> */}
-                            <a href="#">Se connecter</a>
+                            <Link to="/">Se connecter</Link>
                         </span>
                     </p>
                 </section>
