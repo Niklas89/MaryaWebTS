@@ -2,18 +2,18 @@ import { useRef, useState, useEffect, useContext } from "react";
 import AuthContext from "../context/AuthProvider";
 import useAuth from "../hooks/useAuth";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import GetAppIcon from '@mui/icons-material/GetApp';
-
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import axios from "../api/axios";
 import { Button, Grid, TextField, Typography } from "@mui/material";
+
 const LOGIN_URL = "/user/login"; // login endpoint in backend nodejs api
 
 const FormLogin = () => {
     const { setAuth } = useAuth();
 
     const navigate = useNavigate();
-    const location = useLocation();
+    // const location = useLocation();
     // navigate to the location where the user wanted to go before they were sent to the login page OR the home page
     // const from = location.state?.from?.pathname || "/";
     const from = "/home";
@@ -77,10 +77,10 @@ const FormLogin = () => {
     return (
         <section>
             <form onSubmit={handleSubmit}>
-                <Grid container spacing={5} direction="row" justifyContent="center">
-                    <Typography variant="h4" my={5}>Connexion</Typography>
+                <Grid container spacing={5} mt={5} direction="row" justifyContent="center">
+                    <Typography variant="h4">Connexion</Typography>
                 </Grid>
-                <Grid container spacing={5} direction="row" justifyContent="center">
+                <Grid container spacing={5} mt={5} direction="row" justifyContent="center">
                     <Grid item xs={0}>
                         <TextField
                             id="email"
@@ -110,7 +110,7 @@ const FormLogin = () => {
                         <Button
                             variant="contained"
                             color="success"
-                            startIcon={<PlayArrowIcon />}
+                            startIcon={<DoneOutlineIcon />}
                             type="submit"
                         >
                             Connection
@@ -119,14 +119,15 @@ const FormLogin = () => {
                 </Grid>
             </form>
             <Grid container direction="row" justifyContent="center">
-                <Grid item xs={0} mt={2}>
+                <Grid item xs={0} mt={6}>
                     <Typography>Besoin d'un compte ?</Typography>
                     <Button
                         variant="contained"
-                        sx={{ color: "#4dabf5", }}
-                        startIcon={<GetAppIcon />}
+                        component={Link}
+                        to="/register"
+                        startIcon={<AddCircleOutlineIcon />}
                     >
-                        <Link color="#fafafa" to="/register">Inscription</Link>
+                        Inscription
                     </Button>
                 </Grid>
             </Grid>
