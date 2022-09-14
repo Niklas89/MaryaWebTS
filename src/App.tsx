@@ -1,7 +1,5 @@
 
 import { Route, Routes } from 'react-router-dom';
-import Navbar from "./components/Navbar";
-import Layout from './pages/Layout';
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Register from "./pages/Register";
