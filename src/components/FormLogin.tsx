@@ -7,7 +7,6 @@ import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import axios from "../api/axios";
 import { Button, Grid, TextField, Typography } from "@mui/material";
 
-
 const LOGIN_URL = "/user/login"; // login endpoint in backend nodejs api
 
 const FormLogin = () => {
@@ -18,11 +17,9 @@ const FormLogin = () => {
     // navigate to the location where the user wanted to go before they were sent to the login page OR the home page
     // const from = location.state?.from?.pathname || "/";
     const from = "/home";
-
     // set focus on user input and error message
     const userRef = useRef<HTMLInputElement>(null);
     const errRef = useRef<HTMLParagraphElement>(null);
-
     const [user, setUser] = useState<string>("");
     const [pwd, setPwd] = useState<string>("");
     const [errMsg, setErrMsg] = useState<string>("");
