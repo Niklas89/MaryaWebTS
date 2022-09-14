@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { FormFieldType, useFormBuilder } from "./FormModel";
 import { FormikValues } from "formik";
 import { toast } from "react-toastify";
-import { TextField } from "@mui/material";
+import { Grid, TextField, Typography } from "@mui/material";
 import { AxiosFunction } from "../../api/AxiosFunction";
 
 
@@ -74,7 +74,21 @@ const FormRegister = () => {
 
     return (
         <>
+            <Grid container spacing={3} mt={1} direction="row">
+                <Grid textAlign="center" item xs={12}>
+                    <Typography
+                        sx={{
+                            color: "#0FC2C0",
+                            fontWeight: "bold"
+                        }}
+                        variant="h3"
+                    >
+                        Inscription
+                    </Typography>
+                </Grid>
+            </Grid>
             {renderForm}
+
         </>
     );
 };

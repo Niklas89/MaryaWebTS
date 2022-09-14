@@ -9,4 +9,7 @@ export interface IUser {
     createdAt?: string,
     updatedAt?: string,
     idRole?: number,
+    resetToken?: string,
+    resetTokenExpiration?: string,
+    refreshToken?: string,
 }

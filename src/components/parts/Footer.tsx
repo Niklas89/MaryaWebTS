@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
 import InstagramIcon from '@mui/icons-material/Instagram';
-import "../styles/Footer.css";
+import "../../styles/Footer.css";
 import { List, ListItem, ListItemText } from "@mui/material";
 
 const Footer = () => {
