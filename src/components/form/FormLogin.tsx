@@ -1,11 +1,11 @@
 import { useRef, useState, useEffect, useContext } from "react";
-import AuthContext from "../context/AuthProvider";
-import useAuth from "../hooks/useAuth";
+import AuthContext from "../../context/AuthProvider";
+import useAuth from "../../hooks/useAuth";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
-import axios from "../api/axios";
 import { Button, Grid, TextField, Typography } from "@mui/material";
+import { axiosPrivate } from "../../api/axios";
 
 const LOGIN_URL = "/user/login"; // login endpoint in backend nodejs api
 
@@ -40,7 +40,7 @@ const FormLogin = () => {
 
         try {
             // post login file to backend api
-            const response = await axios.post(LOGIN_URL,
+            const response = await axiosPrivate.post(LOGIN_URL,
                 JSON.stringify({ email: user, password: pwd }),
                 {
                     headers: { "Content-Type": "application/json" },
