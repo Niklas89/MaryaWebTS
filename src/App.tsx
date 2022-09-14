@@ -2,6 +2,7 @@
 import { Route, Routes } from 'react-router-dom';
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
+import Layout from './pages/Layout';
 import Register from "./pages/Register";
 import Admin from "./pages/Admin";
 import Home from "./pages/Home";
@@ -13,7 +14,7 @@ import "./styles/App.css"
 const ROLES = {
   'Client': 1,
   'Partner': 2,
-  'Admin': 3
+  'Admin': 1
 }
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Login />} />
+        <Route path="/home" element={<Home />} />
 
         {/* protected routes*/}
         <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
