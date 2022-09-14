@@ -6,8 +6,8 @@ import Layout from './pages/Layout';
 import Register from "./pages/Register";
 import Admin from "./pages/Admin";
 import Home from "./pages/Home";
-import Footer from './components/Footer';
-import Navigation from './components/Navigation';
+import Footer from './components/parts/Footer';
+import Navigation from './components/parts/Navigation';
 import RequireAuth from './components/RequireAuth';
 import "./styles/App.css"
 
@@ -22,25 +22,23 @@ function App() {
     <main>
       <Navigation />
       <Routes>
-      <Route path="/" element={<Layout />}>
-          {/* public routes */}
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/" element={<Login />} />
-          <Route path="/home" element={<Home />} />
+        {/* public routes */}
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/home" element={<Home />} />
 
-          {/* protected routes*/}
-          <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
-            <Route path="/" element={<Home />} />
-          </Route>
+        {/* protected routes*/}
+        <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
+          <Route path="/" element={<Home />} />
+        </Route>
 
-          <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-            <Route path="admin" element={<Admin />} />
-          </Route>
+        <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+          <Route path="admin" element={<Admin />} />
+        </Route>
 
-          <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
-            <Route path="profile" element={<Profile />} />
-          </Route>
+        <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
+          <Route path="profile" element={<Profile />} />
         </Route>
       </Routes>
       <Footer />

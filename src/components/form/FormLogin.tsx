@@ -1,10 +1,12 @@
 import { useRef, useState, useEffect, useContext } from "react";
-import useAuth from "../hooks/useAuth";
+import AuthContext from "../../context/AuthProvider";
+import useAuth from "../../hooks/useAuth";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
-import axios from "../api/axios";
+import axios from "../../api/axios";
 import { Button, Grid, TextField, Typography } from "@mui/material";
+import { axiosPrivate } from "../../api/axios";
 import { ButtonProps } from '@mui/material/Button';
 import { AxiosError, AxiosResponse } from "axios";
 import { styled } from '@mui/material/styles';
@@ -67,7 +69,7 @@ const FormLogin = () => {
                 // auth state stored in our global context with the usecontext hook :
                 setAuth({ email, pwd, role, accessToken });
                 console.log(auth.email);
-                
+
                 // clear components after submit complete
                 setEmail("");
                 setPwd("");
@@ -76,7 +78,7 @@ const FormLogin = () => {
             })
             .catch((err: AxiosError) => {
                 setErr(true);
-                
+
                 error.innerHTML = err.response?.data;
                 error.removeAttribute("hidden");
                 console.log(err.response?.data);
@@ -89,8 +91,13 @@ const FormLogin = () => {
         /*
         try {
             // post login file to backend api
+<<<<<<< HEAD:src/components/form/FormLogin.tsx
+            const response = await axiosPrivate.post(LOGIN_URL,
+                JSON.stringify({ email: user, password: pwd }),
+=======
             const response = await axios.post(LOGIN_URL,
                 JSON.stringify({ email: email, password: pwd }),
+>>>>>>> master:src/components/FormLogin.tsx
                 {
                     headers: { "Content-Type": "application/json" },
                     withCredentials: true
