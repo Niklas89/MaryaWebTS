@@ -6,6 +6,7 @@ import useAuth from "../hooks/useAuth";
 
 const Profile = () => {
     const { auth } = useAuth();
+    console.log(auth);
     console.log(auth?.role);
     return (
         <section>

@@ -5,6 +5,10 @@ export interface IUserData {
     pwd?: string
     role?: number
     accessToken?: string
+    auth?: {user?: string
+        pwd?: string
+        role?: number
+        accessToken?: string}
     setAuth?: Dispatch<SetStateAction<IUserData>>
 }
 
