@@ -27,6 +27,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/register" element={<Register />} />
           <Route path="/" element={<Login />} />
+          <Route path="/home" element={<Home />} />
 
           {/* protected routes*/}
           <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
