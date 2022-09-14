@@ -13,7 +13,7 @@ const useRefreshToken = () => {
             // the request is going to send the secure cookie (not accessible with javascript) that has the response token. 
             // Axios sends it to the backend endpoint
         });
-        setAuth((prev: any) => { // previous state
+        setAuth?.((prev: any) => { // previous state
             console.log(JSON.stringify(prev));
             // accesstoken that we get back after our refresh token is verified
             console.log(response.data.accessToken); 
