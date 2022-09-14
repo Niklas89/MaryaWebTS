@@ -2,13 +2,16 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import { Button, Grid, TextField, Typography } from "@mui/material";
+import useAuth from "../hooks/useAuth";
 
 const Profile = () => {
+    const { auth } = useAuth();
+    console.log(auth?.role);
     return (
         <section>
             <form>
         <Grid container spacing={5} mt={5} direction="row" justifyContent="center">
-            <Typography variant="h4">Profil</Typography>
+            <Typography variant="h4">Profil {auth?.role}</Typography>
         </Grid>
         <Grid container spacing={5} mt={5} direction="row" justifyContent="center">
             <Grid item xs={0}>

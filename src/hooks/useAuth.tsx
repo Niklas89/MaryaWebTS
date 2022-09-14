@@ -1,5 +1,9 @@
 import { useContext, useDebugValue } from "react";
-import AuthContext from "../context/AuthProvider";
+//import AuthContext from "../context/AuthProvider";
+import { IUserData } from "../interfaces/interfaces";
+import { createContext, useState } from "react";
+
+const AuthContext = createContext<IUserData>({});
 
 // global auth state to use throughout the application globally
 const useAuth = () => { 

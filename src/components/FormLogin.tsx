@@ -13,9 +13,9 @@ const FormLogin = () => {
     const { setAuth } = useAuth();
 
     const navigate = useNavigate();
-    // const location = useLocation();
+    const location = useLocation();
     // navigate to the location where the user wanted to go before they were sent to the login page OR the home page
-    // const from = location.state?.from?.pathname || "/";
+    //const from = location.state?.from?.pathname || "/";
     const from = "/home";
     // set focus on user input and error message
     const userRef = useRef<HTMLInputElement>(null);
@@ -51,7 +51,7 @@ const FormLogin = () => {
             console.log(accessToken)
             const role = response?.data?.idRole;
             // auth state stored in our global context with the usecontext hook :
-            setAuth({ user, pwd, role, accessToken });
+            setAuth?.({ user, pwd, role, accessToken });
 
             // clear components after submit complete
             setUser("");
