@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-
 export const AxiosFunction = () => {
 
     const accessToken = "getToken";
@@ -16,14 +15,6 @@ export const AxiosFunction = () => {
         });
     }
 
-    async function postMultipart(path: string, data: any): Promise<any> {
-        return await axios.post<any[]>(`${path}`, data, {
-            headers: {
-                Authorization: `Bearer ${await accessToken}`,
-                "Content-Type": "multipart/form-data",
-            },
-        });
-    }
 
     async function patchQuery(path: string, data: any): Promise<any> {
         return await axios.patch<any[]>(`${path}`, data, {
@@ -50,5 +41,5 @@ export const AxiosFunction = () => {
         });
     }
 
-    return { getQuery, postQuery, deleteQuery, patchQuery, postMultipart }
+    return { getQuery, postQuery, deleteQuery, patchQuery }
 }

@@ -6,6 +6,7 @@ import { FormikValues } from "formik";
 import { toast } from "react-toastify";
 import { Grid, TextField, Typography } from "@mui/material";
 import { AxiosFunction } from "../../api/AxiosFunction";
+import { useNavigate } from "react-router-dom";
 
 
 const userFormFields: FormFieldType[] = [
@@ -13,18 +14,18 @@ const userFormFields: FormFieldType[] = [
     { name: 'firstName', field: TextField, label: "Prenom", isMultiLine: false },
     { name: 'email', field: TextField, label: "E-mail", isMultiLine: false },
     { name: 'password', field: TextField, label: "Mot de passe", type: "password", isMultiLine: false },
-
 ]
-
 
 const FormRegister = () => {
 
+    const navigate = useNavigate();
+    const from = "/home";
+
     const initialValues = {
-        lasteName: "test",
-        firstName: "test",
-        email: "test@test.fr",
-        password: "123456Fhjg",
-        idRole: 1
+        lastName: "",
+        firstName: "",
+        email: "",
+        password: "",
     };
 
     const [userInfo, setUserInfos] = useState<IUser>(initialValues)
@@ -41,6 +42,7 @@ const FormRegister = () => {
     const handleSubmit = useCallback((values: FormikValues, callback: any) => {
 
         const postData = { ...values, 'idRole': '1' };
+
         postQuery('user/register', postData).then((response) => {
             toast.success('Les données ont bien été enregistrées', {
                 position: "bottom-right",
@@ -52,7 +54,6 @@ const FormRegister = () => {
                 toastId: 'submit-dog-success'
             });
             setUserInfos(response.data)
-            console.log({ ...values })
         }).catch(() => {
             toast.error('Une erreur s\'est produite.', {
                 position: "bottom-right",
@@ -62,9 +63,11 @@ const FormRegister = () => {
                 pauseOnHover: true,
                 draggable: true,
                 toastId: 'submit-dog-file-error'
+
             });
+            navigate(from, { replace: true });
             return callback();
-        })
+        }).finally(callback)
     }, [postQuery]);
 
 
@@ -88,7 +91,6 @@ const FormRegister = () => {
                 </Grid>
             </Grid>
             {renderForm}
-
         </>
     );
 };
