@@ -12,7 +12,8 @@ import { Box, Container } from "@mui/system";
 
 const LOGIN_URL = "/user/login"; // login endpoint in backend nodejs api
 
-const LoginButton = styled(Button)<ButtonProps>(() => ({
+// const LoginButton = styled(Button)<ButtonProps>(() => ({
+    const LoginButton = styled(Button)(() => ({
     backgroundColor: "#023535",
     "&:hover": {
         backgroundColor: "#023535",
@@ -20,21 +21,29 @@ const LoginButton = styled(Button)<ButtonProps>(() => ({
 }));
 
 const FormLogin = () => {
-    const error: any = document.getElementById("error");
+    // const error: any = document.getElementById("error");
+    const error = document.getElementById("error");
 
     const { auth, setAuth } = useAuth();
 
     const navigate = useNavigate();
     const location = useLocation();
     // navigate to the location where the user wanted to go before they were sent to the login page OR the home page
-    //const from = location.state?.from?.pathname || "/";
-    const from = "/home";
+    const from = location.state?.from?.pathname || "/home";
+    //const from = "/home";
     // set focus on user input and error message
+    /*
     const userRef = useRef<HTMLInputElement>(null);
     const errRef = useRef<HTMLParagraphElement>(null);
     const [email, setEmail] = useState<string>("");
     const [pwd, setPwd] = useState<string>("");
-    const [err, setErr] = useState<boolean>(false)
+    const [err, setErr] = useState<boolean>(false) */
+
+    const userRef = useRef();
+    const errRef = useRef();
+    const [email, setEmail] = useState("");
+    const [pwd, setPwd] = useState("");
+    const [err, setErr] = useState("")
 
     // when component loads set focus on first input field / user field
     useEffect(() => {
@@ -47,7 +56,8 @@ const FormLogin = () => {
         setErrMsg("");
     }, [email, pwd])*/
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        const handleSubmit = (e) => {
         // prevent default behavior of the page which would reload of the page
         e.preventDefault();
         axios({
@@ -59,7 +69,8 @@ const FormLogin = () => {
                 password: pwd
             }
         })
-            .then((res: AxiosResponse) => {
+            //.then((res: AxiosResponse) => {
+                .then((res) => {
                 const accessToken = res.data.accessToken;
                 const role = res.data.idRole;
                 console.log("test1");
@@ -74,7 +85,8 @@ const FormLogin = () => {
                 // after the form is submited, navigate to the location where the user wanted to go before they were sent to the login page
                 navigate(from, { replace: true });
             })
-            .catch((err: AxiosError) => {
+            // .catch((err: AxiosError) => {
+                .catch((err) => {
                 setErr(true);
                 
                 error.innerHTML = err.response?.data;
