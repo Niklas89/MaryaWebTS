@@ -67,7 +67,6 @@ const FormLogin = () => {
             .then((res: AxiosResponse) => {
                 const accessToken = res.data.accessToken;
                 const role = res.data.idRole;
-                console.log("test1");
                 console.log(role);
                 console.log(accessToken);
                 console.log(email);
@@ -76,8 +75,8 @@ const FormLogin = () => {
                 // auth state stored in our global context with the usecontext hook :
                 //ICI
                 console.log(auth)
-                //setAuth?.({ email, pwd, role, accessToken });
-                //Cookies.set("email", email);
+                setAuth?.({ email, pwd, role, accessToken });
+                Cookies.set("email", email);
                 console.log(auth?.email);
 
                 // clear components after submit complete
@@ -89,7 +88,6 @@ const FormLogin = () => {
             // .catch((err: AxiosError) => {
                 .catch((err) => {
                 setErr(true);
-<<<<<<< HEAD:src/components/FormLogin.tsx
                 
                 if(error != null) {
                     error.innerHTML = err.response?.data;
@@ -97,12 +95,6 @@ const FormLogin = () => {
                     console.log(err.response?.data);
                 }
                 
-=======
-
-                error.innerHTML = err.response?.data;
-                error.removeAttribute("hidden");
-                console.log(err.response?.data);
->>>>>>> master:src/components/form/FormLogin.tsx
 
 
                 if (errRef.current !== null)
