@@ -64,11 +64,12 @@ const FormLogin = () => {
             .then((res: AxiosResponse) => {
                 const accessToken = res.data.accessToken;
                 const role = res.data.idRole;
-                console.log("test1");
 
                 // auth state stored in our global context with the usecontext hook :
-                setAuth({ email, pwd, role, accessToken });
-                console.log(auth.email);
+                //ICI
+                console.log(auth)
+                //setAuth({ email, pwd, role, accessToken });
+                //console.log(auth.email);
 
                 // clear components after submit complete
                 setEmail("");
@@ -91,13 +92,8 @@ const FormLogin = () => {
         /*
         try {
             // post login file to backend api
-<<<<<<< HEAD:src/components/form/FormLogin.tsx
             const response = await axiosPrivate.post(LOGIN_URL,
                 JSON.stringify({ email: user, password: pwd }),
-=======
-            const response = await axios.post(LOGIN_URL,
-                JSON.stringify({ email: email, password: pwd }),
->>>>>>> master:src/components/FormLogin.tsx
                 {
                     headers: { "Content-Type": "application/json" },
                     withCredentials: true
