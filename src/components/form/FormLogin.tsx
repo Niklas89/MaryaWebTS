@@ -67,10 +67,10 @@ const FormLogin = () => {
             .then((res: AxiosResponse) => {
                 const accessToken = res.data.accessToken;
                 const role = res.data.idRole;
-                console.log(role);
-                console.log(accessToken);
-                console.log(email);
-                console.log(pwd);
+                console.log("role: " + role);
+                console.log("accessToken: " + accessToken);
+                console.log("email "+email);
+                console.log("pwd "+pwd);
 
                 // auth state stored in our global context with the usecontext hook :
                 //ICI
