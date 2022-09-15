@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
 import InstagramIcon from '@mui/icons-material/Instagram';
-import "../styles/Footer.css";
+import "../../styles/Footer.css";
 import { List, ListItem, ListItemText } from "@mui/material";
 
 const Footer = () => {
@@ -13,13 +13,13 @@ const Footer = () => {
                 <Grid xs={4} lg={3}>
                     <List disablePadding>
                         <ListItem disablePadding >
-                            <ListItemText primaryTypographyProps={{fontSize: 14}} primary="Information des consomateurs" />
+                            <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Information des consomateurs" />
                         </ListItem>
                         <ListItem disablePadding>
-                            <ListItemText primaryTypographyProps={{fontSize: 14}} primary="Mentions légales" />
+                            <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Mentions légales" />
                         </ListItem>
                         <ListItem disablePadding>
-                            <ListItemText primaryTypographyProps={{fontSize: 14}} primary="Information des consomateurs" />
+                            <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Information des consomateurs" />
                         </ListItem>
                     </List>
                 </Grid>

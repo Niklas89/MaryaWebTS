@@ -1,10 +1,12 @@
 import { useRef, useState, useEffect, useContext } from "react";
-import useAuth from "../hooks/useAuth";
+import AuthContext from "../../context/AuthProvider";
+import useAuth from "../../hooks/useAuth";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
-import axios from "../api/axios";
+import axios from "../../api/axios";
 import { Button, Grid, TextField, Typography } from "@mui/material";
+import { axiosPrivate } from "../../api/axios";
 import { ButtonProps } from '@mui/material/Button';
 import { AxiosError, AxiosResponse } from "axios";
 import { styled } from '@mui/material/styles';
@@ -72,10 +74,12 @@ const FormLogin = () => {
                 console.log(pwd);
 
                 // auth state stored in our global context with the usecontext hook :
-                setAuth?.({ email, pwd, role, accessToken });
-                Cookies.set("email", email);
+                //ICI
+                console.log(auth)
+                //setAuth?.({ email, pwd, role, accessToken });
+                //Cookies.set("email", email);
                 console.log(auth?.email);
-                
+
                 // clear components after submit complete
                 setEmail("");
                 setPwd("");
@@ -85,6 +89,7 @@ const FormLogin = () => {
             // .catch((err: AxiosError) => {
                 .catch((err) => {
                 setErr(true);
+<<<<<<< HEAD:src/components/FormLogin.tsx
                 
                 if(error != null) {
                     error.innerHTML = err.response?.data;
@@ -92,6 +97,12 @@ const FormLogin = () => {
                     console.log(err.response?.data);
                 }
                 
+=======
+
+                error.innerHTML = err.response?.data;
+                error.removeAttribute("hidden");
+                console.log(err.response?.data);
+>>>>>>> master:src/components/form/FormLogin.tsx
 
 
                 if (errRef.current !== null)
@@ -101,8 +112,8 @@ const FormLogin = () => {
         /*
         try {
             // post login file to backend api
-            const response = await axios.post(LOGIN_URL,
-                JSON.stringify({ email: email, password: pwd }),
+            const response = await axiosPrivate.post(LOGIN_URL,
+                JSON.stringify({ email: user, password: pwd }),
                 {
                     headers: { "Content-Type": "application/json" },
                     withCredentials: true

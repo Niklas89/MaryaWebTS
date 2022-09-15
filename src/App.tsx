@@ -6,8 +6,8 @@ import Layout from './pages/Layout';
 import Register from "./pages/Register";
 import Admin from "./pages/Admin";
 import Home from "./pages/Home";
-import Footer from './components/Footer';
-import Navigation from './components/Navigation';
+import Footer from './components/parts/Footer';
+import Navigation from './components/parts/Navigation';
 import RequireAuth from './components/RequireAuth';
 import "./styles/App.css"
 
@@ -27,10 +27,10 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
 
-          {/* protected routes*/}
-          <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
-            <Route path="/" element={<Home />} />
-          </Route>
+        {/* protected routes*/}
+        <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
+          <Route path="/" element={<Home />} />
+        </Route>
 
           <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
             <Route path="profile" element={<Profile />} />
