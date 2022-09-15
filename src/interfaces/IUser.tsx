@@ -3,6 +3,7 @@ export interface IUser {
     firstName?: string,
     lasteName?: string,
     password?: string,
+    pwd?: string,
     email?: string,
     isActive?: number,
     deactivatedDate?: string,
@@ -12,4 +13,6 @@ export interface IUser {
     resetToken?: string,
     resetTokenExpiration?: string,
     refreshToken?: string,
+    role?: number,
+    accessToken?: string
 }

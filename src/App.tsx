@@ -14,7 +14,7 @@ import "./styles/App.css"
 const ROLES = {
   'Client': 1,
   'Partner': 2,
-  'Admin': 1
+  'Admin': 3
 }
 
 function App() {
@@ -22,23 +22,23 @@ function App() {
     <main>
       <Navigation />
       <Routes>
-        {/* public routes */}
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/" element={<Login />} />
-        <Route path="/home" element={<Home />} />
+      <Route path="/" element={<Layout />}>
+          {/* public routes */}
+          <Route path="register" element={<Register />} />
+          <Route path="login" element={<Login />} />
 
         {/* protected routes*/}
         <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
           <Route path="/" element={<Home />} />
         </Route>
 
-        <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-          <Route path="admin" element={<Admin />} />
-        </Route>
+          <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
+            <Route path="profile" element={<Profile />} />
+          </Route>
 
-        <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
-          <Route path="profile" element={<Profile />} />
+          <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+            <Route path="admin" element={<Admin />} />
+          </Route>
         </Route>
       </Routes>
       <Footer />
