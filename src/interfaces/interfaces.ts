@@ -1,11 +1,11 @@
 import { Dispatch, SetStateAction } from "react";
 
 export interface IUserData {
-    user?: string
+    email?: string
     pwd?: string
     role?: number
     accessToken?: string
-    auth?: {user?: string
+    auth?: {email?: string
         pwd?: string
         role?: number
         accessToken?: string}
@@ -13,7 +13,10 @@ export interface IUserData {
 }
 
 export type AuthContextType = {
-    auth?: IUserData;
+    auth?: {email?: string
+        pwd?: string
+        role?: number
+        accessToken?: string};
     setAuth?: (auth: IUserData) => void;
     //updateTodo: (id: number) => void;
   }; 

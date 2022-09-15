@@ -9,11 +9,11 @@ import { ButtonProps } from '@mui/material/Button';
 import { AxiosError, AxiosResponse } from "axios";
 import { styled } from '@mui/material/styles';
 import { Box, Container } from "@mui/system";
+import Cookies from "js-cookie";
 
 const LOGIN_URL = "/user/login"; // login endpoint in backend nodejs api
 
-// const LoginButton = styled(Button)<ButtonProps>(() => ({
-    const LoginButton = styled(Button)(() => ({
+const LoginButton = styled(Button)<ButtonProps>(() => ({
     backgroundColor: "#023535",
     "&:hover": {
         backgroundColor: "#023535",
@@ -27,23 +27,17 @@ const FormLogin = () => {
     const { auth, setAuth } = useAuth();
 
     const navigate = useNavigate();
-    const location = useLocation();
+    const location: any = useLocation();
     // navigate to the location where the user wanted to go before they were sent to the login page OR the home page
-    const from = location.state?.from?.pathname || "/home";
+    const from = location.state?.from?.pathname || "/";
     //const from = "/home";
     // set focus on user input and error message
-    /*
+    
     const userRef = useRef<HTMLInputElement>(null);
     const errRef = useRef<HTMLParagraphElement>(null);
     const [email, setEmail] = useState<string>("");
     const [pwd, setPwd] = useState<string>("");
-    const [err, setErr] = useState<boolean>(false) */
-
-    const userRef = useRef();
-    const errRef = useRef();
-    const [email, setEmail] = useState("");
-    const [pwd, setPwd] = useState("");
-    const [err, setErr] = useState("")
+    const [err, setErr] = useState<boolean>(false) 
 
     // when component loads set focus on first input field / user field
     useEffect(() => {
@@ -56,8 +50,7 @@ const FormLogin = () => {
         setErrMsg("");
     }, [email, pwd])*/
 
-    // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         // prevent default behavior of the page which would reload of the page
         e.preventDefault();
         axios({
@@ -69,15 +62,19 @@ const FormLogin = () => {
                 password: pwd
             }
         })
-            //.then((res: AxiosResponse) => {
-                .then((res) => {
+            .then((res: AxiosResponse) => {
                 const accessToken = res.data.accessToken;
                 const role = res.data.idRole;
                 console.log("test1");
+                console.log(role);
+                console.log(accessToken);
+                console.log(email);
+                console.log(pwd);
 
                 // auth state stored in our global context with the usecontext hook :
-                setAuth({ email, pwd, role, accessToken });
-                console.log(auth.email);
+                setAuth?.({ email, pwd, role, accessToken });
+                Cookies.set("email", email);
+                console.log(auth?.email);
                 
                 // clear components after submit complete
                 setEmail("");
@@ -89,9 +86,12 @@ const FormLogin = () => {
                 .catch((err) => {
                 setErr(true);
                 
-                error.innerHTML = err.response?.data;
-                error.removeAttribute("hidden");
-                console.log(err.response?.data);
+                if(error != null) {
+                    error.innerHTML = err.response?.data;
+                    error.removeAttribute("hidden");
+                    console.log(err.response?.data);
+                }
+                
 
 
                 if (errRef.current !== null)
