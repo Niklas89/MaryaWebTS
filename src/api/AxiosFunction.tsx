@@ -6,37 +6,37 @@ export const AxiosFunction = () => {
     const apiPath = "http://localhost:8080/api";
 
 
-    async function postQuery(path: string, data: any): Promise<any> {
+    function postQuery(path: string, data: object): Promise<any> {
 
-        return await axios.post<any[]>(`${apiPath}/${path}`, data, {
+        return axios.post(`${apiPath}/${path}`, data, {
             headers: {
-                Authorization: `Bearer ${await accessToken}`,
+                Authorization: `Bearer ${accessToken}`,
             },
         });
     }
 
 
-    async function patchQuery(path: string, data: any): Promise<any> {
-        return await axios.patch<any[]>(`${path}`, data, {
+    function patchQuery(path: string, data: object): Promise<any> {
+        return axios.patch(`${path}`, data, {
             headers: {
-                Authorization: `Bearer ${await accessToken}`,
+                Authorization: `Bearer ${accessToken}`,
                 'Content-Type': 'application/merge-patch+json',
             },
         });
     }
 
-    async function getQuery(path: string): Promise<any> {
-        return await axios.get<any[]>(`${path}`, {
+    function getQuery(path: string): Promise<any> {
+        return axios.get(`${path}`, {
             headers: {
-                Authorization: `Bearer ${await accessToken}`,
+                Authorization: `Bearer ${accessToken}`,
             },
         });
     }
 
-    async function deleteQuery(path: string): Promise<any> {
-        return await axios.delete<any[]>(`${path}`, {
+    function deleteQuery(path: string): Promise<any> {
+        return axios.delete(`${path}`, {
             headers: {
-                Authorization: `Bearer ${await accessToken}`,
+                Authorization: `Bearer ${accessToken}`,
             },
         });
     }

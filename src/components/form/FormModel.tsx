@@ -4,6 +4,8 @@ import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import styled from "@emotion/styled";
 import { Button, Grid, ButtonProps, InputLabel, TextField, Typography, FormControl, MenuItem, Select, } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const LoginButton = styled(Button)<ButtonProps>(() => ({
     backgroundColor: "#023535",
@@ -55,25 +57,32 @@ export function useFormBuilder(
     const renderField = (item: FormFieldType) => {
 
         const menuLabel = (item?.menuItems ? <InputLabel id={item.name} key={item.name + "_menu_label"}>{item.label}</InputLabel> : null)
+        const title = (item?.title ? <Grid
+            key={item.name + '_title'}
+            item
+            lg={12}
+            md={12}
+            sm={12}
+            xs={12}
+        ><Typography variant="h4" my={5}>{item.title}</Typography></Grid> : null)
 
         return (
             <React.Fragment key={item.name + 'fragment'}>
-                <FormControl key={item.name + 'form_control'} >
-                    {menuLabel}
-                    {item.field === TextField ?
-                        <TextField
-                            id={item.name}
-                            //ref={userRef}
-                            label={item.label}
-                            name={item.name}
-                            {...(item.type ? { type: item.type } : {})}
-                            value={formik.values[item.name]}
-                            onChange={(value) => {
-                                return formik.setFieldValue(item.name, value, true)
-                            }}
-                        />
-                        :
-                        item.field === DateTimePicker ?
+                {title}
+                <Grid
+                    key={item.name}
+                    p={3}
+                    item
+                    {...(item.field === TextField && item?.isMultiLine ? {
+                        lg: 10,
+                        md: 10,
+                        sm: 10,
+                        xs: 10
+                    } : { lg: 5, md: 5, sm: 12, xs: 12 })}
+                >
+                    <FormControl key={item.name + 'form_control'} fullWidth sx={{ m: 1 }}>
+                        {menuLabel}
+                        {item.field === DateTimePicker ?
                             <DateTimePicker
                                 key={item.name + '_input'}
                                 renderInput={(params) => (
@@ -97,7 +106,7 @@ export function useFormBuilder(
                                 key={item.name + '_field'}
                                 {...(item.label ? { label: item.label } : {})}
                                 name={item.name}
-                                {...(item.type ? { type: item.type } : {})}
+                                {...(item.type === "password" ? { component: item.field, type: item.type } : item.type ? { type: item.type } : { component: item.field })}
                                 {...(item.isMultiLine ? { multiline: true, rows: 4 } : {})}
                                 {...((item.field === Select) ? {
                                     onChange: (value: any) => {
@@ -107,11 +116,10 @@ export function useFormBuilder(
                                     onChange: formik.handleChange,
                                     onBlur: formik.handleBlur
                                 })}
-                                {...(item.field === TextField ? { defaultValue: formik.values[item.name] } : { value: formik.values[item.name] })}
-                                {...(item.field !== TextField || item.type !== undefined ? { error: Boolean(formik.errors[item.name] && formik.touched[item.name]) } : {})}
+                                {...({ value: formik.values[item.name] })}
+                                {...({ error: Boolean(formik.errors[item.name] && formik.touched[item.name]) })}
                                 {...(item.field === TextField && formik.errors[item.name] && formik.touched[item.name] ? { helperText: formik.errors[item.name] } : {})}
                                 {...(item.attributes)}
-
                             >
                                 {item?.menuItems?.map((menuItem: IMenuItem, index: number) => {
                                     return (
@@ -121,9 +129,11 @@ export function useFormBuilder(
                                     )
                                 })}
                             </Field>
-                    }
-                </FormControl>
+                        }
+                    </FormControl>
+                </Grid>
             </React.Fragment>
+
 
         )
     }
@@ -132,25 +142,26 @@ export function useFormBuilder(
         return (
 
             <FormikProvider key={"formik"} value={formik}>
+                <ToastContainer />
                 <form onSubmit={formik.handleSubmit} key={"formik_form"} onChange={formik.handleChange} >
 
-                    <Grid container spacing={3} m={4} direction="row">
-                        <Grid textAlign="center" item xs={4} m={3}>
-                            {formFields.map((item) => {
-                                return renderField(item)
-                            })}
-                        </Grid>
+                    <Grid container p={4} direction="row" justifyContent="space-evenly" alignItems="center">
+                        {formFields.map((item) => {
+                            return renderField(item)
+                        })}
                     </Grid>
-                    <LoginButton
-                        name={"submit"}
-                        id={"submit"}
-                        key={"submit_button"}
-                        variant={"contained"}
-                        endIcon={<DoneOutlineIcon />}
-                        type="submit"
-                    >
-                        Enregistrer
-                    </LoginButton>
+                    <Grid container p={4} direction="row" justifyContent="space-evenly" alignItems="center">
+                        <LoginButton
+                            name={"submit"}
+                            id={"submit"}
+                            key={"submit_button"}
+                            variant={"contained"}
+                            endIcon={<DoneOutlineIcon />}
+                            type="submit"
+                        >
+                            Enregistrer
+                        </LoginButton>
+                    </Grid>
 
                 </form>
             </FormikProvider >
