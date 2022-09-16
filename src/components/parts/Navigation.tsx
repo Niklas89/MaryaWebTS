@@ -14,9 +14,9 @@ import { Link } from "react-router-dom";
 import "../../styles/Navigation.css";
 
 const pages = [
-    { name: "Reserver", path:"booked"},
-    { name: "Mes reservations", path:"booking"},
-    { name: "Se connecter", path:"/"}
+    { name: "Reserver", path: "booked" },
+    { name: "Mes reservations", path: "booking" },
+    { name: "Se connecter", path: "/" }
 ];
 
 const Navigation = () => {
@@ -31,26 +31,26 @@ const Navigation = () => {
     };
 
     return (
-        <AppBar position="static" sx={{backgroundColor: "#035A5A"}}>
+        <AppBar position="static" sx={{ backgroundColor: "#035A5A" }}>
             <Container>
                 <Toolbar disableGutters>
-                        <img src="./assets/logo.png" height="50" alt="" />
-                        <Typography
-                            variant="h6"
-                            noWrap
-                            sx={{
-                                mr: 2,
-                                ml: 2,
-                                display: { xs: "none", md: "flex" },
-                                fontFamily: "monospace",
-                                fontWeight: 700,
-                                letterSpacing: ".3rem",
-                                color: "inherit",
-                                textDecoration: "none",
-                            }}
-                        >
-                            MARYA
-                        </Typography>
+                    <img src="./assets/logo.png" height="50" alt="" />
+                    <Typography
+                        variant="h6"
+                        noWrap
+                        sx={{
+                            mr: 2,
+                            ml: 2,
+                            display: { xs: "none", md: "flex" },
+                            fontFamily: "monospace",
+                            fontWeight: 700,
+                            letterSpacing: ".3rem",
+                            color: "inherit",
+                            textDecoration: "none",
+                        }}
+                    >
+                        MARYA
+                    </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
                         <IconButton
