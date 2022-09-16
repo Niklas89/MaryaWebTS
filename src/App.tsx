@@ -9,12 +9,13 @@ import Home from "./pages/Home";
 import Footer from './components/parts/Footer';
 import Navigation from './components/parts/Navigation';
 import RequireAuth from './components/RequireAuth';
-import "./styles/App.css"
+import "./styles/App.css";
+import CardService from './components/service/CardService';
 
 const ROLES = {
-  'Client': 1,
-  'Partner': 2,
-  'Admin': 3
+  "Client": 1,
+  "Partner": 2,
+  "Admin": 1
 }
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           {/* public routes */}
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
+        <Route path="/service/:id" element={<CardService />} />
 
         {/* protected routes*/}
         <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
