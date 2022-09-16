@@ -1,17 +1,14 @@
 import { useRef, useState, useEffect, useContext } from "react";
-import AuthContext from "../../context/AuthProvider";
 import useAuth from "../../hooks/useAuth";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import axios from "../../api/axios";
-import { Button, Grid, TextField, Typography } from "@mui/material";
-import { axiosPrivate } from "../../api/axios";
+import { Button, Checkbox, Grid, TextField, Typography } from "@mui/material";
 import { ButtonProps } from '@mui/material/Button';
-import { AxiosError, AxiosResponse } from "axios";
 import { styled } from '@mui/material/styles';
-import { Box, Container } from "@mui/system";
-import Cookies from "js-cookie";
+import { AxiosResponse } from "axios";
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 const LOGIN_URL = "/user/login"; // login endpoint in backend nodejs api
 
@@ -26,7 +23,7 @@ const FormLogin = () => {
     // const error: any = document.getElementById("error");
     const error = document.getElementById("error");
 
-    const { auth, setAuth } = useAuth();
+    const { auth, setAuth, persist, setPersist } = useAuth();
 
     const navigate = useNavigate();
     const location: any = useLocation();
@@ -76,7 +73,6 @@ const FormLogin = () => {
                 //ICI
                 console.log(auth)
                 setAuth?.({ email, pwd, role, accessToken });
-                Cookies.set("email", email);
                 console.log(auth?.email);
 
                 // clear components after submit complete
@@ -100,43 +96,19 @@ const FormLogin = () => {
                 if (errRef.current !== null)
                     errRef.current.focus();
             })
-
-        /*
-        try {
-            // post login file to backend api
-            const response = await axiosPrivate.post(LOGIN_URL,
-                JSON.stringify({ email: user, password: pwd }),
-                {
-                    headers: { "Content-Type": "application/json" },
-                    withCredentials: true
-                }
-            );
-            const accessToken = response?.data?.accessToken;
-            console.log(accessToken)
-            const role = response?.data?.idRole;
-            // auth state stored in our global context with the usecontext hook :
-            setAuth?.({ user, pwd, role, accessToken });
-
-            // clear components after submit complete
-            setUser("");
-            setPwd("");
-            // after the form is submited, navigate to the location where the user wanted to go before they were sent to the login page
-            navigate(from, { replace: true });
-        } catch (err: any) {
-            if (!err?.response) {
-                setErrMsg("Le serveur ne repond pas");
-            } else if (err.response?.status === 400) {
-                setErrMsg("Manque le champ Email ou mot de passe");
-            } else if (err.response?.status === 401) {
-                setErrMsg("Vous n'êtes pas authorisé/e");
-            } else {
-                setErrMsg("Erreur de connection");
-            }
-            if (errRef.current !== null)
-                errRef.current.focus();
-        }
-        */
     }
+
+    const togglePersist = () => {
+        // setPersist?.((prev: any) => !prev);
+        setPersist?.(!persist);
+    }
+
+    
+    useEffect(() => { 
+        if(persist !== undefined) {
+            localStorage.setItem("persist", persist.toString()); // store in localstorage at persist state change
+        }
+    }, [persist]) // [persist] : listen to when the persist state changes
 
 
     return (
@@ -195,6 +167,11 @@ const FormLogin = () => {
                         >
                             Connexion
                         </LoginButton>
+                        <Checkbox 
+                        id="persist"
+                        onChange={togglePersist}
+                        checked={persist} 
+                        {...label} />
                     </Grid>
                 </Grid>
             </form>

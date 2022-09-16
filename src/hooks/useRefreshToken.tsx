@@ -16,8 +16,10 @@ const useRefreshToken = () => {
             // the request is going to send the secure cookie (not accessible with javascript) that has the response token. 
             // Axios sends it to the backend endpoint
         });
+        console.log("refreshtoken recu: "+response);
         setAuth?.({
             ...auth,
+            role: response.data.idRole, // we add role for the PersistLogin function (page refresh), we get it at login normally
             accessToken: response.data.accessToken
         });
         // setAuth?.((prev: any) => { // previous state
@@ -27,7 +29,9 @@ const useRefreshToken = () => {
         //     // return the previous state and override the accesstoken with the new accesstoken
         //     return { ...prev, accessToken: response.data.accessToken }
         // }); 
+        
         return response.data.accessToken;
+        
     }
     return refresh;
 };

@@ -10,6 +10,7 @@ export interface IUserData {
         role?: number
         accessToken?: string}
     setAuth?: Dispatch<SetStateAction<IUserData>>
+    setPersist?: Dispatch<SetStateAction<boolean>> | Dispatch<any>
 }
 
 export type AuthContextType = {
@@ -17,7 +18,10 @@ export type AuthContextType = {
         pwd?: string
         role?: number
         accessToken?: string};
+        
+    persist?: boolean;
     setAuth?: (auth: IUserData) => void;
+    setPersist?: (persist: boolean) => void;
     //updateTodo: (id: number) => void;
   };
 

@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import Footer from './components/parts/Footer';
 import Navigation from './components/parts/Navigation';
 import RequireAuth from './components/RequireAuth';
+import PersistLogin from './components/form/PersistLogin';
 import "./styles/App.css";
 import CardService from './components/service/CardService';
 
@@ -30,16 +31,18 @@ function App() {
         <Route path="/service/:id" element={<CardService />} />
 
         {/* protected routes*/}
-        <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
-          <Route path="/" element={<Home />} />
-        </Route>
-
+        <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
-            <Route path="profile" element={<Profile />} />
+            <Route path="/" element={<Home />} />
           </Route>
 
-          <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-            <Route path="admin" element={<Admin />} />
+            <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
+              <Route path="profile" element={<Profile />} />
+            </Route>
+
+            <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+              <Route path="admin" element={<Admin />} />
+            </Route>
           </Route>
         </Route>
       </Routes>
