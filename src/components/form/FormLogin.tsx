@@ -11,6 +11,7 @@ import { ButtonProps } from '@mui/material/Button';
 import { AxiosError, AxiosResponse } from "axios";
 import { styled } from '@mui/material/styles';
 import { Box, Container } from "@mui/system";
+import Cookies from "js-cookie";
 
 const LOGIN_URL = "/user/login"; // login endpoint in backend nodejs api
 
@@ -22,21 +23,23 @@ const LoginButton = styled(Button)<ButtonProps>(() => ({
 }));
 
 const FormLogin = () => {
-    const error: any = document.getElementById("error");
+    // const error: any = document.getElementById("error");
+    const error = document.getElementById("error");
 
     const { auth, setAuth } = useAuth();
 
     const navigate = useNavigate();
-    const location = useLocation();
+    const location: any = useLocation();
     // navigate to the location where the user wanted to go before they were sent to the login page OR the home page
-    //const from = location.state?.from?.pathname || "/";
-    const from = "/home";
+    const from = location.state?.from?.pathname || "/";
+    //const from = "/home";
     // set focus on user input and error message
+    
     const userRef = useRef<HTMLInputElement>(null);
     const errRef = useRef<HTMLParagraphElement>(null);
     const [email, setEmail] = useState<string>("");
     const [pwd, setPwd] = useState<string>("");
-    const [err, setErr] = useState<boolean>(false)
+    const [err, setErr] = useState<boolean>(false) 
 
     // when component loads set focus on first input field / user field
     useEffect(() => {
@@ -64,12 +67,17 @@ const FormLogin = () => {
             .then((res: AxiosResponse) => {
                 const accessToken = res.data.accessToken;
                 const role = res.data.idRole;
+                console.log("role: " + role);
+                console.log("accessToken: " + accessToken);
+                console.log("email "+email);
+                console.log("pwd "+pwd);
 
                 // auth state stored in our global context with the usecontext hook :
                 //ICI
                 console.log(auth)
-                //setAuth({ email, pwd, role, accessToken });
-                //console.log(auth.email);
+                setAuth?.({ email, pwd, role, accessToken });
+                Cookies.set("email", email);
+                console.log(auth?.email);
 
                 // clear components after submit complete
                 setEmail("");
@@ -77,12 +85,16 @@ const FormLogin = () => {
                 // after the form is submited, navigate to the location where the user wanted to go before they were sent to the login page
                 navigate(from, { replace: true });
             })
-            .catch((err: AxiosError) => {
+            // .catch((err: AxiosError) => {
+                .catch((err) => {
                 setErr(true);
-
-                error.innerHTML = err.response?.data;
-                error.removeAttribute("hidden");
-                console.log(err.response?.data);
+                
+                if(error != null) {
+                    error.innerHTML = err.response?.data;
+                    error.removeAttribute("hidden");
+                    console.log(err.response?.data);
+                }
+                
 
 
                 if (errRef.current !== null)

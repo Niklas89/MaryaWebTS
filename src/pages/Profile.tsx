@@ -4,7 +4,11 @@ import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import useAuth from "../hooks/useAuth";
 
+
+
 const Profile = () => {
+    const navigate = useNavigate();
+    const goBack = () => navigate(-1);
     const { auth } = useAuth();
     console.log(auth);
     console.log(auth?.role);
@@ -97,6 +101,7 @@ const Profile = () => {
             </Button>
         </Grid>
     </Grid>
+    <button onClick={goBack}>Retour</button> 
         </section>
     );
 };
