@@ -23,4 +23,9 @@ export type AuthContextType = {
     setAuth?: (auth: IUserData) => void;
     setPersist?: (persist: boolean) => void;
     //updateTodo: (id: number) => void;
-  }; 
+  };
+
+export interface StringArray {
+    length: number;
+    [index: number]: string;
+}
