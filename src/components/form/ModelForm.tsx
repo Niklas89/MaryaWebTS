@@ -3,6 +3,7 @@ import React, { useCallback, useMemo } from "react";
 import Grid from "@mui/material/Grid";
 import {
     Box,
+    Checkbox,
     FormControl,
     InputLabel,
     MenuItem,
@@ -31,6 +32,9 @@ export interface FormFieldType {
     menuItems?: IMenuItem[];
     title?: string;
     type?: string;
+    onChange?: any;
+    checked?: any;
+
 }
 
 export function useFormBuilder(
@@ -56,7 +60,6 @@ export function useFormBuilder(
         }
 
     }, [formik.setValues, handleFormCallback]);
-
 
     const renderField = (item: FormFieldType) => {
 
@@ -175,7 +178,7 @@ export function useFormBuilder(
                             type="submit"
                             sx={{ mt: 3, ml: 1 }}
                         >
-                            Enregistrer
+                            Connexion
                         </Button>
                     </Box>
                 </form>
