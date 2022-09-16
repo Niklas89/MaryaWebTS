@@ -10,6 +10,7 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import { Link } from "react-router-dom";
 import "../../styles/Navigation.css";
 
 const pages = [
@@ -87,7 +88,6 @@ const Navigation = () => {
                             ))}
                         </Menu>
                     </Box>
-                    <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
                     <Typography
                         variant="h5"
                         noWrap
@@ -104,7 +104,7 @@ const Navigation = () => {
                             textDecoration: "none",
                         }}
                     >
-                        LOGO
+                        MARYA
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
                         {pages.map((page) => (

@@ -1,8 +1,8 @@
 import { useNavigate, Link } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext from "../context/AuthProvider";
-import * as React from 'react';
-import Button from '@mui/material/Button';
+import CardCategory from "../components/service/CardCategory";
+import SliderHome from "../components/SliderHome";
 import axios from "../api/axios";
 import { AxiosResponse } from "axios";
 import Cookies from "js-cookie";
