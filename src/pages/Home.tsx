@@ -1,31 +1,14 @@
 import { useNavigate, Link } from "react-router-dom";
-import { useContext } from "react";
-import AuthContext from "../context/AuthProvider";
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import axios from "../api/axios";
-import { AxiosResponse } from "axios";
-import Cookies from "js-cookie";
-
-const LOGOUT_URL = "/logout"; // login endpoint in backend nodejs api
+import useLogout from "../hooks/useLogout";
 
 const Home = () => {
-    const { setAuth } = useContext(AuthContext);
     const navigate = useNavigate();
-    
-    const logout = async () => {
-        // if used in more components, this should be in context 
-        // axios to /logout endpoint 
-        setAuth?.({});
-        axios({
-            method: "get",
-            url: LOGOUT_URL
-        })
-        .then((res: AxiosResponse) => {
-            Cookies.remove("email");
-            Cookies.remove("jwt"); // cannot remove because the cookie is secure and httponly
-            navigate("/login");
-        })
+    const logout = useLogout();
+
+    const signOut = async () => {
+        await logout();
+        // the backend api will delete the cookie that has the refreshToken, so that there will be no refreshToken
+        navigate('/login');
     }
 
     return (
@@ -42,7 +25,7 @@ const Home = () => {
             <br />
             <Link to="/linkpage">Aller à la page des liens</Link>
             <div className="flexGrow">
-                <button onClick={logout}>Déconnecter</button>
+                <button onClick={signOut}>Déconnecter</button>
             </div>
         </section>
     )
