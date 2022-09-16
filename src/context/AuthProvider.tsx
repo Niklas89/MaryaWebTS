@@ -12,11 +12,9 @@ export const AuthProvider = ({ children }: props) => {
     // use localstorage to store a boolean that will tell us if we trust this device or not (check at login page)
     // getItem if it exists or otherwise it's false
     const [persist, setPersist] = useState(JSON.parse(localStorage.getItem("persist")!) || false);
-    // const persistJson = localStorage.getItem("persist");
-    // const [persist, setPersist] = persistJson !== null ? useState(JSON.parse(persistJson)) : useState(false);
         
     return (
-        <AuthContext.Provider value={{ auth, setAuth, persist, setPersist }}>
+         <AuthContext.Provider value={{ auth, setAuth, persist, setPersist }}> 
             {children}
         </AuthContext.Provider>
     )

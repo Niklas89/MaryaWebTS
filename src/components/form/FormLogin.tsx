@@ -64,13 +64,14 @@ const FormLogin = () => {
             .then((res: AxiosResponse) => {
                 const accessToken = res.data.accessToken;
                 const role = res.data.idRole;
+                const id = res.data.user.id;
                 console.log("role: " + role);
+                console.log("user: " + res.data.user.id);
                 console.log("accessToken: " + accessToken);
                 console.log("email "+email);
-                console.log("pwd "+pwd);
 
                 // auth state stored in our global context with the usecontext hook :
-                setAuth?.({ email, pwd, role, accessToken });
+                setAuth?.({ id, email, role, accessToken });
 
                 // clear components after submit complete
                 setEmail("");
