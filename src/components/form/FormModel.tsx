@@ -167,5 +167,4 @@ export function useFormBuilder(
     }, [formFields, formik]);
 
     return { handleFormSubmit, formik, renderForm }
-
 }

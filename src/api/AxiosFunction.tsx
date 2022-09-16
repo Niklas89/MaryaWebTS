@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 export const AxiosFunction = () => {
 
@@ -20,7 +20,7 @@ export const AxiosFunction = () => {
         return axios.patch(`${path}`, data, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
-                'Content-Type': 'application/merge-patch+json',
+                "Content-Type": "application/merge-patch+json",
             },
         });
     }

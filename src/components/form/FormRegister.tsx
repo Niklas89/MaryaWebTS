@@ -62,7 +62,6 @@ const FormRegister = () => {
         }).finally(callback)
     }, [postQuery]);
 
-
     const { renderForm } = useFormBuilder(validationShema, userInfo, userFormFields,
         { submit: handleSubmit }
     );
