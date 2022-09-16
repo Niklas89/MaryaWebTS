@@ -16,4 +16,9 @@ export type AuthContextType = {
     auth?: IUserData;
     setAuth?: (auth: IUserData) => void;
     //updateTodo: (id: number) => void;
-  }; 
+  };
+
+export interface StringArray {
+    length: number;
+    [index: number]: string;
+}
