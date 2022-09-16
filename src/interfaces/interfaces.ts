@@ -1,11 +1,13 @@
 import { Dispatch, SetStateAction } from "react";
 
 export interface IUserData {
+    id?: number
     email?: string
     pwd?: string
     role?: number
     accessToken?: string
-    auth?: {email?: string
+    auth?: {id?: number
+        email?: string
         pwd?: string
         role?: number
         accessToken?: string}
@@ -14,11 +16,13 @@ export interface IUserData {
 }
 
 export type AuthContextType = {
-    auth?: {email?: string
+    auth?: {
+        id?: number
+        email?: string
         pwd?: string
         role?: number
-        accessToken?: string};
-        
+        accessToken?: string
+    };
     persist?: boolean;
     setAuth?: (auth: IUserData) => void;
     setPersist?: (persist: boolean) => void;

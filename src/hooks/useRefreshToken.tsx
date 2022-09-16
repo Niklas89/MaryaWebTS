@@ -11,6 +11,8 @@ import useAuth from './useAuth';
 // then it will refresh, get a new token, and we will retry the request.
 const useRefreshToken = () => {
     const { auth, setAuth } = useAuth();
+    
+    /*
     const [accessToken, setAccessToken] = useState<string>();
 
     const refresh = () => {
@@ -26,11 +28,11 @@ const useRefreshToken = () => {
         });
         setAccessToken(res.data.accessToken)});
         console.log("const accessToken: "+ accessToken);
-        return accessToken;
+        return accessToken; */
 
-    /*
-    const refresh = () => {
-        const response = axios.get('/refresh', {
+    // marche bien quand on clique sur le bouton refresh dans page profile, mais ne marche pas lors de l'actualisation de la page
+    const refresh = async () => {
+        const response = await axios.get('/refresh', {
             withCredentials: true 
             // this is the setting that allows us to send cookies with our request
             // the request is going to send the secure cookie (not accessible with javascript) that has the response token. 
@@ -39,10 +41,11 @@ const useRefreshToken = () => {
         console.log("refreshtoken recu: "+response.data.accessToken);
         setAuth?.({
             ...auth,
-            role: response.data.idRole, // we add role for the PersistLogin function (page refresh), we get it at login normally
+           role: response.data.idRole, // we add role for the PersistLogin function (page refresh), we get it at login normally
             accessToken: response.data.accessToken
         });
-        */
+        console.log("role recu: "+response.data.idRole);
+        
 
         // setAuth?.((prev: any) => { // previous state
         //     console.log(JSON.stringify(prev));
@@ -52,7 +55,7 @@ const useRefreshToken = () => {
         //     return { ...prev, accessToken: response.data.accessToken }
         // }); 
        
-        
+        return response.data.accessToken;
     }
     return refresh;
 };
