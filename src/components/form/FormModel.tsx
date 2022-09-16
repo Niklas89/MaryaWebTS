@@ -1,11 +1,11 @@
 import { Field, FormikProvider, FormikValues, useFormik } from "formik";
 import React, { useCallback, useMemo } from "react";
-import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
+import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import styled from "@emotion/styled";
 import { Button, Grid, ButtonProps, InputLabel, TextField, Typography, FormControl, MenuItem, Select, } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
 const LoginButton = styled(Button)<ButtonProps>(() => ({
     backgroundColor: "#023535",
@@ -15,13 +15,13 @@ const LoginButton = styled(Button)<ButtonProps>(() => ({
 }));
 
 export interface IMenuItem {
-    value: any;
+    value: string;
     label: string | number;
 }
 
 export interface FormFieldType {
-    name: any;
-    field: any;
+    name: string;
+    field: object;
     label?: string;
     attributes?: object;
     values?: FormikValues[];
@@ -36,8 +36,8 @@ export function useFormBuilder(
     defaultValues: any,
     formFields: FormFieldType[],
     handleFormCallback?: {
-        change?: any;
-        submit?: any;
+        change?: string;
+        submit?: object;
     },
 ) {
     const formik = useFormik({
@@ -45,9 +45,9 @@ export function useFormBuilder(
         validationSchema: schema,
         onSubmit: (values) => handleFormSubmit(values),
         enableReinitialize: true
-    })
+    });
     const handleFormSubmit: any = useCallback((values: FormikValues) => {
-        if (handleFormCallback?.submit && typeof handleFormCallback.submit === 'function') {
+        if (handleFormCallback?.submit && typeof handleFormCallback.submit === "function") {
 
             handleFormCallback.submit(values, () => formik.setValues);
         }
@@ -58,7 +58,7 @@ export function useFormBuilder(
 
         const menuLabel = (item?.menuItems ? <InputLabel id={item.name} key={item.name + "_menu_label"}>{item.label}</InputLabel> : null)
         const title = (item?.title ? <Grid
-            key={item.name + '_title'}
+            key={item.name + "_title"}
             item
             lg={12}
             md={12}
@@ -67,7 +67,7 @@ export function useFormBuilder(
         ><Typography variant="h4" my={5}>{item.title}</Typography></Grid> : null)
 
         return (
-            <React.Fragment key={item.name + 'fragment'}>
+            <React.Fragment key={item.name + "fragment"}>
                 {title}
                 <Grid
                     key={item.name}
@@ -80,11 +80,11 @@ export function useFormBuilder(
                         xs: 10
                     } : { lg: 5, md: 5, sm: 12, xs: 12 })}
                 >
-                    <FormControl key={item.name + 'form_control'} fullWidth sx={{ m: 1 }}>
+                    <FormControl key={item.name + "form_control"} fullWidth sx={{ m: 1 }}>
                         {menuLabel}
                         {item.field === DateTimePicker ?
                             <DateTimePicker
-                                key={item.name + '_input'}
+                                key={item.name + "_input"}
                                 renderInput={(params) => (
                                     <TextField
                                         id={item.name}
@@ -103,7 +103,7 @@ export function useFormBuilder(
                             :
                             <Field
                                 id={item.name}
-                                key={item.name + '_field'}
+                                key={item.name + "_field"}
                                 {...(item.label ? { label: item.label } : {})}
                                 name={item.name}
                                 {...(item.type === "password" ? { component: item.field, type: item.type } : item.type ? { type: item.type } : { component: item.field })}
@@ -124,7 +124,7 @@ export function useFormBuilder(
                                 {item?.menuItems?.map((menuItem: IMenuItem, index: number) => {
                                     return (
                                         <MenuItem key={index}
-                                            id={menuItem.value + '_' + index}
+                                            id={menuItem.value + "_" + index}
                                             value={menuItem.value}>{menuItem.label}</MenuItem>
                                     )
                                 })}
@@ -133,8 +133,6 @@ export function useFormBuilder(
                     </FormControl>
                 </Grid>
             </React.Fragment>
-
-
         )
     }
 
@@ -165,10 +163,8 @@ export function useFormBuilder(
 
                 </form>
             </FormikProvider >
-
         );
     }, [formFields, formik]);
 
     return { handleFormSubmit, formik, renderForm }
-
 }
