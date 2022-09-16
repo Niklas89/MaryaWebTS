@@ -70,10 +70,7 @@ const FormLogin = () => {
                 console.log("pwd "+pwd);
 
                 // auth state stored in our global context with the usecontext hook :
-                //ICI
-                console.log(auth)
                 setAuth?.({ email, pwd, role, accessToken });
-                console.log(auth?.email);
 
                 // clear components after submit complete
                 setEmail("");
