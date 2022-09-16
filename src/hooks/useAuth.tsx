@@ -1,4 +1,3 @@
-import Cookies from "js-cookie";
 import { useContext, useDebugValue } from "react";
 import AuthContext from "../context/AuthProvider";
 
@@ -7,8 +6,6 @@ import AuthContext from "../context/AuthProvider";
 const useAuth = () => { 
     const { auth } = useContext(AuthContext);
     useDebugValue(auth, auth => auth?.email ? "Logged In" : "Logged Out")
-    if(auth?.role == undefined)
-            console.log("Cookie: " + Cookies.get("email"));
     return useContext(AuthContext);
 }
 
