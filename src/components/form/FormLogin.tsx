@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { Button, Checkbox, FormControlLabel, Grid, isMuiElement, TextField, Typography } from "@mui/material";
+import { Button, Checkbox, FormControlLabel, Grid, TextField, Typography } from "@mui/material";
 import { FormFieldType, useFormBuilder } from "./FormModel";
 import { useCallback, useEffect, useState } from "react";
 import { AxiosFunction } from "../../api/AxiosFunction";
@@ -10,14 +10,12 @@ import { AxiosError, AxiosResponse } from "axios";
 import * as Yup from "yup";
 import { FormikValues } from "formik";
 import useAuth from "../../hooks/useAuth";
-import { CheckBox } from "@mui/icons-material";
-import { pink } from "@mui/material/colors";
 
 const LOGIN_URL = "user/login";
 
 const userFormFields: FormFieldType[] = [
     { name: "email", field: TextField, label: "E-mail", isMultiLine: false },
-    { name: "password", field: TextField, label: "Mot de passe", type: "password", isMultiLine: false },
+    { name: "password", field: TextField, label: "Mot de passe", type: "password", isMultiLine: false, labelButton: "Se connecter" },
 ];
 
 const FormLogin = () => {
@@ -38,7 +36,7 @@ const FormLogin = () => {
     const { postQuery } = AxiosFunction();
 
     const validationShema = Yup.object().shape({
-        email: Yup.string().email("Votre e-mail n\'est pas valide").required("Merci de remplir le champ e-mail"),
+        email: Yup.string().email("Votre e-mail n'est pas valide").required("Merci de remplir le champ e-mail"),
         password: Yup.string().min(6, "Mot de passe trop court").max(50, "Mot de passe trop long").matches(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*#?&\/]{6,50}$/, "Le mot de passe doit contenir une majuscule, une minuscule, et un nombre.").required("Merci de remplir le champ mot de passe"),
     });
     const handleSubmit = useCallback((values: FormikValues, callback: any) => {
@@ -48,16 +46,13 @@ const FormLogin = () => {
         postQuery(LOGIN_URL, postData).then((response: AxiosResponse) => {
             const accessToken = response.data.accessToken;
             const role = response.data.idRole;
-            //const email = response.data.email;
-            const user = response.data.user.id;
-            console.log("responce: " + user);
-            const userId = setUserInfos(response.data)
-            console.log(userId)
-            //console.log("accessToken: " + accessToken);
+            const userId = setUserInfos(response.data);
+            console.log(userId);
+            console.log("accessToken: " + accessToken);
             setAuth?.({ role, accessToken })
-            //navigate(from, { replace: true });
+            navigate(from, { replace: true });
         }).catch((error: AxiosError) => {
-            toast.error("Ce compte existe déjà, merci de vous connecter.", {
+            toast.error("Une erreur c'est produite, vérifier vos identifiants.", {
                 position: "bottom-right",
                 autoClose: 3000,
                 hideProgressBar: true,
@@ -69,7 +64,7 @@ const FormLogin = () => {
             });
             return callback();
         }).finally(callback)
-    }, [postQuery]);
+    }, [postQuery, from, navigate, setAuth]);
 
     //pour la checkbox
     const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
