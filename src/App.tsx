@@ -12,7 +12,6 @@ import RequireAuth from './components/RequireAuth';
 import PersistLogin from './components/form/PersistLogin';
 import "./styles/App.css";
 import CardService from './components/service/CardService';
-import Home2 from './pages/Home2';
 
 const ROLES = {
   "Client": 1,
@@ -30,13 +29,14 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
           <Route path="/service/:id" element={<CardService />} />
-          <Route path="/home2" element={<Home2 />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/*" element={<Home />} />
 
-        {/* protected routes*/}
-        <Route element={<PersistLogin />}>
-          <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
+          {/* protected routes*/}
+          <Route element={<PersistLogin />}>
+            {/*<Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
             <Route path="/" element={<Home />} />
-          </Route>
+            </Route>*/}
 
             <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
               <Route path="profile" element={<Profile />} />
