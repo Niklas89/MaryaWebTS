@@ -16,7 +16,7 @@ import "../../styles/Navigation.css";
 const pages = [
     { name: "Reserver", path: "booked" },
     { name: "Mes reservations", path: "booking" },
-    { name: "Se connecter", path: "/" }
+    { name: "Se connecter", path: "login" }
 ];
 
 const Navigation = () => {
@@ -111,6 +111,8 @@ const Navigation = () => {
                             <Button
                                 key={page.name}
                                 onClick={handleCloseNavMenu}
+                                component={Link}
+                                to={page.path}
                                 sx={{ my: 2, color: "white", display: "block" }}
                             >
                                 {page.name}

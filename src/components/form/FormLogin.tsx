@@ -49,7 +49,7 @@ const FormLogin = () => {
             const userId = setUserInfos(response.data);
             console.log(userId);
             console.log("accessToken: " + accessToken);
-            setAuth?.({ role, accessToken })
+            setAuth?.({ role, accessToken });
             navigate(from, { replace: true });
         }).catch((error: AxiosError) => {
             toast.error("Une erreur c'est produite, vérifier vos identifiants.", {

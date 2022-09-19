@@ -26,7 +26,7 @@ const CardService = () => {
             .then((res: AxiosResponse) => setServices(res.data))
     }, []);
 
-    console.log(services);
+    //console.log(services);
 
     return (
         <Container>

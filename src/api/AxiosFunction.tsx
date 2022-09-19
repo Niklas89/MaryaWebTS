@@ -1,8 +1,12 @@
 import axios from "axios";
+import useAuth from "../hooks/useAuth";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import { axiosPrivate } from "./axios";
 
 export const AxiosFunction = () => {
 
-    const accessToken = "getToken";
+    const { auth } = useAuth();
+    const accessToken = auth?.accessToken;
     const apiPath = "http://localhost:8080/api";
 
 
@@ -12,6 +16,7 @@ export const AxiosFunction = () => {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
+            withCredentials: true
         });
     }
 
@@ -22,14 +27,16 @@ export const AxiosFunction = () => {
                 Authorization: `Bearer ${accessToken}`,
                 "Content-Type": "application/merge-patch+json",
             },
+            withCredentials: true
         });
     }
-
+    console.log(accessToken)
     function getQuery(path: string): Promise<any> {
         return axios.get(`${path}`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
+            withCredentials: true
         });
     }
 
@@ -38,6 +45,7 @@ export const AxiosFunction = () => {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
+            withCredentials: true
         });
     }
 
