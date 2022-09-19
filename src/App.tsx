@@ -11,6 +11,7 @@ import Navigation from './components/parts/Navigation';
 import RequireAuth from './components/RequireAuth';
 import "./styles/App.css";
 import CardService from './components/service/CardService';
+import Home2 from './pages/Home2';
 
 const ROLES = {
   "Client": 1,
@@ -23,16 +24,17 @@ function App() {
     <main>
       <Navigation />
       <Routes>
-      <Route path="/" element={<Layout />}>
+        <Route path="/" element={<Layout />}>
           {/* public routes */}
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
-        <Route path="/service/:id" element={<CardService />} />
+          <Route path="/service/:id" element={<CardService />} />
+          <Route path="/home2" element={<Home2 />} />
 
-        {/* protected routes*/}
-        <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
-          <Route path="/" element={<Home />} />
-        </Route>
+          {/* protected routes*/}
+          <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
+            <Route path="/" element={<Home />} />
+          </Route>
 
           <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
             <Route path="profile" element={<Profile />} />

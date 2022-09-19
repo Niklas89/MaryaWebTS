@@ -51,7 +51,7 @@ const FormLogin = () => {
             console.log(accessToken)
             const role = response?.data?.idRole;
             // auth state stored in our global context with the usecontext hook :
-            setAuth?.({ user, pwd, role, accessToken });
+            // setAuth?.({ email, pwd, role, accessToken });
 
             // clear components after submit complete
             setUser("");

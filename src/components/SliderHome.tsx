@@ -1,10 +1,6 @@
-import Carousel from 'react-material-ui-carousel'
-
 const SliderHome = () => {
-    return (
-        <div>
-            Slider
-        </div>
+       return (
+        <div>Carousel</div>
     );
 };
 
