@@ -24,7 +24,7 @@ const Footer = () => {
                     </List>
                 </Grid>
                 <Grid xs={4} md={3}>
-                    <img src="./assets/logo.png" height="80" width="80" alt="logo" />
+                    <img src="./assets/logo/logoM.png" height="80" width="80" alt="logo" />
                 </Grid>
                 <Grid xs={4} lg={3}>
                     <Typography variant="body1" sx={{ fontWeight: "bold" }}>

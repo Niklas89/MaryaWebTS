@@ -34,7 +34,7 @@ const Navigation = () => {
         <AppBar position="static" sx={{ backgroundColor: "#035A5A" }}>
             <Container>
                 <Toolbar disableGutters>
-                    <img src="./assets/logo.png" height="50" alt="" />
+                    <img src="./assets/logo/marya.png" height="50" alt="" />
                     <Typography
                         variant="h6"
                         noWrap
