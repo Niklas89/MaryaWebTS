@@ -4,12 +4,10 @@ import { IUser } from "./IUser";
 export interface IUserData {
     id?: number
     email?: string
-    pwd?: string
     role?: number
     accessToken?: string
-    auth?: {
+    auth?: {id?: number
         email?: string
-        pwd?: string
         role?: number
         accessToken?: string
     }
@@ -24,7 +22,6 @@ export type AuthContextType = {
         role?: number
         accessToken?: string
     };
-
     persist?: boolean;
     setAuth?: (auth: IUserData) => void;
     setPersist?: (persist: boolean) => void;

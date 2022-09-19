@@ -3,12 +3,17 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import useAuth from "../hooks/useAuth";
+import useRefreshToken from "../hooks/useRefreshToken";
 
 
 
 const Profile = () => {
     const navigate = useNavigate();
     const goBack = () => navigate(-1);
+
+    {/* test du refreshToken */}
+    const refresh = useRefreshToken();
+    
     const { auth } = useAuth();
     console.log(auth);
     console.log(auth?.role);
@@ -102,6 +107,9 @@ const Profile = () => {
         </Grid>
     </Grid>
     <button onClick={goBack}>Retour</button> 
+
+    {/* test du refreshToken */}
+    <button onClick={() => refresh()}>Refresh</button> 
         </section>
     );
 };
