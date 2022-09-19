@@ -1,7 +1,7 @@
 import { Field, FormikProvider, FormikValues, useFormik } from "formik";
 import React, { useCallback, useMemo } from "react";
 import styled from "@emotion/styled";
-import { Button, Grid, ButtonProps, InputLabel, TextField, Typography, FormControl, MenuItem, Select, } from "@mui/material";
+import { Button, Grid, ButtonProps, InputLabel, TextField, Typography, FormControl, MenuItem, Select, Radio, FormControlLabel, } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -27,6 +27,7 @@ export interface FormFieldType {
     values?: FormikValues[];
     isMultiLine?: boolean;
     menuItems?: IMenuItem[];
+    fields?: { label: string }[];
     title?: string;
     type?: string;
     labelButton?: string;
@@ -145,6 +146,11 @@ export function useFormBuilder(
                                         <MenuItem key={index}
                                             id={menuItem.value + "_" + index}
                                             value={menuItem.value}>{menuItem.label}</MenuItem>
+                                    )
+                                })}
+                                {item?.fields?.map((item, index: number) => {
+                                    return (
+                                        <FormControlLabel key={index} value={item?.label} control={<Radio />} label={item.label} />
                                     )
                                 })}
                             </Field>

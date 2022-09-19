@@ -21,9 +21,9 @@ import { IBookings } from '../../interfaces/IBooking';
 
 const LOGIN_URL = "booking";
 
-const serviceFormFields: FormFieldType[] = [
+let formFields: FormFieldType[] = [
 
-    { name: "appointmentDate", field: DateTimePicker, label: "Date et heure:", isMultiLine: true },
+    //{ name: "bidule", field: FormControlLabel, attributes: { control: <Radio />, label: 'euh' } }
 
 ];
 
@@ -31,32 +31,44 @@ const serviceFormFields: FormFieldType[] = [
 const FormService = () => {
 
     const initialValues = {
-        appointmentDate: moment()
+        //appointmentDate: moment()
+        //bidule: "test"
     }
 
     const { setAuth } = useAuth();
-    const [booking, setBooking] = useState<IBookings>(initialValues);
-    const [services, setServices] = useState<IService[]>();
+    const [booking, setBooking] = useState(initialValues);
+    const [services, setServices] = useState<Array<IService>>();
     const { id } = useParams();
-
+    const { getQuery } = AxiosFunction();
     const validationShema = Yup.object().shape({
-        appointmentDate: Yup.string().required("Merci de remplire la date et heure"),
+        // appointmentDate: Yup.string().required("Merci de remplire la date et heure"),
     })
+
+    const serviceFormFields: FormFieldType[] = services?.map((item: IService) => {
+        const myArray = {
+            name: item.name,
+            field: FormControlLabel,
+            label: item.name,
+            attributes: {
+                control: <Radio />,
+            }
+        };
+        return myArray;
+    }) ?? formFields;
+    // formFields.push({ name: "radioGroup", field: RadioGroup, fields: services?.map((item: IService) => { return { label: item.name + ' ' + item.price + ' €' } }) });
 
     useEffect(() => {
-        axios({
-            method: "get",
-            url: `/service/by-category/${id}`
-        })
-            .then((res: AxiosResponse) => setServices(res.data))
+        getQuery(`service/by-category/${id}`)
+            .then((res: AxiosResponse) => {
+                setServices(res.data)
+                formFields = [
+                    { name: "radioGroup", field: RadioGroup, fields: res.data?.map((item: IService) => { return { label: item.name + ' ' + item.price + ' €' } }) },
+                    { name: "appointmentDate", field: DateTimePicker, label: "Date et heure:", isMultiLine: true }
+                ];
+                console.log(formFields);
+            })
     }, []);
 
-
-    const button = services?.map((item: IService) => {
-        return (
-            <FormControlLabel key={item.id} value={item?.id} control={<Radio />} label={item.name + ' ' + item.price + ' €'} />
-        )
-    })
 
     const { postQuery } = AxiosFunction();
 
@@ -85,23 +97,13 @@ const FormService = () => {
         }).finally(callback)
     }, [postQuery]);
 
-    const { renderForm } = useFormBuilder(validationShema, services, booking, serviceFormFields,
+    const { renderForm } = useFormBuilder(validationShema, initialValues, formFields,
         //{ submit: handleSubmit }
     );
 
 
     return (
         <div>
-            <FormControl>
-                <FormLabel id="demo-radio-buttons-group-label">Les services proposer :</FormLabel>
-                <RadioGroup
-                    aria-labelledby="demo-radio-buttons-group-label"
-                    defaultValue="female"
-                    name="radio-buttons-group"
-                >
-                    {button}
-                </RadioGroup>
-            </FormControl>
             {renderForm}
         </div >
     );

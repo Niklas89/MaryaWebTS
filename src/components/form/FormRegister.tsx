@@ -14,7 +14,7 @@ const userFormFields: FormFieldType[] = [
     { name: "lastName", field: TextField, label: "Nom", isMultiLine: false },
     { name: "firstName", field: TextField, label: "Prenom", isMultiLine: false },
     { name: "email", field: TextField, label: "E-mail", isMultiLine: false },
-    { name: "password", field: TextField, label: "Mot de passe", type: "password", isMultiLine: false },
+    { name: "password", field: TextField, label: "Mot de passe", type: "password", isMultiLine: false, labelButton: "S'enregistrer" },
 ];
 
 const FormRegister = () => {
@@ -55,7 +55,7 @@ const FormRegister = () => {
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,
-                toastId: "submit-dog-file-error"
+                toastId: "submit-file-error"
 
             });
             return callback();

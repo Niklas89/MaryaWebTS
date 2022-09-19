@@ -30,9 +30,9 @@ export const AxiosFunction = () => {
             withCredentials: true
         });
     }
-    console.log(accessToken)
+
     function getQuery(path: string): Promise<any> {
-        return axios.get(`${path}`, {
+        return axios.get(`${apiPath}/${path}`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },

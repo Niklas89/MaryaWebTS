@@ -13,6 +13,10 @@ import PersistLogin from './components/form/PersistLogin';
 import "./styles/App.css";
 import CardService from './components/service/CardService';
 import Service from './pages/Service';
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import 'moment/locale/fr'
+const locale = 'fr-FR';
 
 const ROLES = {
   "Client": 1,
@@ -23,33 +27,35 @@ const ROLES = {
 function App() {
   return (
     <main>
-      <Navigation />
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          {/* public routes */}
-          <Route path="register" element={<Register />} />
-          <Route path="login" element={<Login />} />
-          <Route path="/service/:id" element={<Service />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/*" element={<Home />} />
+      <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={locale}>
+        <Navigation />
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            {/* public routes */}
+            <Route path="register" element={<Register />} />
+            <Route path="login" element={<Login />} />
+            <Route path="/service/:id" element={<Service />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/*" element={<Home />} />
 
-          {/* protected routes*/}
-          <Route element={<PersistLogin />}>
-            {/*<Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
+            {/* protected routes*/}
+            <Route element={<PersistLogin />}>
+              {/*<Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
             <Route path="/" element={<Home />} />
             </Route>*/}
 
-            <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
-              <Route path="profile" element={<Profile />} />
-            </Route>
+              <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
+                <Route path="profile" element={<Profile />} />
+              </Route>
 
-            <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-              <Route path="admin" element={<Admin />} />
+              <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+                <Route path="admin" element={<Admin />} />
+              </Route>
             </Route>
           </Route>
-        </Route>
-      </Routes>
-      <Footer />
+        </Routes>
+        <Footer />
+      </LocalizationProvider>
     </main>
   );
 }

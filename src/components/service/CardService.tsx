@@ -31,17 +31,17 @@ const CardService = () => {
     return (
         <Container>
             {
-                services?.map((service: IService) => {
-                    return (<Grid key={service?.id} container>
-                        <Typography>
-                            {service?.name}
-                        </Typography>
-                        <Typography>
-                            {service?.price} €
-                        </Typography>
-                    </Grid>
-                    )
-                })
+                // services?.map((service: IService) => {
+                //     return (<Grid key={service?.id} container>
+                //         <Typography>
+                //             {service?.name}
+                //         </Typography>
+                //         <Typography>
+                //             {service?.price} €
+                //         </Typography>
+                //     </Grid>
+                //     )
+                // })
             }
         </Container>
     );
