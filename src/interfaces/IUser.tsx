@@ -14,5 +14,6 @@ export interface IUser {
     resetTokenExpiration?: string,
     refreshToken?: string,
     role?: number,
+    persist?: boolean,
     accessToken?: string
 }

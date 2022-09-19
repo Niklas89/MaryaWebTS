@@ -1,205 +1,117 @@
-import { useRef, useState, useEffect, useContext } from "react";
-import AuthContext from "../../context/AuthProvider";
-import useAuth from "../../hooks/useAuth";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
-import axios from "../../api/axios";
-import { Button, Grid, TextField, Typography } from "@mui/material";
-import { axiosPrivate } from "../../api/axios";
-import { ButtonProps } from '@mui/material/Button';
+import { Button, Checkbox, FormControlLabel, Grid, TextField, Typography } from "@mui/material";
+import { FormFieldType, useFormBuilder } from "./FormModel";
+import { useCallback, useEffect, useState } from "react";
+import { AxiosFunction } from "../../api/AxiosFunction";
+import { IUser } from "../../interfaces/IUser";
+import { toast } from "react-toastify";
 import { AxiosError, AxiosResponse } from "axios";
-import { styled } from '@mui/material/styles';
-import { Box, Container } from "@mui/system";
-import Cookies from "js-cookie";
+import * as Yup from "yup";
+import { FormikValues } from "formik";
+import useAuth from "../../hooks/useAuth";
 
-const LOGIN_URL = "/user/login"; // login endpoint in backend nodejs api
+const LOGIN_URL = "user/login";
 
-const LoginButton = styled(Button)<ButtonProps>(() => ({
-    backgroundColor: "#023535",
-    "&:hover": {
-        backgroundColor: "#023535",
-    }
-}));
+const userFormFields: FormFieldType[] = [
+    { name: "email", field: TextField, label: "E-mail", isMultiLine: false },
+    { name: "password", field: TextField, label: "Mot de passe", type: "password", isMultiLine: false, labelButton: "Se connecter" },
+];
 
 const FormLogin = () => {
-    // const error: any = document.getElementById("error");
-    const error = document.getElementById("error");
 
-    const { auth, setAuth } = useAuth();
+    const { setAuth, persist, setPersist } = useAuth();
 
     const navigate = useNavigate();
     const location: any = useLocation();
-    // navigate to the location where the user wanted to go before they were sent to the login page OR the home page
     const from = location.state?.from?.pathname || "/";
-    //const from = "/home";
-    // set focus on user input and error message
-    
-    const userRef = useRef<HTMLInputElement>(null);
-    const errRef = useRef<HTMLParagraphElement>(null);
-    const [email, setEmail] = useState<string>("");
-    const [pwd, setPwd] = useState<string>("");
-    const [err, setErr] = useState<boolean>(false) 
 
-    // when component loads set focus on first input field / user field
-    useEffect(() => {
-        if (userRef.current !== null)
-            userRef.current.focus();
-    }, [])
+    const initialValues = {
+        email: "",
+        password: "",
+    };
 
-    // make error message disapear when ajusting fields 
-    /*useEffect(() => {
-        setErrMsg("");
-    }, [email, pwd])*/
+    const [userInfo, setUserInfos] = useState<IUser>(initialValues);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        // prevent default behavior of the page which would reload of the page
-        e.preventDefault();
-        axios({
-            method: "post",
-            url: LOGIN_URL,
-            withCredentials: true,
-            data: {
-                email: email,
-                password: pwd
-            }
-        })
-            .then((res: AxiosResponse) => {
-                const accessToken = res.data.accessToken;
-                const role = res.data.idRole;
-                console.log("role: " + role);
-                console.log("accessToken: " + accessToken);
-                console.log("email "+email);
-                console.log("pwd "+pwd);
+    const { postQuery } = AxiosFunction();
 
-                // auth state stored in our global context with the usecontext hook :
-                //ICI
-                console.log(auth)
-                setAuth?.({ email, pwd, role, accessToken });
-                Cookies.set("email", email);
-                console.log(auth?.email);
+    const validationShema = Yup.object().shape({
+        email: Yup.string().email("Votre e-mail n'est pas valide").required("Merci de remplir le champ e-mail"),
+        password: Yup.string().min(6, "Mot de passe trop court").max(50, "Mot de passe trop long").matches(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*#?&\/]{6,50}$/, "Le mot de passe doit contenir une majuscule, une minuscule, et un nombre.").required("Merci de remplir le champ mot de passe"),
+    });
+    const handleSubmit = useCallback((values: FormikValues, callback: any) => {
 
-                // clear components after submit complete
-                setEmail("");
-                setPwd("");
-                // after the form is submited, navigate to the location where the user wanted to go before they were sent to the login page
-                navigate(from, { replace: true });
-            })
-            // .catch((err: AxiosError) => {
-                .catch((err) => {
-                setErr(true);
-                
-                if(error != null) {
-                    error.innerHTML = err.response?.data;
-                    error.removeAttribute("hidden");
-                    console.log(err.response?.data);
-                }
-                
+        const postData = { ...values };
 
-
-                if (errRef.current !== null)
-                    errRef.current.focus();
-            })
-
-        /*
-        try {
-            // post login file to backend api
-            const response = await axiosPrivate.post(LOGIN_URL,
-                JSON.stringify({ email: user, password: pwd }),
-                {
-                    headers: { "Content-Type": "application/json" },
-                    withCredentials: true
-                }
-            );
-            const accessToken = response?.data?.accessToken;
-            console.log(accessToken)
-            const role = response?.data?.idRole;
-            // auth state stored in our global context with the usecontext hook :
-            setAuth?.({ user, pwd, role, accessToken });
-
-            // clear components after submit complete
-            setUser("");
-            setPwd("");
-            // after the form is submited, navigate to the location where the user wanted to go before they were sent to the login page
+        postQuery(LOGIN_URL, postData).then((response: AxiosResponse) => {
+            const accessToken = response.data.accessToken;
+            const role = response.data.idRole;
+            const userId = setUserInfos(response.data);
+            console.log(userId);
+            console.log("accessToken: " + accessToken);
+            setAuth?.({ role, accessToken })
             navigate(from, { replace: true });
-        } catch (err: any) {
-            if (!err?.response) {
-                setErrMsg("Le serveur ne repond pas");
-            } else if (err.response?.status === 400) {
-                setErrMsg("Manque le champ Email ou mot de passe");
-            } else if (err.response?.status === 401) {
-                setErrMsg("Vous n'êtes pas authorisé/e");
-            } else {
-                setErrMsg("Erreur de connection");
-            }
-            if (errRef.current !== null)
-                errRef.current.focus();
-        }
-        */
+        }).catch((error: AxiosError) => {
+            toast.error("Une erreur c'est produite, vérifier vos identifiants.", {
+                position: "bottom-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                toastId: "submit-dog-file-error"
+
+            });
+            return callback();
+        }).finally(callback)
+    }, [postQuery, from, navigate, setAuth]);
+
+    //pour la checkbox
+    const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
+    const togglePersist = () => {
+        setPersist?.(!persist);
     }
 
+    useEffect(() => {
+        if (persist !== undefined) {
+            localStorage.setItem("persist", persist.toString()); // store in localstorage at persist state change
+        }
+    }, [persist])
 
+    const { renderForm } = useFormBuilder(validationShema, userInfo, userFormFields,
+        { submit: handleSubmit }
+    );
     return (
         <section>
-            <form onSubmit={handleSubmit}>
-                <Grid container spacing={3} mt={1} direction="row">
-                    <Grid item xs={12}>
-                        <Typography hidden sx={{
-                            fontSize: "12px",
-                            backgroundColor: "#DBF227",
-                            fontWeight: "bold",
-                            borderRadius: 2,
-                            padding: "5px 10px",
-                        }} id="error">
-                        </Typography>
-                    </Grid>
-                    <Grid textAlign="center" item xs={12}>
-                        <Typography
-                            sx={{
+            <Grid textAlign="center" item xs={12} pt={5}>
+                <Typography
+                    sx={{
+                        color: "#0FC2C0",
+                        fontWeight: "bold"
+                    }}
+                    variant="h3"
+                >
+                    Connexion
+                </Typography>
+            </Grid>
+            {renderForm}
+            <Grid item textAlign="center" xs={12}>
+                <FormControlLabel control={
+                    <Checkbox
+                        id="persist"
+                        onChange={togglePersist}
+                        checked={persist}
+                        {...label}
+                        sx={{
+                            color: "#0FC2C0",
+                            "&:hover": {
                                 color: "#0FC2C0",
-                                fontWeight: "bold"
-                            }}
-                            variant="h3"
-                        >
-                            Connexion
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={6} textAlign={["center", "center", "right"]}>
-                        <TextField
-                            id="email"
-                            ref={userRef}
-                            label="E-mail"
-                            name="mail"
-                            autoComplete="off" // not fill input with past entries
-                            onChange={(e) => setEmail(e.target.value)} // function to set user state
-                            value={email} // user state in value
-                            required
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={6} textAlign={["center", "center", "left"]}>
-                        <TextField
-                            id="pwd"
-                            label="Mot de passe"
-                            name="pwd"
-                            type="password"
-                            onChange={(e) => setPwd(e.target.value)}
-                            value={pwd}
-                            required
-                        />
-                    </Grid>
-                    <Grid item textAlign="center" xs={12}>
-                        <LoginButton
-                            variant="contained"
-                            startIcon={<DoneOutlineIcon />}
-                            type="submit"
-                        >
-                            Connexion
-                        </LoginButton>
-                    </Grid>
-                </Grid>
-            </form>
+                            }
+                        }} />}
+                    label="Se souvenir de moi!" />
+            </Grid>
             <Grid container direction="row" justifyContent="center">
-                <Grid item xs={0} mt={5} mb={3}>
+                <Grid item xs={0} mt={5} pb={13}>
                     <Typography>Besoin d'un compte ?</Typography>
                     <Button
                         variant="contained"
@@ -217,8 +129,7 @@ const FormLogin = () => {
                     </Button>
                 </Grid>
             </Grid>
-        </section>
-
+        </section >
     );
 };
 
