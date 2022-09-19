@@ -1,11 +1,11 @@
 import { Field, FormikProvider, FormikValues, useFormik } from "formik";
 import React, { useCallback, useMemo } from "react";
-import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import styled from "@emotion/styled";
 import { Button, Grid, ButtonProps, InputLabel, TextField, Typography, FormControl, MenuItem, Select, } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 
 const LoginButton = styled(Button)<ButtonProps>(() => ({
     backgroundColor: "#023535",
@@ -29,6 +29,7 @@ export interface FormFieldType {
     menuItems?: IMenuItem[];
     title?: string;
     type?: string;
+    labelButton?: string;
 }
 
 export function useFormBuilder(
@@ -55,7 +56,6 @@ export function useFormBuilder(
     }, [formik.setValues, handleFormCallback]);
 
     const renderField = (item: FormFieldType) => {
-
         const menuLabel = (item?.menuItems ? <InputLabel id={item.name} key={item.name + "_menu_label"}>{item.label}</InputLabel> : null)
         const title = (item?.title ? <Grid
             key={item.name + "_title"}
@@ -66,9 +66,25 @@ export function useFormBuilder(
             xs={12}
         ><Typography variant="h4" my={5}>{item.title}</Typography></Grid> : null)
 
+        const submit = (item?.labelButton ?
+            <Grid container p={4} direction="row" justifyContent="space-evenly" alignItems="center">
+                <LoginButton
+                    name={"submit"}
+                    id={"submit"}
+                    key={"submit_button"}
+                    variant={"contained"}
+                    endIcon={<DoneOutlineIcon />}
+                    type="submit"
+                >
+                    {item.labelButton}
+                </LoginButton>
+            </Grid> : null)
+
         return (
+
             <React.Fragment key={item.name + "fragment"}>
                 {title}
+
                 <Grid
                     key={item.name}
                     p={3}
@@ -132,13 +148,16 @@ export function useFormBuilder(
                         }
                     </FormControl>
                 </Grid>
+                {submit}
             </React.Fragment>
+
+
+
         )
     }
 
     const renderForm = useMemo(() => {
         return (
-
             <FormikProvider key={"formik"} value={formik}>
                 <ToastContainer />
                 <form onSubmit={formik.handleSubmit} key={"formik_form"} onChange={formik.handleChange} >
@@ -148,23 +167,10 @@ export function useFormBuilder(
                             return renderField(item)
                         })}
                     </Grid>
-                    <Grid container p={4} direction="row" justifyContent="space-evenly" alignItems="center">
-                        <LoginButton
-                            name={"submit"}
-                            id={"submit"}
-                            key={"submit_button"}
-                            variant={"contained"}
-                            endIcon={<DoneOutlineIcon />}
-                            type="submit"
-                        >
-                            Enregistrer
-                        </LoginButton>
-                    </Grid>
-
                 </form>
             </FormikProvider >
         );
-    }, [formFields, formik]);
+    }, [formFields, formik, renderField]);
 
     return { handleFormSubmit, formik, renderForm }
 }
