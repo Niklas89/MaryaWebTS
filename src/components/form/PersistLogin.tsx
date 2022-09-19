@@ -11,7 +11,9 @@ const PersistLogin = () => {
 
     useEffect(() => {
 
+        // useEffect fix: stop useEffect from running twice because of the React v18 update - https://github.com/gitdagray/useeffect_fix
         if (effectRan.current === false) {
+            
         let isMounted = true; 
 
         // we want to run this only when authState is empty (after refresh the page and the state has been emptied)
