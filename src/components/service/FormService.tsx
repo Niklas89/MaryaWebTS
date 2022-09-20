@@ -35,6 +35,7 @@ const FormService = () => {
     const { getQuery } = AxiosFunction();
 
     const validationShema = Yup.object().shape({
+        //@TODO: Voir quel date et heure ne soit pas inferieur à moment()
         appointmentDate: Yup.string().required("Merci de remplire la date et heure"),
     })
 
@@ -45,6 +46,7 @@ const FormService = () => {
                 const type = res.data?.[1].idType
                 if (type === 1) {
                     formFields = [
+                        //@TODO: changer le nom totalPrice
                         { name: "totalPrice", field: RadioGroup, title: "Services à l'heure:", fields: res.data?.map((item: IService) => { return { value: item.id, name: "totalPrice", label: item.name + ' ' + item.price + ' €' } }) },
                         { name: "appointmentDate", field: DateTimePicker, title: "Pour le:", label: "Date et heure:", isMultiLine: true },
                         { name: "nbHours", field: Select, label: "Nombre d'heure", menuItems: [{ value: "1", label: "1 Heure" }, { value: "2", label: "2 Heures" }, { value: "3", label: "3 Heures" }, { value: "4", label: "4 Heures" }, { value: "5", label: "5 Heures" }], labelButton: "Réserver" },
@@ -70,31 +72,33 @@ const FormService = () => {
     }, []);
 
     const { postQuery } = AxiosFunction();
-    console.log(idUser)
 
     const handleSubmit = useCallback((values: FormikValues, callback: any) => {
         const idUser = auth?.id;
         if (idUser === undefined) {
             navigate(from, { replace: true });
         } else {
-            const data = { ...values };
-            const date = moment(data.appointementDate).format("DD-MM-YYYY HH:mm");
+            const date = values.appointmentDate
+            const idService = values.totalPrice
+            const price = services?.find((item: IService) => item.id === Number(idService))?.price
             //ici calculer le total
+            //@TODO: calculer le total du prix
 
-            if (!data.nbHours) {
-                console.log(date)
-                const idService = data.totalPrice
-                const postData = { accepted: 0, totalPrice: 10, idClient: 2, idService: idService, appointmentDate: data.appointementDate }
-                //console.log(postData)
-                postQuery(LOGIN_URL, postData).then((response: AxiosResponse) => {
-                    setBooking(response.data)
-                    console.log(setBooking(response.data))
-                })
+            if (!values.nbHours) {
+
+                const postData = { accepted: 0, totalPrice: price, idClient: 1, idService: idService, appointmentDate: date }
+                //const booking = { booking: postData }
+
+                //console.log(idService)
+                // postQuery(LOGIN_URL, postData).then((response: AxiosResponse) => {
+                //     setBooking(response.data)
+                //     console.log(setBooking(response.data))
+                // })
             } else {
-                const idService = data.totalPrice;
+                const idService = values.totalPrice;
                 //console.log(services)
-                const priceTotal = data.totalPrice
-                const postData = { nbHours: data.nbHours, accepted: 0, }
+                const priceTotal = values.totalPrice
+                const postData = { nbHours: values.nbHours, accepted: 0, }
                 postQuery(LOGIN_URL, postData).then((response: AxiosResponse) => {
                     setBooking(response.data)
                 })
