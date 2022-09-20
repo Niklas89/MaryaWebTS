@@ -16,7 +16,8 @@ import "../../styles/Navigation.css";
 const pages = [
     { name: "Reserver", path: "booked" },
     { name: "Mes reservations", path: "booking" },
-    { name: "Se connecter", path: "login" }
+    { name: "Se connecter", path: "login" },
+    { name: "Mon profil", path: "profile" }
 ];
 
 const Navigation = () => {

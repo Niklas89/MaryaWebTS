@@ -21,7 +21,7 @@ const locale = 'fr-FR';
 const ROLES = {
   "Client": 1,
   "Partner": 2,
-  "Admin": 1
+  "Admin": 3
 }
 
 function App() {
