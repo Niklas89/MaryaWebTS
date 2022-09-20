@@ -5,67 +5,44 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useAuth from "../../hooks/useAuth";
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import axios from '../../api/axios';
 import { AxiosResponse } from 'axios';
 import { IUser } from '../../interfaces/IUser';
 
 
 
-const Profile = () => {
+const FormProfile = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const effectRan = useRef(false);
     const goBack = () => navigate(-1);
     const axiosPrivate = useAxiosPrivate();
-    const [userProfile, setUserProfile] = useState<object>();
+    const [userProfile, setUserProfile] = useState<IUser>({});
     const { auth } = useAuth();
     const id = auth?.id;
 
-    // useEffect when component loads
     useEffect(() => {
-        let isMounted = true;
-        // cancel our request if the component unmounts
-        const controller = new AbortController();
-
-      if (effectRan.current === true) {
-        
-        const getUser = async () => {
-            try {
-                const response = await axiosPrivate.get("/client/profile/", {
-                    signal: controller.signal
-                });
-                console.log("response data ");
-                console.log(response.data);
-                isMounted && setUserProfile(response.data);
-            } catch (err) {
-                console.error("catch:"); 
-                console.error(err); 
+            axiosPrivate.get("/client/profile/")
+            .then((res: AxiosResponse) => {setUserProfile(res.data)})
+            .catch(() => {
                 // if refresh token has expired, logout to login. Redirect to current page after login
                 navigate('/login', { state: { from: location }, replace: true });
-            }
-        }
-
-        getUser();
-    }
-        // cleanup function runs as the component unmounts
-        return () => {
-            isMounted = false;
-            controller.abort(); // cancel any request that we have pending when the component unmounts
-            effectRan.current = true;
-        }
-    
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+            });
     }, [])
 
     
-    
+    console.log(userProfile);
+    console.log("auth");
+    console.log(auth);
     
     return (
         <section>
             <form>
         <Grid container spacing={5} mt={5} direction="row" justifyContent="center">
-            <Typography variant="h4">Profil {auth?.role}</Typography>
+            <Typography variant="h4">Profil {userProfile?.firstName}</Typography>
+            <p>Id: {auth?.id}</p>
+            <p>Email: {auth?.email}</p>
+            <p>Role: {auth?.role}</p>
         </Grid>
         <Grid container spacing={5} mt={5} direction="row" justifyContent="center">
             <Grid item xs={0}>
@@ -73,6 +50,7 @@ const Profile = () => {
                     id="lastname"
                     label="Nom"
                     name="lastname"
+                    value={userProfile?.firstName || ''}
                      // function to set user state
                     // user state in value
                     required
@@ -83,6 +61,7 @@ const Profile = () => {
                     id="firstname"
                     label="Prénom"
                     name="firstname"
+                    value={userProfile?.lastName || ''}
                     required
                 />
             </Grid>
@@ -92,7 +71,8 @@ const Profile = () => {
                 <TextField
                     id="email"
                     label="E-mail"
-                    name="mail"
+                    name="email"
+                    value={auth?.email || ''}
                      // function to set user state
                     // user state in value
                     required
@@ -103,8 +83,6 @@ const Profile = () => {
                     id="city"
                     label="Ville"
                     name="city"
-                    type="password"
-                    
                     required
                 />
             </Grid>
@@ -166,4 +144,4 @@ const Profile = () => {
     );
 };
 
-export default Profile;
+export default FormProfile;

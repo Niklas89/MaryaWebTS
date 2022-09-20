@@ -46,10 +46,10 @@ const FormLogin = () => {
         postQuery(LOGIN_URL, postData).then((response: AxiosResponse) => {
             const accessToken = response.data.accessToken;
             const role = response.data.idRole;
-            const userId = setUserInfos(response.data);
-            console.log(userId);
-            console.log("accessToken: " + accessToken);
-            setAuth?.({ role, accessToken })
+            const id = response.data.user.id;
+            const email = response.data.user.email;
+            setUserInfos(response.data);
+            setAuth?.({ id, email, role, accessToken })
             navigate(from, { replace: true });
         }).catch((error: AxiosError) => {
             toast.error("Une erreur c'est produite, vérifier vos identifiants.", {

@@ -16,7 +16,7 @@ import CardService from './components/service/CardService';
 const ROLES = {
   "Client": 1,
   "Partner": 2,
-  "Admin": 1
+  "Admin": 3
 }
 
 function App() {
@@ -29,8 +29,7 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
           <Route path="/service/:id" element={<CardService />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/*" element={<Home />} />
+          <Route path="/home" element={<Home />} />
 
           {/* protected routes*/}
           <Route element={<PersistLogin />}>

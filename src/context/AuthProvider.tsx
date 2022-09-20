@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { IUserData, AuthContextType } from "../interfaces/interfaces";
+import { IUserData, AuthContextType } from "../interfaces/IAuthProvider";
 
 const AuthContext = createContext<AuthContextType>({});
 
