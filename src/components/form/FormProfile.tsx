@@ -1,169 +1,170 @@
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useState, useCallback, useEffect, useRef  } from "react";
+import { IUser } from "../../interfaces/IUser";
+import * as Yup from "yup";
+import { FormFieldType, useFormBuilder } from "./FormModel";
+import { FormikValues } from "formik";
+import { toast } from "react-toastify";
 import { Button, Grid, TextField, Typography } from "@mui/material";
+import { AxiosFunction } from "../../api/AxiosFunction";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { AxiosError, AxiosResponse } from "axios";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useAuth from "../../hooks/useAuth";
-import { useState, useEffect, useRef } from 'react';
-import axios from '../../api/axios';
-import { AxiosResponse } from 'axios';
-import { IUser } from '../../interfaces/IUser';
+import useLogout from "../../hooks/useLogout";
 
+const userFormFields: FormFieldType[] = [
+    { name: "lastName", field: TextField, label: "Nom", isMultiLine: false },
+    { name: "firstName", field: TextField, label: "Prenom", isMultiLine: false },
+    { name: "email", field: TextField, label: "E-mail", isMultiLine: false },
+    { name: "address", field: TextField, label: "Adresse", isMultiLine: false },
+    { name: "city", field: TextField, label: "Ville", isMultiLine: false },
+    { name: "postalCode", field: TextField, label: "Code Postal", isMultiLine: false },
+    { name: "phone", field: TextField, label: "Téléphone", isMultiLine: false, labelButton: "Modifier" },
+];
 
-
-const Profile = () => {
+const FormProfile = () => {
+    const { auth } = useAuth();
     const navigate = useNavigate();
+    const logout = useLogout();
     const location = useLocation();
-    const effectRan = useRef(false);
     const goBack = () => navigate(-1);
     const axiosPrivate = useAxiosPrivate();
-    const [userProfile, setUserProfile] = useState<object>();
-    const { auth } = useAuth();
-    const id = auth?.id;
 
-    // useEffect when component loads
-    useEffect(() => {
-        let isMounted = true;
-        // cancel our request if the component unmounts
-        const controller = new AbortController();
-
-      if (effectRan.current === true) {
-        
-        const getUser = async () => {
-            try {
-                const response = await axiosPrivate.get("/client/profile/", {
-                    signal: controller.signal
-                });
-                console.log("response data ");
-                console.log(response.data);
-                isMounted && setUserProfile(response.data);
-            } catch (err) {
-                console.error("catch:"); 
-                console.error(err); 
-                // if refresh token has expired, logout to login. Redirect to current page after login
-                navigate('/login', { state: { from: location }, replace: true });
-            }
-        }
-
-        getUser();
+    const signOut = async () => {
+        await logout();
+        // the backend api will delete the cookie that has the refreshToken, so that there will be no refreshToken
+        navigate('/');
     }
-        // cleanup function runs as the component unmounts
-        return () => {
-            isMounted = false;
-            controller.abort(); // cancel any request that we have pending when the component unmounts
-            effectRan.current = true;
-        }
-    
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    const initialValues = {
+        lastName: "",
+        firstName: "",
+        email: "",
+        address: "",
+        city: "",
+        postalCode: "",
+        phone: ""
+    };
+
+    const [userProfile, setUserProfile] = useState<IUser>(initialValues);
+
+    const { patchQuery } = AxiosFunction();
+
+    const validationShema = Yup.object().shape({
+        lastName: Yup.string().matches(/^[A-Za-z]+$/, "Le nom doit contenir que des lettres.").required("Merci de remplir le champ nom"),
+        firstName: Yup.string().matches(/^[A-Za-z]+$/, "Le nom doit contenir que des lettres.").required("Merci de remplir le champ prenom"),
+        email: Yup.string().email("Votre e-mail n\'est pas valide").required("Merci de remplir le champ e-mail"),
+        address: Yup.string().required("Merci de remplir le champ adresse"),
+        city: Yup.string().matches(/^[A-Za-z]+$/, "La ville doit contenir que des lettres.").required("Merci de remplir le champ ville"),
+        postalCode: Yup.number().required("Merci de remplir le champ code postal"),
+        phone: Yup.number().required("Merci de remplir le champ téléphone")
+    });
+
+    const handleSubmit = useCallback((values: FormikValues, callback: any) => {
+
+        const postData = { ...values };
+
+        patchQuery("/client/edit/", postData).then((response: AxiosResponse) => {
+            setUserProfile({
+                lastName: response.data.lastName,
+                firstName: response.data.firstName,
+                email: response.data.email,
+                address: response.data.client.address,
+                city: response.data.client.city,
+                postalCode: response.data.client.postalCode,
+                phone: response.data.client.phone
+            })
+        }).catch((error: AxiosError) => {
+            toast.error("Une erreur est survenue lors de la modification.", {
+                position: "bottom-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                toastId: "submit-error"
+
+            });
+            return callback();
+        }).finally(callback)
+    }, [patchQuery]);
+
+    const { renderForm } = useFormBuilder(validationShema, userProfile, userFormFields,
+        { submit: handleSubmit }
+    );
+
+    console.log(auth?.role);
+
+    useEffect(() => {
+        axiosPrivate.get("/client/profile/")
+        .then((response: AxiosResponse) => {setUserProfile({
+            lastName: response.data.lastName,
+            firstName: response.data.firstName,
+            email: response.data.email,
+            address: response.data.client.address,
+            city: response.data.client.city,
+            postalCode: response.data.client.postalCode,
+            phone: response.data.client.phone
+        })})
+        .catch(() => {
+            // if refresh token has expired, logout to login. Redirect to current page after login
+            navigate('/login', { state: { from: location }, replace: true });
+        });
     }, [])
 
-    
-    
-    
     return (
-        <section>
-            <form>
-        <Grid container spacing={5} mt={5} direction="row" justifyContent="center">
-            <Typography variant="h4">Profil {auth?.role}</Typography>
-        </Grid>
-        <Grid container spacing={5} mt={5} direction="row" justifyContent="center">
-            <Grid item xs={0}>
-                <TextField
-                    id="lastname"
-                    label="Nom"
-                    name="lastname"
-                     // function to set user state
-                    // user state in value
-                    required
-                />
+        <>
+        <Grid container mr={5} direction="row" justifyContent="right">
+                <Grid item xs={0} mt={1}>
+                    <Button
+                                variant="contained"
+                                startIcon={<LogoutIcon />}
+                                onClick={signOut}
+                                size="small">
+                        Déconnecter
+                    </Button>
+                </Grid>
             </Grid>
-            <Grid item xs={0}>
-                <TextField
-                    id="firstname"
-                    label="Prénom"
-                    name="firstname"
-                    required
-                />
+            <Grid container direction="row">
+                <Grid textAlign="center" p={5} item xs={12}>
+                    <Typography
+                        sx={{
+                            color: "#0FC2C0",
+                            fontWeight: "bold"
+                        }}
+                        variant="h3"
+                    >
+                        Modifier le profil
+                    </Typography>
+                </Grid>
             </Grid>
-        </Grid>
-        <Grid container spacing={5} mt={1} direction="row" justifyContent="center">
-            <Grid item xs={0}>
-                <TextField
-                    id="email"
-                    label="E-mail"
-                    name="mail"
-                     // function to set user state
-                    // user state in value
-                    required
-                />
+            {renderForm}
+            <Grid container mb={2} direction="row" justifyContent="center">
+                <Grid item xs={0} mt={2}>
+                    <Button
+                                variant="contained"
+                                component={Link}
+                                to="#"
+                                size="medium">
+                        Changer mot de passe
+                    </Button>
+                </Grid>
             </Grid>
-            <Grid item xs={0}>
-                <TextField
-                    id="city"
-                    label="Ville"
-                    name="city"
-                    type="password"
-                    
-                    required
-                />
+            <Grid container mb={5} ml={5} direction="row" justifyContent="left">
+                <Grid item xs={0} mt={1}>
+                    <Button
+                                variant="contained"
+                                startIcon={<ArrowBackIcon />}
+                                onClick={goBack}
+                                size="small">
+                        Retour
+                    </Button>
+                </Grid>
             </Grid>
-        </Grid>
-        <Grid container spacing={5} mt={1} direction="row" justifyContent="center">
-            <Grid item xs={0}>
-                <TextField
-                    id="postalcode"
-                    label="Code Postal"
-                    name="postalcode"
-                    required
-                />
-            </Grid>
-            <Grid item xs={0}>
-                <TextField
-                    id="phone"
-                    label="Numéro de téléphone"
-                    name="phone"
-                    required
-                />
-            </Grid>
-        </Grid>
-        <Grid container spacing={0} mt={1} direction="row" justifyContent="center">
-            <Grid item xs={0} mt={2}>
-                <Button
-                    variant="contained"
-                    color="success"
-                    startIcon={<DoneOutlineIcon />}
-                    type="submit">
-                    Modifier mes informations
-                </Button>
-            </Grid>
-        </Grid>
-    </form>
-    <Grid container mb={2} direction="row" justifyContent="center">
-        <Grid item xs={0} mt={2}>
-            <Button
-                        variant="contained"
-                        component={Link}
-                        to="#"
-                        size="medium">
-                Changer mot de passe
-            </Button>
-        </Grid>
-    </Grid>
-    <Grid container mb={5} ml={5} direction="row" justifyContent="left">
-        <Grid item xs={0} mt={2}>
-            <Button
-                        variant="contained"
-                        startIcon={<ArrowBackIcon />}
-                        onClick={goBack}
-                        size="small">
-                Retour
-            </Button>
-        </Grid>
-    </Grid>
-
-        </section>
+        </>
     );
 };
 
-export default Profile;
+export default FormProfile;

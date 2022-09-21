@@ -1,4 +1,5 @@
 import { ReactNode } from "react"
+import moment from "moment";
 
 export interface IBooking {
     accepted?: boolean,
@@ -29,4 +30,10 @@ export interface IGetBooking {
         future?: boolean,
         accepted?: boolean
     }
+
+
+export interface IBookings {
+    id?: number,
+    appointmentDate?: moment.Moment,
+
 }

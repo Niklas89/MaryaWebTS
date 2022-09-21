@@ -46,9 +46,7 @@ const FormLogin = () => {
         postQuery(LOGIN_URL, postData).then((response: AxiosResponse) => {
             const accessToken = response.data.accessToken;
             const role = response.data.idRole;
-            const userId = setUserInfos(response.data);
-            console.log(userId);
-            console.log("accessToken: " + accessToken);
+            setUserInfos(response.data);
             setAuth?.({ role, accessToken })
             navigate(from, { replace: true });
         }).catch((error: AxiosError) => {

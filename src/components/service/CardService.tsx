@@ -26,22 +26,22 @@ const CardService = () => {
             .then((res: AxiosResponse) => setServices(res.data))
     }, []);
 
-    console.log(services);
+    //console.log(services);
 
     return (
         <Container>
             {
-                services?.map((service: IService) => {
-                    return (<Grid key={service?.id} container>
-                        <Typography>
-                            {service?.name}
-                        </Typography>
-                        <Typography>
-                            {service?.price} €
-                        </Typography>
-                    </Grid>
-                    )
-                })
+                // services?.map((service: IService) => {
+                //     return (<Grid key={service?.id} container>
+                //         <Typography>
+                //             {service?.name}
+                //         </Typography>
+                //         <Typography>
+                //             {service?.price} €
+                //         </Typography>
+                //     </Grid>
+                //     )
+                // })
             }
         </Container>
     );

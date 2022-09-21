@@ -11,14 +11,33 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
 import "../../styles/Navigation.css";
+import useAuth from "../../hooks/useAuth";
 
-const pages = [
-    { name: "Reserver", path: "/booked"},
-    { name: "Mes reservations", path: "/booking"},
-    { name: "Se connecter", path: "/login"}
-];
 
 const Navigation = () => {
+    const { auth } = useAuth();
+
+    let connectedName;
+    let connectPath;
+
+    if(auth?.role === undefined) {
+        connectedName = "Se connecter";
+        connectPath = "login";
+    }
+    else {
+        connectedName = "Se déconnecter";
+        connectPath = "logout";
+    }
+
+    console.log(auth?.role);
+
+    const pages = [
+        { name: "Reserver", path: "booked" },
+        { name: "Mes reservations", path: "booking" },
+        { name: connectedName, path: connectPath },
+        { name: "Mon profil", path: "profile" }
+    ];
+
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -111,6 +130,8 @@ const Navigation = () => {
                             <Button
                                 key={page.name}
                                 onClick={handleCloseNavMenu}
+                                component={Link}
+                                to={page.path}
                                 sx={{ my: 2, color: "white", display: "block" }}
                                 component={Link}
                                 to={page.path}

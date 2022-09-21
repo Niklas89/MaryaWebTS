@@ -1,15 +1,13 @@
 import { axiosPrivate } from "../api/axios";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import useRefreshToken from "./useRefreshToken";
 import useAuth from "./useAuth";
 
 const useAxiosPrivate = () => {
     const refresh = useRefreshToken();
     const { auth } = useAuth();
-    const effectRan = useRef(false);
 
     useEffect(() => {
-       // if (effectRan.current === true) {
         const requestIntercept = axiosPrivate.interceptors.request.use(
             config => {
                 if (config.headers === undefined) {
@@ -38,9 +36,7 @@ const useAxiosPrivate = () => {
         return () => {
             axiosPrivate.interceptors.request.eject(requestIntercept);
             axiosPrivate.interceptors.response.eject(responseIntercept);
-           // effectRan.current = true;
         }
-       // }
     }, [auth, refresh])
 
     return axiosPrivate;

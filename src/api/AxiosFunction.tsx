@@ -1,44 +1,25 @@
-import axios from "axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 export const AxiosFunction = () => {
 
-    const accessToken = "getToken";
-    const apiPath = "http://localhost:8080/api";
+    const axiosPrivate = useAxiosPrivate();
 
 
     function postQuery(path: string, data: object): Promise<any> {
-
-        return axios.post(`${apiPath}/${path}`, data, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-        });
+        return axiosPrivate.post(`${path}`, data);
     }
 
 
     function patchQuery(path: string, data: object): Promise<any> {
-        return axios.patch(`${path}`, data, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-                "Content-Type": "application/merge-patch+json",
-            },
-        });
+        return axiosPrivate.patch(`${path}`, data);
     }
 
     function getQuery(path: string): Promise<any> {
-        return axios.get(`${path}`, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-        });
+        return axiosPrivate.get(`${path}`);
     }
 
     function deleteQuery(path: string): Promise<any> {
-        return axios.delete(`${path}`, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-        });
+        return axiosPrivate.delete(`${path}`);
     }
 
     return { getQuery, postQuery, deleteQuery, patchQuery }
