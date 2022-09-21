@@ -1,9 +1,8 @@
 export interface IUser {
     id?: number,
     firstName?: string,
-    lasteName?: string,
+    lastName?: string,
     password?: string,
-    pwd?: string,
     email?: string,
     isActive?: number,
     deactivatedDate?: string,
@@ -15,5 +14,9 @@ export interface IUser {
     refreshToken?: string,
     role?: number,
     persist?: boolean,
-    accessToken?: string
+    accessToken?: string,
+    address?: string,
+    city?: string,
+    phone?: string,
+    postalCode?: string
 }

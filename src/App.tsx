@@ -12,6 +12,7 @@ import RequireAuth from './components/RequireAuth';
 import PersistLogin from './components/form/PersistLogin';
 import "./styles/App.css";
 import CardService from './components/service/CardService';
+import Booking from './pages/Booking';
 import Service from './pages/Service';
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
@@ -22,7 +23,7 @@ const locale = 'fr-FR';
 const ROLES = {
   "Client": 1,
   "Partner": 2,
-  "Admin": 1
+  "Admin": 3
 }
 
 function App() {
@@ -41,14 +42,10 @@ function App() {
 
             {/* protected routes*/}
             <Route element={<PersistLogin />}>
-              {/*<Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
-            <Route path="/" element={<Home />} />
-            </Route>*/}
-
-              <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
-                <Route path="profile" element={<Profile />} />
-                <Route path="/booking/:id" element={<Booking />} />
-              </Route>
+            <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
+              <Route path="profile" element={<Profile />} />
+              <Route path="/booking/:id" element={<Booking />} />
+            </Route>
 
               <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
                 <Route path="admin" element={<Admin />} />

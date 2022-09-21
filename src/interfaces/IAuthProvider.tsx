@@ -1,17 +1,25 @@
 import { Dispatch, SetStateAction } from "react";
 import { IUser } from "./IUser";
 
+export type AuthData = {
+    id?: number
+    email?: string
+    role?: number
+    accessToken?: string
+}
+/*
+export interface IPersist {
+    persist?: boolean
+    setPersist?: Dispatch<SetStateAction<boolean>> | Dispatch<any>
+} */
+
 export interface IUserData {
     id?: number
     email?: string
     role?: number
     accessToken?: string
-    auth?: {id?: number
-        email?: string
-        role?: number
-        accessToken?: string
-    }
-    setAuth?: Dispatch<SetStateAction<IUserData>>
+    auth?: AuthData,
+    setAuth?: Dispatch<SetStateAction<AuthData>>
     setPersist?: Dispatch<SetStateAction<boolean>> | Dispatch<any>
 }
 
@@ -22,10 +30,9 @@ export type AuthContextType = {
         role?: number
         accessToken?: string
     };
-    persist?: boolean;
-    setAuth?: (auth: IUserData) => void;
+    persist?: boolean | undefined;
+    setAuth?: (auth: AuthData) => void;
     setPersist?: (persist: boolean) => void;
-    //updateTodo: (id: number) => void;
 };
 
 export interface StringArray {
