@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { IUser } from "./IUser";
 
-type AuthData = {
+export type AuthData = {
     id?: number
     email?: string
     role?: number
