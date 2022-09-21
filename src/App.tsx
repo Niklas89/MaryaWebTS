@@ -16,6 +16,7 @@ import Service from './pages/Service';
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import 'moment/locale/fr'
+import ChangePassword from './pages/ChangePassword';
 const locale = 'fr-FR';
 
 const ROLES = {
@@ -40,12 +41,10 @@ function App() {
 
             {/* protected routes*/}
             <Route element={<PersistLogin />}>
-              {/*<Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
-            <Route path="/" element={<Home />} />
-            </Route>*/}
 
               <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
                 <Route path="profile" element={<Profile />} />
+                <Route path="profile/changepassword" element={<ChangePassword />} />
               </Route>
 
               <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>

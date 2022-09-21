@@ -32,8 +32,8 @@ const FormProfile = () => {
     const goBack = () => navigate(-1);
     const axiosPrivate = useAxiosPrivate();
 
-    const signOut = async () => {
-        await logout();
+    const signOut = () => {
+         logout();
         // the backend api will delete the cookie that has the refreshToken, so that there will be no refreshToken
         navigate('/');
     }
@@ -146,7 +146,7 @@ const FormProfile = () => {
                     <Button
                                 variant="contained"
                                 component={Link}
-                                to="#"
+                                to="changepassword"
                                 size="medium">
                         Changer mot de passe
                     </Button>
