@@ -1,4 +1,4 @@
-import Grid from "@mui/material/Unstable_Grid2";
+import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
@@ -9,8 +9,8 @@ import { List, ListItem, ListItemText } from "@mui/material";
 const Footer = () => {
     return (
         <div>
-            <Grid container justifyContent="space-evenly" alignItems="center" className="footer" spacing={2}>
-                <Grid xs={4} lg={3}>
+            <Grid container alignItems="center" justifyContent="center" className="footer">
+                <Grid item xs={4} lg={3}>
                     <List disablePadding>
                         <ListItem disablePadding >
                             <ListItemText primaryTypographyProps={{ fontSize: 14 }} primary="Information des consomateurs" />
