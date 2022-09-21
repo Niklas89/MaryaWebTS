@@ -1,47 +1,43 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { IService } from '../../interfaces/IService';
+import React, { useCallback, useEffect, useState } from 'react';
+import { IService } from "../../interfaces/IService";
 import * as Yup from "yup";
-import { AxiosFunction } from '../../api/AxiosFunction';
-import { useNavigate, useParams } from 'react-router-dom';
-import { AxiosError, AxiosResponse } from 'axios';
-import RadioGroup from '@mui/material/RadioGroup';
-import { FormFieldType, useFormBuilder } from '../form/FormModel';
-import { DateTimePicker } from '@mui/x-date-pickers';
-import { FormikValues } from 'formik';
+import { AxiosFunction } from "../../api/AxiosFunction";
+import { useNavigate, useParams } from "react-router-dom";
+import { AxiosError, AxiosResponse } from "axios";
+import RadioGroup from "@mui/material/RadioGroup";
+import { FormFieldType, useFormBuilder } from "../form/FormModel";
+import { DateTimePicker } from "@mui/x-date-pickers";
+import { FormikValues } from "formik";
 import { toast } from "react-toastify";
-import { Select } from '@mui/material';
-import useAuth from '../../hooks/useAuth';
-import { IBookings } from '../../interfaces/IBooking';
-import moment from 'moment';
+import { Select } from "@mui/material";
+import useAuth from "../../hooks/useAuth";
+import { IBookings } from "../../interfaces/IBooking";
+
 
 const LOGIN_URL = "booking";
 const from = "/login";
 
-let formFields: FormFieldType[] = [
-
-];
+let formFields: FormFieldType[] = [];
 
 const FormService = () => {
 
-    const initialValues = {
-
-    }
+    const initialValues = {};
     const { auth } = useAuth();
     const navigate = useNavigate();
     const [services, setServices] = useState<Array<IService>>();
-    const [booking, setBooking] = useState<IBookings>()
+    const [booking, setBooking] = useState<IBookings>();
     const { id } = useParams();
     const { getQuery } = AxiosFunction();
 
     const validationShema = Yup.object().shape({
         appointmentDate: Yup.date().required("Merci de remplire la date et heure"),
-    })
+    });
 
     useEffect(() => {
         getQuery(`service/by-category/${id}`)
             .then((res: AxiosResponse) => {
-                setServices(res?.data)
-                const type = res.data?.[1].idType
+                setServices(res?.data);
+                const type = res.data?.[1].idType;
                 if (type === 1) {
                     formFields = [
                         { name: "idService", field: RadioGroup, title: "Services à l'heure:", fields: res.data?.map((item: IService) => { return { value: item.id, name: "idService", label: item.name + ' ' + item.price + ' €' } }) },
@@ -62,7 +58,7 @@ const FormService = () => {
                     closeOnClick: true,
                     pauseOnHover: true,
                     draggable: true,
-                    toastId: "submit-dog-file-error"
+                    toastId: "submit-file-error"
                 });
                 return;
             });
@@ -71,8 +67,8 @@ const FormService = () => {
 
     const { postQuery } = AxiosFunction();
     const handleSubmit = useCallback((values: FormikValues, callback: any) => {
-        const idUser = auth?.id;
-        if (idUser === undefined) {
+        const idRole = auth?.role;
+        if (idRole === undefined) {
             navigate(from, { replace: true });
         } else {
             const date = values.appointmentDate;
@@ -81,9 +77,9 @@ const FormService = () => {
             if (!values.nbHours) {
                 const postData = { accepted: 0, totalPrice: price, idClient: 2, idService: idServiceNum, appointmentDate: date }
                 postQuery(LOGIN_URL, postData).then((response: AxiosResponse) => {
-                    setBooking(response.data)
-                    const urlBooking = "/booking/" + response.data.booking
-                    navigate(urlBooking, { replace: true })
+                    setBooking(response.data);
+                    const urlBooking = "/formBooking/" + response.data.booking;
+                    navigate(urlBooking, { replace: true });
                 }).catch((error: AxiosError) => {
                     toast.error("Une erreur c'est produite.", {
                         position: "bottom-right",
@@ -101,9 +97,9 @@ const FormService = () => {
                 const priceTotal = Number(hours) * Number(price)
                 const postData = { accepted: 0, totalPrice: priceTotal, idClient: 2, nbHours: values.nbHours, idService: idServiceNum, appointmentDate: date }
                 postQuery(LOGIN_URL, postData).then((response: AxiosResponse) => {
-                    setBooking(response.data)
-                    const urlBooking = "/booking/" + response.data.booking
-                    navigate(urlBooking, { replace: true })
+                    setBooking(response.data);
+                    const urlBooking = "/booking/" + response.data.booking;
+                    navigate(urlBooking, { replace: true });
                 }).catch((error: AxiosError) => {
                     toast.error("Une erreur c'est produite.", {
                         position: "bottom-right",
@@ -120,7 +116,6 @@ const FormService = () => {
         }
     }, [postQuery]);
 
-
     const { renderForm } = useFormBuilder(validationShema, initialValues, formFields,
         { submit: handleSubmit }
     );
@@ -132,7 +127,3 @@ const FormService = () => {
 };
 
 export default FormService;
-
-function callback(): any {
-    throw new Error('Function not implemented.');
-}
