@@ -23,15 +23,24 @@ const Navigation = () => {
 
     if (auth?.role) {
         pages = [
-            { name: "Reserver", path: "booked" },
+            { name: "Coiffure", path: "service/1" },
+            { name: "Bricolage", path: "service/2" },
+            { name: "Jardinage", path: "service/3" },
+            { name: "Ménage", path: "service/4" },
+            { name: "Beauté", path: "service/5" },
+            { name: "Babysitting", path: "service/6" },
             { name: "Mes reservations", path: "booking" },
-            { name: "Mon profil", path: "profile" }
+            { name: "Mon profil", path: "profile" },
         ]
     }
     else {
         pages = [
-            { name: "Reserver", path: "booked" },
-            { name: "Se connecter", path: "login" }
+            { name: "Coiffure", path: "service/1" },
+            { name: "Bricolage", path: "service/2" },
+            { name: "Jardinage", path: "service/3" },
+            { name: "Ménage", path: "service/4" },
+            { name: "Beauté", path: "service/5" },
+            { name: "Babysitting", path: "service/6" },
         ]
     }
 
@@ -47,7 +56,7 @@ const Navigation = () => {
 
     return (
         <AppBar position="static" sx={{ backgroundColor: "#035A5A" }}>
-            <Container>
+            <Container maxWidth={false}>
                 <Toolbar disableGutters>
                     <img src="./assets/logo/marya.png" height="50" alt="" />
                     <Typography
@@ -135,13 +144,17 @@ const Navigation = () => {
                             </Button>
                         ))}
                     </Box>
-                    {auth?.role && (
-                        <Box sx={{ flexGrow: 0 }}>
+                    <Box sx={{ flexGrow: 0 }}>
+                        {auth?.role ? (
                             <Button onClick={logout} sx={{ my: 2, color: "white", display: "block" }}>
                                 Se déconnecter
                             </Button>
-                        </Box>
-                    )}
+                        ) : (
+                            <Button component={Link} to="login" sx={{ my: 2, color: "white", display: "block" }}>
+                                Se connecter
+                            </Button>
+                        )}
+                    </Box>
                 </Toolbar>
             </Container>
         </AppBar>
