@@ -9,14 +9,13 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 import { Link } from "react-router-dom";
 import "../../styles/Navigation.css";
 
 const pages = [
-    { name: "Reserver", path: "booked" },
-    { name: "Mes reservations", path: "booking" },
-    { name: "Se connecter", path: "/" }
+    { name: "Reserver", path: "/booked"},
+    { name: "Mes reservations", path: "/booking"},
+    { name: "Se connecter", path: "/login"}
 ];
 
 const Navigation = () => {
@@ -37,7 +36,8 @@ const Navigation = () => {
                     <img src="./assets/logo/marya.png" height="50" alt="" />
                     <Typography
                         variant="h6"
-                        noWrap
+                        component="a"
+                        href="/"
                         sx={{
                             mr: 2,
                             ml: 2,
@@ -81,8 +81,8 @@ const Navigation = () => {
                                 display: { xs: "block", md: "none" },
                             }}
                         >
-                            {pages.map((page) => (
-                                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                            {pages.map((page, index) => (
+                                <MenuItem key={index} component={Link} to={page.path} onClick={handleCloseNavMenu}>
                                     <Typography textAlign="center">{page.name}</Typography>
                                 </MenuItem>
                             ))}
@@ -92,7 +92,7 @@ const Navigation = () => {
                         variant="h5"
                         noWrap
                         component="a"
-                        href=""
+                        href="/"
                         sx={{
                             mr: 2,
                             display: { xs: "flex", md: "none" },
@@ -112,6 +112,8 @@ const Navigation = () => {
                                 key={page.name}
                                 onClick={handleCloseNavMenu}
                                 sx={{ my: 2, color: "white", display: "block" }}
+                                component={Link}
+                                to={page.path}
                             >
                                 {page.name}
                             </Button>

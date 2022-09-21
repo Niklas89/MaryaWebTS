@@ -12,6 +12,7 @@ import RequireAuth from './components/RequireAuth';
 import PersistLogin from './components/form/PersistLogin';
 import "./styles/App.css";
 import CardService from './components/service/CardService';
+import Booking from './pages/Booking';
 
 const ROLES = {
   "Client": 1,
@@ -26,8 +27,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           {/* public routes */}
-          <Route path="register" element={<Register />} />
-          <Route path="login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/service/:id" element={<CardService />} />
           <Route path="/" element={<Home />} />
           <Route path="/*" element={<Home />} />
@@ -40,6 +41,7 @@ function App() {
 
             <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
               <Route path="profile" element={<Profile />} />
+              <Route path="/booking" element={<Booking />} />
             </Route>
 
             <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
