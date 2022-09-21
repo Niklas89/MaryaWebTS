@@ -14,6 +14,7 @@ import "./styles/App.css";
 import CardService from './components/service/CardService';
 import Booking from './pages/Booking';
 import Service from './pages/Service';
+import ChangePassword from './pages/ChangePassword';
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import 'moment/locale/fr'
@@ -41,14 +42,17 @@ function App() {
 
             {/* protected routes*/}
             <Route element={<PersistLogin />}>
+
               <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
                 <Route path="profile" element={<Profile />} />
                 <Route path="/booking/:id" element={<Booking />} />
+                <Route path="profile/changepassword" element={<ChangePassword />} />
               </Route>
 
               <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
                 <Route path="admin" element={<Admin />} />
               </Route>
+
             </Route>
           </Route>
         </Routes>

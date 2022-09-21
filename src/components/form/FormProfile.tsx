@@ -31,6 +31,7 @@ const FormProfile = () => {
     const goBack = () => navigate(-1);
     const axiosPrivate = useAxiosPrivate();
 
+
     const initialValues = {
         lastName: "",
         firstName: "",
@@ -128,10 +129,11 @@ const FormProfile = () => {
             <Grid container mb={2} direction="row" justifyContent="center">
                 <Grid item xs={0} mt={2}>
                     <Button
-                        variant="contained"
-                        component={Link}
-                        to="#"
-                        size="medium">
+                                variant="contained"
+                                component={Link}
+                                to="changepassword"
+                                size="medium">
+
                         Changer mot de passe
                     </Button>
                 </Grid>
