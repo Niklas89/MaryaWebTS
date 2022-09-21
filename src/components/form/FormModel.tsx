@@ -6,6 +6,7 @@ import { DateTimePicker } from "@mui/x-date-pickers";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
+import moment from "moment";
 
 const LoginButton = styled(Button)<ButtonProps>(() => ({
     backgroundColor: "#023535",
@@ -58,7 +59,6 @@ export function useFormBuilder(
         }
 
     }, [formik.setValues, handleFormCallback]);
-
     const renderField = (item: FormFieldType) => {
         const menuLabel = (item?.menuItems ? <InputLabel id={item.name} key={item.name + "_menu_label"}>{item.label}</InputLabel> : null)
 
@@ -105,6 +105,7 @@ export function useFormBuilder(
                     <FormControl key={item.name + "form_control"} fullWidth sx={{ m: 1 }}>
                         {menuLabel}
                         {item.field === DateTimePicker ?
+
                             <DateTimePicker
                                 key={item.name + "_input"}
                                 renderInput={(params) => (
@@ -121,6 +122,7 @@ export function useFormBuilder(
                                 onChange={(value) => {
                                     return formik.setFieldValue(item.name, value, true)
                                 }}
+                                minDateTime={moment()}
                             />
                             :
                             <Field

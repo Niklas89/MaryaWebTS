@@ -27,7 +27,6 @@ const FormService = () => {
 
     }
     const { auth } = useAuth();
-    const idUser = auth?.id;
     const navigate = useNavigate();
     const [services, setServices] = useState<Array<IService>>();
     const [booking, setBooking] = useState<IBookings>()
@@ -35,8 +34,7 @@ const FormService = () => {
     const { getQuery } = AxiosFunction();
 
     const validationShema = Yup.object().shape({
-        //@TODO: Voir quel date et heure ne soit pas inferieur à moment()
-        appointmentDate: Yup.string().required("Merci de remplire la date et heure"),
+        appointmentDate: Yup.date().required("Merci de remplire la date et heure"),
     })
 
     useEffect(() => {
@@ -46,14 +44,13 @@ const FormService = () => {
                 const type = res.data?.[1].idType
                 if (type === 1) {
                     formFields = [
-                        //@TODO: changer le nom totalPrice
-                        { name: "totalPrice", field: RadioGroup, title: "Services à l'heure:", fields: res.data?.map((item: IService) => { return { value: item.id, name: "totalPrice", label: item.name + ' ' + item.price + ' €' } }) },
+                        { name: "idService", field: RadioGroup, title: "Services à l'heure:", fields: res.data?.map((item: IService) => { return { value: item.id, name: "idService", label: item.name + ' ' + item.price + ' €' } }) },
                         { name: "appointmentDate", field: DateTimePicker, title: "Pour le:", label: "Date et heure:", isMultiLine: true },
                         { name: "nbHours", field: Select, label: "Nombre d'heure", menuItems: [{ value: "1", label: "1 Heure" }, { value: "2", label: "2 Heures" }, { value: "3", label: "3 Heures" }, { value: "4", label: "4 Heures" }, { value: "5", label: "5 Heures" }], labelButton: "Réserver" },
                     ];
                 } else {
                     formFields = [
-                        { name: "totalPrice", field: RadioGroup, title: "Services à la prestation:", fields: res.data?.map((item: IService) => { return { value: item.id, name: "totalPrice", label: item.name + ' ' + item.price + ' €' } }) },
+                        { name: "idService", field: RadioGroup, title: "Services à la prestation:", fields: res.data?.map((item: IService) => { return { value: item.id, name: "idService", label: item.name + ' ' + item.price + ' €' } }) },
                         { name: "appointmentDate", field: DateTimePicker, title: "Pour le:", label: "Date et heure:", isMultiLine: true, labelButton: "Réserver" }
                     ];
                 }
@@ -71,40 +68,58 @@ const FormService = () => {
             });
     }, []);
 
-    const { postQuery } = AxiosFunction();
 
+    const { postQuery } = AxiosFunction();
     const handleSubmit = useCallback((values: FormikValues, callback: any) => {
         const idUser = auth?.id;
         if (idUser === undefined) {
             navigate(from, { replace: true });
         } else {
-            const date = values.appointmentDate
-            const idService = values.totalPrice
-            const price = services?.find((item: IService) => item.id === Number(idService))?.price
-            //ici calculer le total
-            //@TODO: calculer le total du prix
-
+            const date = values.appointmentDate;
+            const idServiceNum = Number(values.idService);
+            const price = services?.find((item: IService) => item.id === idServiceNum)?.price;
             if (!values.nbHours) {
-
-                const postData = { accepted: 0, totalPrice: price, idClient: 1, idService: idService, appointmentDate: date }
-                //const booking = { booking: postData }
-
-                //console.log(idService)
-                // postQuery(LOGIN_URL, postData).then((response: AxiosResponse) => {
-                //     setBooking(response.data)
-                //     console.log(setBooking(response.data))
-                // })
-            } else {
-                const idService = values.totalPrice;
-                //console.log(services)
-                const priceTotal = values.totalPrice
-                const postData = { nbHours: values.nbHours, accepted: 0, }
+                const postData = { accepted: 0, totalPrice: price, idClient: 2, idService: idServiceNum, appointmentDate: date }
                 postQuery(LOGIN_URL, postData).then((response: AxiosResponse) => {
                     setBooking(response.data)
+                    const urlBooking = "/booking/" + response.data.booking
+                    navigate(urlBooking, { replace: true })
+                }).catch((error: AxiosError) => {
+                    toast.error("Une erreur c'est produite.", {
+                        position: "bottom-right",
+                        autoClose: 3000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        toastId: "submit-file-error"
+                    });
+                    return;
+                });
+            } else {
+                const hours = values.nbHours;
+                const priceTotal = Number(hours) * Number(price)
+                const postData = { accepted: 0, totalPrice: priceTotal, idClient: 2, nbHours: values.nbHours, idService: idServiceNum, appointmentDate: date }
+                postQuery(LOGIN_URL, postData).then((response: AxiosResponse) => {
+                    setBooking(response.data)
+                    const urlBooking = "/booking/" + response.data.booking
+                    navigate(urlBooking, { replace: true })
+                }).catch((error: AxiosError) => {
+                    toast.error("Une erreur c'est produite.", {
+                        position: "bottom-right",
+                        autoClose: 3000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        toastId: "submit-file-error"
+                    });
+                    return;
                 })
             }
         }
-    }, []);
+    }, [postQuery]);
+
 
     const { renderForm } = useFormBuilder(validationShema, initialValues, formFields,
         { submit: handleSubmit }
