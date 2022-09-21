@@ -11,7 +11,7 @@ import * as Yup from "yup";
 import { FormikValues } from "formik";
 import useAuth from "../../hooks/useAuth";
 
-const LOGIN_URL = "user/login";
+const LOGIN_URL = "auth/login";
 
 const userFormFields: FormFieldType[] = [
     { name: "email", field: TextField, label: "E-mail", isMultiLine: false },
