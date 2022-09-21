@@ -12,31 +12,28 @@ import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
 import "../../styles/Navigation.css";
 import useAuth from "../../hooks/useAuth";
+import useLogout from "../../hooks/useLogout";
 
 
 const Navigation = () => {
     const { auth } = useAuth();
+    const logout = useLogout();
 
-    let connectedName;
-    let connectPath;
+    let pages;
 
-    if(auth?.role === undefined) {
-        connectedName = "Se connecter";
-        connectPath = "login";
+    if (auth?.role) {
+        pages = [
+            { name: "Reserver", path: "booked" },
+            { name: "Mes reservations", path: "booking" },
+            { name: "Mon profil", path: "profile" }
+        ]
     }
     else {
-        connectedName = "Se déconnecter";
-        connectPath = "logout";
+        pages = [
+            { name: "Reserver", path: "booked" },
+            { name: "Se connecter", path: "login" }
+        ]
     }
-
-    console.log(auth?.role);
-
-    const pages = [
-        { name: "Reserver", path: "booked" },
-        { name: "Mes reservations", path: "booking" },
-        { name: connectedName, path: connectPath },
-        { name: "Mon profil", path: "profile" }
-    ];
 
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
 
@@ -133,13 +130,18 @@ const Navigation = () => {
                                 component={Link}
                                 to={page.path}
                                 sx={{ my: 2, color: "white", display: "block" }}
-                                component={Link}
-                                to={page.path}
                             >
                                 {page.name}
                             </Button>
                         ))}
                     </Box>
+                    {auth?.role && (
+                        <Box sx={{ flexGrow: 0 }}>
+                            <Button onClick={logout} sx={{ my: 2, color: "white", display: "block" }}>
+                                Se déconnecter
+                            </Button>
+                        </Box>
+                    )}
                 </Toolbar>
             </Container>
         </AppBar>

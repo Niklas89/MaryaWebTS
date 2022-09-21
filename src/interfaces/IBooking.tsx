@@ -30,7 +30,7 @@ export interface IGetBooking {
         future?: boolean,
         accepted?: boolean
     }
-
+}
 
 export interface IBookings {
     id?: number,
