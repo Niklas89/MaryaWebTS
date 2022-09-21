@@ -1,0 +1,21 @@
+.notSelected {
+    background-color: white !important;
+    color: #035A5A !important;
+    border-color: #035A5A !important;
+}
+.notSelected:hover {
+    background-color: white !important;
+    color: #035A5A !important;
+    border-color: #035A5A !important;
+}
+
+.selected {
+    background-color: #035A5A !important;
+    color: white !important;
+    border-color: #035A5A !important;
+}
+.selected:hover {
+    background-color: #035A5A !important;
+    color: white !important;
+    border-color: #035A5A !important;
+}

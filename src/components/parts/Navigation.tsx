@@ -9,35 +9,31 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 import { Link } from "react-router-dom";
 import "../../styles/Navigation.css";
 import useAuth from "../../hooks/useAuth";
+import useLogout from "../../hooks/useLogout";
 
 
 const Navigation = () => {
     const { auth } = useAuth();
+    const logout = useLogout();
 
-    let connectedName;
-    let connectPath;
+    let pages;
 
-    if(auth?.role === undefined) {
-        connectedName = "Se connecter";
-        connectPath = "login";
+    if (auth?.role) {
+        pages = [
+            { name: "Reserver", path: "booked" },
+            { name: "Mes reservations", path: "booking" },
+            { name: "Mon profil", path: "profile" }
+        ]
     }
     else {
-        connectedName = "Se déconnecter";
-        connectPath = "logout";
+        pages = [
+            { name: "Reserver", path: "booked" },
+            { name: "Se connecter", path: "login" }
+        ]
     }
-
-    console.log(auth?.role);
-
-    const pages = [
-        { name: "Reserver", path: "booked" },
-        { name: "Mes reservations", path: "booking" },
-        { name: connectedName, path: connectPath },
-        { name: "Mon profil", path: "profile" }
-    ];
 
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
 
@@ -56,7 +52,8 @@ const Navigation = () => {
                     <img src="./assets/logo/marya.png" height="50" alt="" />
                     <Typography
                         variant="h6"
-                        noWrap
+                        component="a"
+                        href="/"
                         sx={{
                             mr: 2,
                             ml: 2,
@@ -100,8 +97,8 @@ const Navigation = () => {
                                 display: { xs: "block", md: "none" },
                             }}
                         >
-                            {pages.map((page) => (
-                                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                            {pages.map((page, index) => (
+                                <MenuItem key={index} component={Link} to={page.path} onClick={handleCloseNavMenu}>
                                     <Typography textAlign="center">{page.name}</Typography>
                                 </MenuItem>
                             ))}
@@ -111,7 +108,7 @@ const Navigation = () => {
                         variant="h5"
                         noWrap
                         component="a"
-                        href=""
+                        href="/"
                         sx={{
                             mr: 2,
                             display: { xs: "flex", md: "none" },
@@ -138,6 +135,13 @@ const Navigation = () => {
                             </Button>
                         ))}
                     </Box>
+                    {auth?.role && (
+                        <Box sx={{ flexGrow: 0 }}>
+                            <Button onClick={logout} sx={{ my: 2, color: "white", display: "block" }}>
+                                Se déconnecter
+                            </Button>
+                        </Box>
+                    )}
                 </Toolbar>
             </Container>
         </AppBar>

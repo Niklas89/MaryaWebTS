@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef  } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { IUser } from "../../interfaces/IUser";
 import * as Yup from "yup";
 import { FormFieldType, useFormBuilder } from "./FormModel";
@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import { AxiosFunction } from "../../api/AxiosFunction";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import LogoutIcon from '@mui/icons-material/Logout';
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AxiosError, AxiosResponse } from "axios";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -32,11 +31,6 @@ const FormProfile = () => {
     const goBack = () => navigate(-1);
     const axiosPrivate = useAxiosPrivate();
 
-    const signOut = () => {
-         logout();
-        // the backend api will delete the cookie that has the refreshToken, so that there will be no refreshToken
-        navigate('/');
-    }
 
     const initialValues = {
         lastName: "",
@@ -99,34 +93,25 @@ const FormProfile = () => {
 
     useEffect(() => {
         axiosPrivate.get("/client/profile/")
-        .then((response: AxiosResponse) => {setUserProfile({
-            lastName: response.data.lastName,
-            firstName: response.data.firstName,
-            email: response.data.email,
-            address: response.data.client.address,
-            city: response.data.client.city,
-            postalCode: response.data.client.postalCode,
-            phone: response.data.client.phone
-        })})
-        .catch(() => {
-            // if refresh token has expired, logout to login. Redirect to current page after login
-            navigate('/login', { state: { from: location }, replace: true });
-        });
+            .then((response: AxiosResponse) => {
+                setUserProfile({
+                    lastName: response.data.lastName,
+                    firstName: response.data.firstName,
+                    email: response.data.email,
+                    address: response.data.client.address,
+                    city: response.data.client.city,
+                    postalCode: response.data.client.postalCode,
+                    phone: response.data.client.phone
+                })
+            })
+            .catch(() => {
+                // if refresh token has expired, logout to login. Redirect to current page after login
+                navigate('/login', { state: { from: location }, replace: true });
+            });
     }, [])
 
     return (
         <>
-        <Grid container mr={5} direction="row" justifyContent="right">
-                <Grid item xs={0} mt={1}>
-                    <Button
-                                variant="contained"
-                                startIcon={<LogoutIcon />}
-                                onClick={signOut}
-                                size="small">
-                        Déconnecter
-                    </Button>
-                </Grid>
-            </Grid>
             <Grid container direction="row">
                 <Grid textAlign="center" p={5} item xs={12}>
                     <Typography
@@ -148,6 +133,7 @@ const FormProfile = () => {
                                 component={Link}
                                 to="changepassword"
                                 size="medium">
+
                         Changer mot de passe
                     </Button>
                 </Grid>
@@ -155,10 +141,10 @@ const FormProfile = () => {
             <Grid container mb={5} ml={5} direction="row" justifyContent="left">
                 <Grid item xs={0} mt={1}>
                     <Button
-                                variant="contained"
-                                startIcon={<ArrowBackIcon />}
-                                onClick={goBack}
-                                size="small">
+                        variant="contained"
+                        startIcon={<ArrowBackIcon />}
+                        onClick={goBack}
+                        size="small">
                         Retour
                     </Button>
                 </Grid>
