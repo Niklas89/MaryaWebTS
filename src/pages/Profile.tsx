@@ -1,9 +1,9 @@
-import FormProfileModel from "../components/form/FormProfileModel"
+import FormProfile from "../components/form/FormProfile"
 
 const Profile = () => {
     return (
         <div>
-            <FormProfileModel />
+            <FormProfile />
         </div>
     )
 }

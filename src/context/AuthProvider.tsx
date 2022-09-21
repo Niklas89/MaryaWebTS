@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { IUserData, AuthContextType } from "../interfaces/IAuthProvider";
+import { IUserData, AuthContextType, AuthData } from "../interfaces/IAuthProvider";
 
 const AuthContext = createContext<AuthContextType>({});
 
@@ -8,7 +8,7 @@ interface props {
 }
 
 export const AuthProvider = ({ children }: props) => {
-    const [auth, setAuth] = useState<IUserData>({});
+    const [auth, setAuth] = useState<AuthData>({});
     // use localstorage to store a boolean that will tell us if we trust this device or not (check at login page)
     // getItem if it exists or otherwise it's false
     const [persist, setPersist] = useState(JSON.parse(localStorage.getItem("persist")!) || false);

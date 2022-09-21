@@ -49,7 +49,7 @@ const useRefreshToken = () => {
         
 
         /*
-         setAuth?.((prev: AuthData): AuthData => { // previous state
+         setAuth?.((prev) => { // previous state
              console.log(JSON.stringify(prev));
              // accesstoken that we get back after our refresh token is verified
              console.log(response.data.accessToken); 
