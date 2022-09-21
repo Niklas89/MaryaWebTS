@@ -47,7 +47,7 @@ const FormLogin = () => {
             const accessToken = response.data.accessToken;
             const role = response.data.idRole;
             setUserInfos(response.data);
-            setAuth?.({ role, accessToken })
+            setAuth?.({ role, accessToken });
             navigate(from, { replace: true });
         }).catch((error: AxiosError) => {
             toast.error("Une erreur c'est produite, vérifier vos identifiants.", {

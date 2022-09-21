@@ -42,6 +42,9 @@ const FormProfile = () => {
         phone: ""
     };
 
+    console.log(auth);
+    
+
     const [userProfile, setUserProfile] = useState<IUser>(initialValues);
 
     const { patchQuery } = AxiosFunction();
