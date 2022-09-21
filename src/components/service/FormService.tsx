@@ -2,106 +2,128 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IService } from '../../interfaces/IService';
 import * as Yup from "yup";
 import { AxiosFunction } from '../../api/AxiosFunction';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { AxiosError, AxiosResponse } from 'axios';
-import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-import axios from '../../api/axios';
 import { FormFieldType, useFormBuilder } from '../form/FormModel';
 import { DateTimePicker } from '@mui/x-date-pickers';
-import moment from "moment";
 import { FormikValues } from 'formik';
 import { toast } from "react-toastify";
+import { Select } from '@mui/material';
 import useAuth from '../../hooks/useAuth';
 import { IBookings } from '../../interfaces/IBooking';
-
+import moment from 'moment';
 
 const LOGIN_URL = "booking";
+const from = "/login";
 
 let formFields: FormFieldType[] = [
 
-    //{ name: "bidule", field: FormControlLabel, attributes: { control: <Radio />, label: 'euh' } }
-
 ];
-
 
 const FormService = () => {
 
     const initialValues = {
-        //appointmentDate: moment()
-        //bidule: "test"
-    }
 
-    const { setAuth } = useAuth();
-    const [booking, setBooking] = useState(initialValues);
+    }
+    const { auth } = useAuth();
+    const navigate = useNavigate();
     const [services, setServices] = useState<Array<IService>>();
+    const [booking, setBooking] = useState<IBookings>()
     const { id } = useParams();
     const { getQuery } = AxiosFunction();
-    const validationShema = Yup.object().shape({
-        // appointmentDate: Yup.string().required("Merci de remplire la date et heure"),
-    })
 
-    const serviceFormFields: FormFieldType[] = services?.map((item: IService) => {
-        const myArray = {
-            name: item.name,
-            field: FormControlLabel,
-            label: item.name,
-            attributes: {
-                control: <Radio />,
-            }
-        };
-        return myArray;
-    }) ?? formFields;
-    // formFields.push({ name: "radioGroup", field: RadioGroup, fields: services?.map((item: IService) => { return { label: item.name + ' ' + item.price + ' €' } }) });
+    const validationShema = Yup.object().shape({
+        appointmentDate: Yup.date().required("Merci de remplire la date et heure"),
+    })
 
     useEffect(() => {
         getQuery(`service/by-category/${id}`)
             .then((res: AxiosResponse) => {
-                setServices(res.data)
-                formFields = [
-                    { name: "radioGroup", field: RadioGroup, fields: res.data?.map((item: IService) => { return { label: item.name + ' ' + item.price + ' €' } }) },
-                    { name: "appointmentDate", field: DateTimePicker, label: "Date et heure:", isMultiLine: true }
-                ];
-                console.log(formFields);
-            })
+                setServices(res?.data)
+                const type = res.data?.[1].idType
+                if (type === 1) {
+                    formFields = [
+                        { name: "idService", field: RadioGroup, title: "Services à l'heure:", fields: res.data?.map((item: IService) => { return { value: item.id, name: "idService", label: item.name + ' ' + item.price + ' €' } }) },
+                        { name: "appointmentDate", field: DateTimePicker, title: "Pour le:", label: "Date et heure:", isMultiLine: true },
+                        { name: "nbHours", field: Select, label: "Nombre d'heure", menuItems: [{ value: "1", label: "1 Heure" }, { value: "2", label: "2 Heures" }, { value: "3", label: "3 Heures" }, { value: "4", label: "4 Heures" }, { value: "5", label: "5 Heures" }], labelButton: "Réserver" },
+                    ];
+                } else {
+                    formFields = [
+                        { name: "idService", field: RadioGroup, title: "Services à la prestation:", fields: res.data?.map((item: IService) => { return { value: item.id, name: "idService", label: item.name + ' ' + item.price + ' €' } }) },
+                        { name: "appointmentDate", field: DateTimePicker, title: "Pour le:", label: "Date et heure:", isMultiLine: true, labelButton: "Réserver" }
+                    ];
+                }
+            }).catch((error: AxiosError) => {
+                toast.error("Une erreur c'est produite, vérifier vos identifiants.", {
+                    position: "bottom-right",
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    toastId: "submit-dog-file-error"
+                });
+                return;
+            });
     }, []);
 
 
     const { postQuery } = AxiosFunction();
-
     const handleSubmit = useCallback((values: FormikValues, callback: any) => {
-
-        const postData = { ...values, "idService": id, "idClient": "1" };
-
-        postQuery(LOGIN_URL, postData).then((response: AxiosResponse) => {
-            const accessToken = response.data.accessToken;
-            const role = response.data.idRole;
-            const services = setServices(response.data);
-            setAuth?.({ role, accessToken });
-            //navigate(from, { replace: true });
-        }).catch((error: AxiosError) => {
-            toast.error("Une erreur c'est produite, vérifier vos identifiants.", {
-                position: "bottom-right",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                toastId: "submit-dog-file-error"
-
-            });
-            return callback();
-        }).finally(callback)
+        const idUser = auth?.id;
+        if (idUser === undefined) {
+            navigate(from, { replace: true });
+        } else {
+            const date = values.appointmentDate;
+            const idServiceNum = Number(values.idService);
+            const price = services?.find((item: IService) => item.id === idServiceNum)?.price;
+            if (!values.nbHours) {
+                const postData = { accepted: 0, totalPrice: price, idClient: 2, idService: idServiceNum, appointmentDate: date }
+                postQuery(LOGIN_URL, postData).then((response: AxiosResponse) => {
+                    setBooking(response.data)
+                    const urlBooking = "/booking/" + response.data.booking
+                    navigate(urlBooking, { replace: true })
+                }).catch((error: AxiosError) => {
+                    toast.error("Une erreur c'est produite.", {
+                        position: "bottom-right",
+                        autoClose: 3000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        toastId: "submit-file-error"
+                    });
+                    return;
+                });
+            } else {
+                const hours = values.nbHours;
+                const priceTotal = Number(hours) * Number(price)
+                const postData = { accepted: 0, totalPrice: priceTotal, idClient: 2, nbHours: values.nbHours, idService: idServiceNum, appointmentDate: date }
+                postQuery(LOGIN_URL, postData).then((response: AxiosResponse) => {
+                    setBooking(response.data)
+                    const urlBooking = "/booking/" + response.data.booking
+                    navigate(urlBooking, { replace: true })
+                }).catch((error: AxiosError) => {
+                    toast.error("Une erreur c'est produite.", {
+                        position: "bottom-right",
+                        autoClose: 3000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        toastId: "submit-file-error"
+                    });
+                    return;
+                })
+            }
+        }
     }, [postQuery]);
 
+
     const { renderForm } = useFormBuilder(validationShema, initialValues, formFields,
-        //{ submit: handleSubmit }
+        { submit: handleSubmit }
     );
-
-
     return (
         <div>
             {renderForm}
@@ -110,3 +132,7 @@ const FormService = () => {
 };
 
 export default FormService;
+
+function callback(): any {
+    throw new Error('Function not implemented.');
+}

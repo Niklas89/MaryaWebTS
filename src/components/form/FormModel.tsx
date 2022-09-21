@@ -6,6 +6,7 @@ import { DateTimePicker } from "@mui/x-date-pickers";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
+import moment from "moment";
 
 const LoginButton = styled(Button)<ButtonProps>(() => ({
     backgroundColor: "#023535",
@@ -27,7 +28,10 @@ export interface FormFieldType {
     values?: FormikValues[];
     isMultiLine?: boolean;
     menuItems?: IMenuItem[];
-    fields?: { label: string }[];
+    fields?: {
+        name: string | undefined;
+        value: unknown; label: string
+    }[];
     title?: string;
     type?: string;
     labelButton?: string;
@@ -55,20 +59,18 @@ export function useFormBuilder(
         }
 
     }, [formik.setValues, handleFormCallback]);
-
     const renderField = (item: FormFieldType) => {
         const menuLabel = (item?.menuItems ? <InputLabel id={item.name} key={item.name + "_menu_label"}>{item.label}</InputLabel> : null)
-        /*const radioButton = (
-            item?.b
-        )*/
-        const title = (item?.title ? <Grid
-            key={item.name + "_title"}
-            item
-            lg={12}
-            md={12}
-            sm={12}
-            xs={12}
-        ><Typography variant="h4" my={5}>{item.title}</Typography></Grid> : null)
+
+        const title = (item?.title ?
+            <Grid
+                key={item.name + "_title"}
+                textAlign="center" p={5} item xs={12}><Typography sx={{
+                    color: "#0FC2C0",
+                    fontWeight: "bold"
+                }}
+                    variant="h3"
+                >{item.title}</Typography></Grid> : null)
 
         const submit = (item?.labelButton ?
             <Grid container p={4} direction="row" justifyContent="space-evenly" alignItems="center">
@@ -103,6 +105,7 @@ export function useFormBuilder(
                     <FormControl key={item.name + "form_control"} fullWidth sx={{ m: 1 }}>
                         {menuLabel}
                         {item.field === DateTimePicker ?
+
                             <DateTimePicker
                                 key={item.name + "_input"}
                                 renderInput={(params) => (
@@ -119,6 +122,7 @@ export function useFormBuilder(
                                 onChange={(value) => {
                                     return formik.setFieldValue(item.name, value, true)
                                 }}
+                                minDateTime={moment()}
                             />
                             :
                             <Field
@@ -148,9 +152,9 @@ export function useFormBuilder(
                                             value={menuItem.value}>{menuItem.label}</MenuItem>
                                     )
                                 })}
-                                {item?.fields?.map((item, index: number) => {
+                                {item?.fields?.map((item) => {
                                     return (
-                                        <FormControlLabel key={index} value={item?.label} control={<Radio />} label={item.label} />
+                                        <FormControlLabel key={item.label} name={item.name} value={item.value} control={<Radio />} label={item.label} />
                                     )
                                 })}
                             </Field>
