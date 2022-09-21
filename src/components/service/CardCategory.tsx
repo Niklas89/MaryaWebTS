@@ -6,6 +6,7 @@ import axios from "../../api/axios";
 import { ICategory } from "../../interfaces/ICategory";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
+
 const GETCATEGORY_URL = "/service/category";
 
 const CardCategory = () => {
