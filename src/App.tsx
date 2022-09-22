@@ -18,7 +18,7 @@ import ChangePassword from './pages/ChangePassword';
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import 'moment/locale/fr'
-import FormBooking from './pages/FormBooking';
+import BookingService from './pages/BookingService';
 const locale = 'fr-FR';
 
 const ROLES = {
@@ -47,7 +47,7 @@ function App() {
               <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
                 <Route path="profile" element={<Profile />} />
                 <Route path="booking" element={<Booking />} />
-                <Route path="formBooking/:id" element={<FormBooking />} />
+                <Route path="formBooking/:id" element={<BookingService />} />
                 <Route path="profile/changepassword" element={<ChangePassword />} />
               </Route>
 

@@ -98,7 +98,7 @@ const FormService = () => {
                 const postData = { accepted: 0, totalPrice: priceTotal, idClient: 2, nbHours: values.nbHours, idService: idServiceNum, appointmentDate: date }
                 postQuery(LOGIN_URL, postData).then((response: AxiosResponse) => {
                     setBooking(response.data);
-                    const urlBooking = "/booking/" + response.data.booking;
+                    const urlBooking = "/formBooking/" + response.data.booking;
                     navigate(urlBooking, { replace: true });
                 }).catch((error: AxiosError) => {
                     toast.error("Une erreur c'est produite.", {
