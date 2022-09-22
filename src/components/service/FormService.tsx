@@ -14,7 +14,7 @@ import useAuth from "../../hooks/useAuth";
 import { IBookings } from "../../interfaces/IBooking";
 
 
-const LOGIN_URL = "booking";
+const LOGIN_URL = "booking/add";
 const from = "/login";
 
 let formFields: FormFieldType[] = [];
@@ -75,7 +75,7 @@ const FormService = () => {
             const idServiceNum = Number(values.idService);
             const price = services?.find((item: IService) => item.id === idServiceNum)?.price;
             if (!values.nbHours) {
-                const postData = { accepted: 0, totalPrice: price, idClient: 2, idService: idServiceNum, appointmentDate: date }
+                const postData = { accepted: 0, totalPrice: price, idService: idServiceNum, appointmentDate: date }
                 postQuery(LOGIN_URL, postData).then((response: AxiosResponse) => {
                     setBooking(response.data);
                     const urlBooking = "/formBooking/" + response.data.booking;

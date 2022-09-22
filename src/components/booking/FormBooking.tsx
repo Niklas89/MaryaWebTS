@@ -1,57 +1,99 @@
-import { Card, CardContent, Typography } from '@mui/material';
-import { AxiosResponse } from 'axios';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { AxiosFunction } from '../../api/AxiosFunction';
-import { IBooking } from '../../interfaces/IBooking';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import ScheduleIcon from '@mui/icons-material/Schedule';
-import EuroIcon from '@mui/icons-material/Euro';
-import RoomServiceIcon from '@mui/icons-material/RoomService';
-import moment from 'moment';
+import { useState, useCallback, useEffect, useRef } from "react";
+import { IUser } from "../../interfaces/IUser";
+import * as Yup from "yup";
+
+import { FormikValues } from "formik";
+import { toast } from "react-toastify";
+import { Button, Grid, TextField, Typography } from "@mui/material";
+import { AxiosFunction } from "../../api/AxiosFunction";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
+import { AxiosError, AxiosResponse } from "axios";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useAuth from "../../hooks/useAuth";
+import useLogout from "../../hooks/useLogout";
+import { FormFieldType, useFormBuilder } from "../form/FormModel";
+import { IBooking } from "../../interfaces/IBooking";
+
+const userFormFields: FormFieldType[] = [
+    { name: "address", field: TextField, label: "Adresse", isMultiLine: false },
+    { name: "city", field: TextField, label: "Ville", isMultiLine: false },
+    { name: "postalCode", field: TextField, label: "Code Postal", isMultiLine: false },
+    { name: "phone", field: TextField, label: "Téléphone", isMultiLine: false },
+    { name: "description", field: TextField, label: "description", isMultiLine: true, labelButton: "Valider" },
+]
 
 const FormBooking = () => {
-    const { id } = useParams();
-    const { getQuery } = AxiosFunction();
-    const [booking, setBooking] = useState<IBooking>()
 
-    const getBookingInfos = useCallback(() => {
-        getQuery(`booking/${id}`)
-            .then((res: AxiosResponse) => {
-                setBooking({
-                    nbHours: res.data.nbHours,
-                    totalPrice: res.data.totalPrice,
-                    appointmentDate: res.data.appointmentDate,
-                })
-            })
-    }, [getQuery])
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        getBookingInfos();
-    }, [booking, getBookingInfos])
+    const initialValues = {
+        address: "",
+        city: "",
+        postalCode: "",
+        phone: "",
+        description: "",
+    };
 
-    const hour = moment(booking?.appointmentDate).format('LT')
-    const date = moment(booking?.appointmentDate).format('Do MMMM YYYY')
+    const urlBooking = "/booking";
+
+    const [userProfile, setUserProfile] = useState<IUser>(initialValues);
+    //const [booking, setBooking] = useState<IBooking>()
+
+    const { patchQuery } = AxiosFunction();
+
+    const validationShema = Yup.object().shape({
+        address: Yup.string().required("Merci de remplir le champ adresse"),
+        city: Yup.string().matches(/^[A-Za-z]+$/, "La ville doit contenir que des lettres.").required("Merci de remplir le champ ville"),
+        postalCode: Yup.number().required("Merci de remplir le champ code postal"),
+        phone: Yup.number().required("Merci de remplir le champ téléphone"),
+        description: Yup.string()
+    });
+
+    const handleSubmit = useCallback((values: FormikValues, callback: any) => {
+
+        const dataClient = { address: values.address, city: values.city, postalCode: values.postalCode, phone: values.phone };
+
+        patchQuery("client/edit/", dataClient).then((response: AxiosResponse) => {
+            setUserProfile({
+                address: response.data.client.address,
+                city: response.data.client.city,
+                postalCode: response.data.client.postalCode,
+                phone: response.data.client.phone
+            });
+            navigate(urlBooking, { replace: true });
+        }).catch((error: AxiosError) => {
+            toast.error("Une erreur est survenue lors de la modification du profil.", {
+                position: "bottom-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                toastId: "submit-error"
+            });
+            return callback();
+        })
+
+    }, [patchQuery]);
+
+    const { renderForm } = useFormBuilder(validationShema, userProfile, userFormFields,
+        { submit: handleSubmit }
+    );
 
     return (
-        <div>
-            <Card sx={{ minWidth: 275 }}>
-                <CardContent>
-                    <Typography sx={{ mb: 1.5 }}>
-                        <RoomServiceIcon /> : Prestation
-                    </Typography>
-                    <Typography sx={{ mb: 1.5 }}>
-                        <CalendarMonthIcon /> : {date}
-                    </Typography>
-                    <Typography sx={{ mb: 1.5 }}>
-                        <ScheduleIcon /> : {hour}
-                    </Typography>
-                    <Typography sx={{ mb: 1.5 }}>
-                        <EuroIcon /> : {booking?.totalPrice}
-                    </Typography>
-                </CardContent>
-            </Card>
-        </div>
+        <>
+            {renderForm}
+            <Grid container mb={2} direction="row" justifyContent="center">
+                <Grid item xs={0} mt={2}>
+                    <Button
+                        variant="contained"
+                        size="medium">
+                        Annuler la prestation
+                    </Button>
+                </Grid>
+            </Grid>
+        </>
     );
 };
 
