@@ -25,7 +25,7 @@ const userFormFields: FormFieldType[] = [
 const FormRegister = () => {
     const { setAuth } = useAuth();
     const navigate = useNavigate();
-    const location: any = useLocation();
+    //const location: any = useLocation();
     //const from = location.state?.from?.pathname || "/";
     const from = "/login"
 
