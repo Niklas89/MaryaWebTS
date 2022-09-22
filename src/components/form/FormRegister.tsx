@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { IUser } from "../../interfaces/IUser";
 import * as Yup from "yup";
 import { FormFieldType, useFormBuilder } from "./FormModel";
@@ -6,9 +6,9 @@ import { FormikValues } from "formik";
 import { toast } from "react-toastify";
 import { Grid, TextField, Typography } from "@mui/material";
 import { AxiosFunction } from "../../api/AxiosFunction";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AxiosError, AxiosResponse } from "axios";
-import { min } from "moment";
+import useAuth from "../../hooks/useAuth";
 
 
 const userFormFields: FormFieldType[] = [
@@ -23,9 +23,11 @@ const userFormFields: FormFieldType[] = [
 ];
 
 const FormRegister = () => {
-
+    const { setAuth } = useAuth();
     const navigate = useNavigate();
-    const from = "/home";
+    const location: any = useLocation();
+    //const from = location.state?.from?.pathname || "/";
+    const from = "/login"
 
     const initialValues = {
         lastName: "",
@@ -54,9 +56,11 @@ const FormRegister = () => {
         const postData = { ...values, "idRole": "1" };
 
         postQuery("auth/client/register", postData).then((response: AxiosResponse) => {
+            const accessToken = response.data.accessToken;
+            const role = response.data.idRole;
+            setAuth?.({ role, accessToken });
             setUserInfos(response?.data);
-
-            //navigate(from, { replace: true });
+            navigate(from, { replace: true });
         }).catch((error: AxiosError) => {
             toast.error("Ce compte existe déjà, merci de vous connecter.", {
                 position: "bottom-right",
@@ -70,7 +74,7 @@ const FormRegister = () => {
             });
             return callback();
         }).finally(callback)
-    }, [postQuery]);
+    }, [postQuery, from, navigate, setAuth]);
 
     const { renderForm } = useFormBuilder(validationShema, userInfo, userFormFields,
         { submit: handleSubmit }
