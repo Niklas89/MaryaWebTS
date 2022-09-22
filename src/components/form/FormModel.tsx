@@ -130,7 +130,7 @@ export function useFormBuilder(
                                 key={item.name + "_field"}
                                 {...(item.label ? { label: item.label } : {})}
                                 name={item.name}
-                                {...(item.type === "password" ? { component: item.field, type: item.type } : item.type ? { type: item.type } : { component: item.field })}
+                                {...(item.type === "password" ? { component: item.field, type: item.type } : item.type === "hidden" ? { component: item.field, type: item.type } : item.type ? { type: item.type } : { component: item.field })}
                                 {...(item.isMultiLine ? { multiline: true, rows: 4 } : {})}
                                 {...((item.field === Select) ? {
                                     onChange: (value: any) => {

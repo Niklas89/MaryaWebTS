@@ -108,6 +108,15 @@ const FormLogin = () => {
                         }} />}
                     label="Se souvenir de moi!" />
             </Grid>
+            <Grid item textAlign="center" xs={0} mt={1}>
+                <Button
+                        variant="outlined"
+                        component={Link}
+                        to="/resetpassword"
+                        size="small">
+                    Mot de passe oublié?
+                </Button>
+            </Grid>
             <Grid container direction="row" justifyContent="center">
                 <Grid item xs={0} mt={5} pb={13}>
                     <Typography>Besoin d'un compte ?</Typography>

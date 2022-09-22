@@ -1,25 +1,26 @@
 
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
-import Layout from './pages/Layout';
+import Layout from "./pages/Layout";
 import Register from "./pages/Register";
 import Admin from "./pages/Admin";
 import Home from "./pages/Home";
-import Footer from './components/parts/Footer';
-import Navigation from './components/parts/Navigation';
-import RequireAuth from './components/RequireAuth';
-import PersistLogin from './components/form/PersistLogin';
+import Footer from "./components/parts/Footer";
+import Navigation from "./components/parts/Navigation";
+import RequireAuth from "./components/RequireAuth";
+import PersistLogin from "./components/form/PersistLogin";
 import "./styles/App.css";
-import CardService from './components/service/CardService';
-import Booking from './pages/Booking';
-import Service from './pages/Service';
-import ChangePassword from './pages/ChangePassword';
+import Booking from "./pages/Booking";
+import Service from "./pages/Service";
+import ChangePassword from "./pages/ChangePassword";
 import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import 'moment/locale/fr'
-import BookingService from './pages/BookingService';
-const locale = 'fr-FR';
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import "moment/locale/fr"
+import BookingService from "./pages/BookingService";
+import ResetPassword from "./pages/ResetPassword";
+import ResetPasswordSaveNew from "./pages/ResetPasswordSaveNew";
+const locale = "fr-FR";
 
 const ROLES = {
   "Client": 1,
@@ -37,6 +38,8 @@ function App() {
             {/* public routes */}
             <Route path="register" element={<Register />} />
             <Route path="login" element={<Login />} />
+            <Route path="resetpassword" element={<ResetPassword />} />
+            <Route path="resetpassword/new/:token" element={<ResetPasswordSaveNew />} />
             <Route path="/service/:id" element={<Service />} />
             <Route path="/" element={<Home />} />
             <Route path="/*" element={<Home />} />
