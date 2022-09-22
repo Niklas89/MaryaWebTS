@@ -13,38 +13,22 @@ import { Link } from "react-router-dom";
 import "../../styles/Navigation.css";
 import useAuth from "../../hooks/useAuth";
 import useLogout from "../../hooks/useLogout";
-
+import { AccountCircle } from "@mui/icons-material";
 
 const Navigation = () => {
     const { auth } = useAuth();
     const logout = useLogout();
-
-    let pages;
-
-    if (auth?.role) {
-        pages = [
-            { name: "Coiffure", path: "service/1" },
-            { name: "Bricolage", path: "service/2" },
-            { name: "Jardinage", path: "service/3" },
-            { name: "Ménage", path: "service/4" },
-            { name: "Beauté", path: "service/5" },
-            { name: "Babysitting", path: "service/6" },
-            { name: "Mes reservations", path: "booking" },
-            { name: "Mon profil", path: "profile" },
-        ]
-    }
-    else {
-        pages = [
-            { name: "Coiffure", path: "service/1" },
-            { name: "Bricolage", path: "service/2" },
-            { name: "Jardinage", path: "service/3" },
-            { name: "Ménage", path: "service/4" },
-            { name: "Beauté", path: "service/5" },
-            { name: "Babysitting", path: "service/6" },
-        ]
-    }
-
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+    const [anchorElProfil, setAnchorElProfil] = React.useState<null | HTMLElement>(null);
+
+    const pages = [
+        { name: "Coiffure", path: "service/1" },
+        { name: "Bricolage", path: "service/2" },
+        { name: "Jardinage", path: "service/3" },
+        { name: "Ménage", path: "service/4" },
+        { name: "Beauté", path: "service/5" },
+        { name: "Babysitting", path: "service/6" },
+    ];
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -54,6 +38,14 @@ const Navigation = () => {
         setAnchorElNav(null);
     };
 
+    const handleOpenMenuProfil = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorElProfil(event.currentTarget);
+    };
+
+    const handleCloseMenuProfil = () => {
+        setAnchorElProfil(null);
+    };
+
     return (
         <AppBar position="static" sx={{ backgroundColor: "#035A5A" }}>
             <Container maxWidth={false}>
@@ -61,8 +53,8 @@ const Navigation = () => {
                     <img src="./assets/logo/marya.png" height="50" alt="" />
                     <Typography
                         variant="h6"
-                        component="a"
-                        href="/"
+                        component={Link}
+                        to="/"
                         sx={{
                             mr: 2,
                             ml: 2,
@@ -146,9 +138,38 @@ const Navigation = () => {
                     </Box>
                     <Box sx={{ flexGrow: 0 }}>
                         {auth?.role ? (
-                            <Button onClick={logout} sx={{ my: 2, color: "white", display: "block" }}>
-                                Se déconnecter
-                            </Button>
+                            <>
+                                <IconButton
+                                    size="large"
+                                    aria-label="account of current user"
+                                    aria-controls="menu-appbar"
+                                    aria-haspopup="true"
+                                    onClick={handleOpenMenuProfil}
+                                    color="inherit"
+                                >
+                                    <AccountCircle />
+                                </IconButton>
+                                <Menu
+                                    id="menu-appbar"
+                                    anchorEl={anchorElProfil}
+                                    anchorOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    keepMounted
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    open={Boolean(anchorElProfil)}
+                                    onClose={handleCloseMenuProfil}
+                                >
+                                    <MenuItem component={Link} to={"/profile"}>Profil</MenuItem>
+                                    <MenuItem component={Link} to={"/booking"}>Mes réservations</MenuItem>
+                                    <MenuItem onClick={logout}>Se déconnecter</MenuItem>
+                                </Menu>
+
+                            </>
                         ) : (
                             <Button component={Link} to="login" sx={{ my: 2, color: "white", display: "block" }}>
                                 Se connecter
