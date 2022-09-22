@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { Button, Checkbox, FormControlLabel, Grid, TextField, Typography } from "@mui/material";
 import { FormFieldType, useFormBuilder } from "./FormModel";
 import { useCallback, useEffect, useState } from "react";
@@ -50,7 +50,7 @@ const FormLogin = () => {
             setAuth?.({ role, accessToken });
             navigate(from, { replace: true });
         }).catch((error: AxiosError) => {
-            toast.error("Une erreur c'est produite, vérifier vos identifiants.", {
+            toast.error("Une erreur s'est produite, vérifier vos identifiants.", {
                 position: "bottom-right",
                 autoClose: 3000,
                 hideProgressBar: true,
