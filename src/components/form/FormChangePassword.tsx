@@ -22,6 +22,7 @@ const userFormFields: FormFieldType[] = [
 const FormChangePassword = () => {
     const { auth } = useAuth();
     const navigate = useNavigate();
+    const logout = useLogout();
     const location: any = useLocation();
     const goBack = () => navigate(-1);
     const axiosPrivate = useAxiosPrivate();
@@ -50,7 +51,7 @@ const FormChangePassword = () => {
                 lastPassword: response.data.lastPassword,
                 newPassword: response.data.newPassword
             });
-            navigate(from, { replace: true });
+            logout();
         }).catch((error: AxiosError) => {
             toast.error("Une erreur est survenue lors de la modification.", {
                 position: "bottom-right",
