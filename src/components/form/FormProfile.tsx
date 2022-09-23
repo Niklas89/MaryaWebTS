@@ -15,7 +15,7 @@ import useLogout from "../../hooks/useLogout";
 
 const userFormFields: FormFieldType[] = [
     { name: "lastName", field: TextField, label: "Nom", isMultiLine: false },
-    { name: "firstName", field: TextField, label: "Prenom", isMultiLine: false },
+    { name: "firstName", field: TextField, label: "Prénom", isMultiLine: false },
     { name: "email", field: TextField, label: "E-mail", isMultiLine: false },
     { name: "address", field: TextField, label: "Adresse", isMultiLine: false },
     { name: "city", field: TextField, label: "Ville", isMultiLine: false },
@@ -41,7 +41,6 @@ const FormProfile = () => {
         postalCode: "",
         phone: ""
     };
-
 
 
     const [userProfile, setUserProfile] = useState<IUser>(initialValues);
@@ -144,10 +143,19 @@ const FormProfile = () => {
                 <Grid item xs={0} mt={1}>
                     <Button
                         variant="contained"
-                        startIcon={<ArrowBackIcon />}
-                        onClick={goBack}
-                        size="small">
-                        Retour
+                        component={Link}
+                        to="changepassword"
+                        sx={{
+                            backgroundColor: "#0FC2C0",
+                            color: "white",
+                            fontWeight: "bold",
+                            "&:hover": {
+                                backgroundColor: "#0FC2C0",
+                                color: "white",
+                            }
+                        }}
+                    >
+                        Changer mot de passe
                     </Button>
                 </Grid>
             </Grid>

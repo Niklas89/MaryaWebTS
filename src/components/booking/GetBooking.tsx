@@ -62,7 +62,7 @@ const GetBooking = (props: IGetBooking) => {
     }, [presentModal, pastModal, futureModal])
 
     return (
-        <Grid container columnSpacing={2} rowSpacing={3} mb={3} mt={2} justifyContent="center">
+        <Grid container columnSpacing={2} rowSpacing={3} mb={3} mt={2} maxWidth="0.9" justifyContent="center" mx="auto">
             <Grid item xs={12} textAlign="center">
                 <Typography sx={{
                     color: "#0CABA8",

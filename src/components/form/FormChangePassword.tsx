@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef  } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { IChangePassword } from "../../interfaces/IChangePassword";
 import * as Yup from "yup";
 import { FormFieldType, useFormBuilder } from "./FormModel";
@@ -7,11 +7,8 @@ import { toast } from "react-toastify";
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import { AxiosFunction } from "../../api/AxiosFunction";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { AxiosError, AxiosResponse } from "axios";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import useAuth from "../../hooks/useAuth";
 import useLogout from "../../hooks/useLogout";
 
 const userFormFields: FormFieldType[] = [
@@ -20,12 +17,10 @@ const userFormFields: FormFieldType[] = [
 ];
 
 const FormChangePassword = () => {
-    const { auth } = useAuth();
     const navigate = useNavigate();
     const logout = useLogout();
     const location: any = useLocation();
     const goBack = () => navigate(-1);
-    const axiosPrivate = useAxiosPrivate();
     const from = location.state?.from?.pathname || "/profile";
 
     const initialValues = {
@@ -93,17 +88,6 @@ const FormChangePassword = () => {
                 </Grid>
             </Grid>
             {renderForm}
-            <Grid container mb={5} ml={5} direction="row" justifyContent="left">
-                <Grid item xs={0} mt={1}>
-                    <Button
-                                variant="contained"
-                                startIcon={<ArrowBackIcon />}
-                                onClick={goBack}
-                                size="small">
-                        Retour
-                    </Button>
-                </Grid>
-            </Grid>
         </>
     );
 };
