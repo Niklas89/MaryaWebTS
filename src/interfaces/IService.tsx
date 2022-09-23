@@ -5,6 +5,7 @@ export interface IService {
     id?: number,
     name: string,
     price?: number,
+    priceId?: string,
     createdAt?: string,
     updatedAt?: string,
     idCategory?: number,
