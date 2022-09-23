@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, List, ListItem, ListItemIcon, ListItemText, Typography } from "@mui/material";
+import { Button, Card, CardContent, CardHeader, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from "@mui/material";
 import { IBooking } from "../../interfaces/IBooking";
 import { dateParser } from "../Utils";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -7,12 +7,18 @@ import EuroIcon from "@mui/icons-material/Euro";
 import LayersIcon from "@mui/icons-material/Layers";
 import { useEffect, useState } from "react";
 import axios from "../../api/axios";
-import { BorderAllRounded } from "@mui/icons-material";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import moment from "moment";
 
 const BookingCard = ({ data }: IBooking) => {
     const [serviceName, setServiceName] = useState<string>();
+    const [idBooking, setIdBooking] = useState<number>();
+    const [dateResult, setDateResult] = useState<boolean>();
+    const axiosPrivate = useAxiosPrivate();
+    let timestampAppointment: number;
 
     useEffect(() => {
+        setIdBooking(data?.id);
         if (!data?.message) {
             const idService = data?.idService?.toString();
             axios({
@@ -21,10 +27,19 @@ const BookingCard = ({ data }: IBooking) => {
             })
                 .then(res => {
                     setServiceName(res.data.name);
-
                 })
         }
-    })
+
+        if (data?.appointmentDate) {
+            timestampAppointment = new Date(dateParser(data?.appointmentDate)).getTime();
+            setDateResult(timestampAppointment > Date.now());
+        }
+    });
+
+    const deleteBooking = (id: number | undefined) => {
+        axiosPrivate.patch(`/booking/cancel/${id}`)
+            .then(res => window.location.reload())
+    }
 
     return (
         <>
@@ -33,7 +48,7 @@ const BookingCard = ({ data }: IBooking) => {
                     <Typography variant="body1" textAlign="center" sx={{
                         color: "#023535",
                         backgroundColor: "#DBF227",
-                        borderRadius :"5px",
+                        borderRadius: "5px",
                         fontWeight: "bold"
                     }}>
                         {data?.message}
@@ -41,7 +56,8 @@ const BookingCard = ({ data }: IBooking) => {
                 ) : (
                     <Card sx={{
                         backgroundColor: "#0FC2C0",
-                        color: "white"
+                        color: "white",
+                        minHeight: "365px"
                     }} >
                         <CardHeader title="Réservation" />
                         <CardContent>
@@ -58,12 +74,14 @@ const BookingCard = ({ data }: IBooking) => {
                                     </ListItemIcon>
                                     <ListItemText primary={`${serviceName}`} />
                                 </ListItem>
-                                <ListItem>
-                                    <ListItemIcon>
-                                        <AccessTimeIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary={`${data?.nbHours} heures`} />
-                                </ListItem>
+                                {data?.nbHours && (
+                                    <ListItem>
+                                        <ListItemIcon>
+                                            <AccessTimeIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary={`${data?.nbHours} heures`} />
+                                    </ListItem>
+                                )}
                                 <ListItem>
                                     <ListItemIcon>
                                         <EuroIcon />
@@ -73,12 +91,30 @@ const BookingCard = ({ data }: IBooking) => {
                                 <ListItem>
                                     <ListItemText primary={`${data?.description}`} />
                                 </ListItem>
+                                {!data?.accepted && dateResult && (
+                                    <ListItem>
+                                        <ListItemButton component="button" onClick={() => {
+                                            deleteBooking(data?.id)
+                                        }}
+                                            sx={{
+                                                backgroundColor: "#1B4F4F",
+                                                textAlign: "center",
+                                                borderRadius: "5px",
+                                                "&:hover": {
+                                                    backgroundColor: "#023535",
+                                                }
+
+                                            }}>
+                                            <ListItemText
+                                                primary="Supprimer la prestation" />
+                                        </ListItemButton>
+                                    </ListItem>
+                                )}
                             </List>
                         </CardContent>
                     </Card >
                 )
             }
-
         </>
     );
 };
