@@ -73,7 +73,7 @@ export function useFormBuilder(
                 >{item.title}</Typography></Grid> : null)
 
         const submit = (item?.labelButton ?
-            <Grid container p={4} direction="row" justifyContent="space-evenly" alignItems="center">
+            <Grid container p={2} direction="row" justifyContent="space-evenly" alignItems="center">
                 <LoginButton
                     name={"submit"}
                     id={"submit"}
@@ -93,7 +93,7 @@ export function useFormBuilder(
 
                 <Grid
                     key={item.name}
-                    p={3}
+                    p={2}
                     item
                     {...(item.field === TextField && item?.isMultiLine ? {
                         lg: 10,
@@ -163,9 +163,6 @@ export function useFormBuilder(
                 </Grid>
                 {submit}
             </React.Fragment>
-
-
-
         )
     }
 
@@ -174,8 +171,7 @@ export function useFormBuilder(
             <FormikProvider key={"formik"} value={formik}>
                 <ToastContainer />
                 <form onSubmit={formik.handleSubmit} key={"formik_form"} onChange={formik.handleChange} >
-
-                    <Grid container p={4} direction="row" justifyContent="space-evenly" alignItems="center">
+                    <Grid container p={1} direction="row" justifyContent="space-evenly" alignItems="center">
                         {formFields.map((item) => {
                             return renderField(item)
                         })}

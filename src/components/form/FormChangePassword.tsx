@@ -88,17 +88,6 @@ const FormChangePassword = () => {
                 </Grid>
             </Grid>
             {renderForm}
-            <Grid container mb={5} ml={5} direction="row" justifyContent="left">
-                <Grid item xs={0} mt={1}>
-                    <Button
-                                variant="contained"
-                                startIcon={<ArrowBackIcon />}
-                                onClick={goBack}
-                                size="small">
-                        Retour
-                    </Button>
-                </Grid>
-            </Grid>
         </>
     );
 };
