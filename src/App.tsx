@@ -20,7 +20,6 @@ import "moment/locale/fr"
 import BookingService from "./pages/BookingService";
 import ResetPassword from "./pages/ResetPassword";
 import ResetPasswordSaveNew from "./pages/ResetPasswordSaveNew";
-import Checkout from "./pages/Checkout";
 const locale = "fr-FR";
 
 const ROLES = {
@@ -42,7 +41,6 @@ function App() {
             <Route path="resetpassword" element={<ResetPassword />} />
             <Route path="resetpassword/new/:token" element={<ResetPasswordSaveNew />} />
             <Route path="/service/:id" element={<Service />} />
-            <Route path="/checkout" element={<Checkout />} />
             <Route path="/" element={<Home />} />
             <Route path="/*" element={<Home />} />
 
