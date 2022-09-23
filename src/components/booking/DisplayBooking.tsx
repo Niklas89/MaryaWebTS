@@ -117,8 +117,8 @@ const DisplayBooking = () => {
         }
     }
 
-    const hour = moment(booking?.appointmentDate).format('LT')
-    const date = moment(booking?.appointmentDate).format('Do MMMM YYYY')
+    const hour = moment(booking?.appointmentDate).format('LT');
+    const date = moment(booking?.appointmentDate).format('Do MMMM YYYY');
 
     return message ? (
         <div>
