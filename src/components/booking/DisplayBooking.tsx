@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography } from '@mui/material';
+import { Card, CardContent, Grid, Typography } from '@mui/material';
 import { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -85,8 +85,8 @@ const DisplayBooking = () => {
         }
     }
 
-    const hour = moment(booking?.appointmentDate).format('LT')
-    const date = moment(booking?.appointmentDate).format('Do MMMM YYYY')
+    const hour = moment(booking?.appointmentDate).format('LT');
+    const date = moment(booking?.appointmentDate).format('Do MMMM YYYY');
 
     return (
         <div>
