@@ -42,8 +42,6 @@ const FormProfile = () => {
         phone: ""
     };
 
-    console.log(auth);
-
 
     const [userProfile, setUserProfile] = useState<IUser>(initialValues);
 
@@ -131,6 +129,18 @@ const FormProfile = () => {
             {renderForm}
             <Grid container mb={2} direction="row" justifyContent="center">
                 <Grid item xs={0} mt={2}>
+                    <Button
+                        variant="contained"
+                        component={Link}
+                        to="changepassword"
+                        size="medium">
+
+                        Changer mot de passe
+                    </Button>
+                </Grid>
+            </Grid>
+            <Grid container mb={5} ml={5} direction="row" justifyContent="left">
+                <Grid item xs={0} mt={1}>
                     <Button
                         variant="contained"
                         component={Link}

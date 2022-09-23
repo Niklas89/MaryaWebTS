@@ -9,12 +9,12 @@ import { FormFieldType, useFormBuilder } from "../form/FormModel";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { FormikValues } from "formik";
 import { toast } from "react-toastify";
-import { Select } from "@mui/material";
+import { Select, TextField } from "@mui/material";
 import useAuth from "../../hooks/useAuth";
 import { IBookings } from "../../interfaces/IBooking";
 
 
-const LOGIN_URL = "booking";
+const LOGIN_URL = "booking/add";
 const from = "/login";
 
 let formFields: FormFieldType[] = [];
@@ -42,12 +42,14 @@ const FormService = () => {
                     formFields = [
                         { name: "idService", field: RadioGroup, title: "Services à l'heure:", fields: res.data?.map((item: IService) => { return { value: item.id, name: "idService", label: item.name + ' ' + item.price + ' €' } }) },
                         { name: "appointmentDate", field: DateTimePicker, title: "Pour le:", label: "Date et heure:", isMultiLine: true },
-                        { name: "nbHours", field: Select, label: "Nombre d'heure", menuItems: [{ value: "1", label: "1 Heure" }, { value: "2", label: "2 Heures" }, { value: "3", label: "3 Heures" }, { value: "4", label: "4 Heures" }, { value: "5", label: "5 Heures" }], labelButton: "Réserver" },
+                        { name: "nbHours", field: Select, label: "Nombre d'heure", menuItems: [{ value: "1", label: "1 Heure" }, { value: "2", label: "2 Heures" }, { value: "3", label: "3 Heures" }, { value: "4", label: "4 Heures" }, { value: "5", label: "5 Heures" }] },
+                        { name: "description", field: TextField, label: "Déscription", isMultiLine: true, labelButton: "Réserver" },
                     ];
                 } else {
                     formFields = [
                         { name: "idService", field: RadioGroup, title: "Services à la prestation:", fields: res.data?.map((item: IService) => { return { value: item.id, name: "idService", label: item.name + ' ' + item.price + ' €' } }) },
-                        { name: "appointmentDate", field: DateTimePicker, title: "Pour le:", label: "Date et heure:", isMultiLine: true, labelButton: "Réserver" }
+                        { name: "appointmentDate", field: DateTimePicker, title: "Pour le:", label: "Date et heure:", isMultiLine: true },
+                        { name: "description", field: TextField, label: "Déscription", isMultiLine: true, labelButton: "Réserver" },
                     ];
                 }
             }).catch((error: AxiosError) => {
@@ -75,9 +77,10 @@ const FormService = () => {
             const idServiceNum = Number(values.idService);
             const price = services?.find((item: IService) => item.id === idServiceNum)?.price;
             if (!values.nbHours) {
-                const postData = { accepted: 0, totalPrice: price, idClient: 2, idService: idServiceNum, appointmentDate: date }
+                const postData = { accepted: 0, totalPrice: price, idService: idServiceNum, appointmentDate: date, description: values.description }
                 postQuery(LOGIN_URL, postData).then((response: AxiosResponse) => {
                     setBooking(response.data);
+                    console.log(setBooking(response.data))
                     const urlBooking = "/formBooking/" + response.data.booking;
                     navigate(urlBooking, { replace: true });
                 }).catch((error: AxiosError) => {
@@ -95,7 +98,7 @@ const FormService = () => {
             } else {
                 const hours = values.nbHours;
                 const priceTotal = Number(hours) * Number(price)
-                const postData = { accepted: 0, totalPrice: priceTotal, idClient: 2, nbHours: values.nbHours, idService: idServiceNum, appointmentDate: date }
+                const postData = { accepted: 0, totalPrice: priceTotal, idClient: 2, nbHours: values.nbHours, idService: idServiceNum, appointmentDate: date, description: values.description }
                 postQuery(LOGIN_URL, postData).then((response: AxiosResponse) => {
                     setBooking(response.data);
                     const urlBooking = "/formBooking/" + response.data.booking;

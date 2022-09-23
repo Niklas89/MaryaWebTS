@@ -11,7 +11,7 @@ const GetBooking = (props: IGetBooking) => {
     const [futureModal, setFutureModal] = useState<boolean>(props.future ? props.future : false);
     const [pastModal, setPastModal] = useState<boolean>(props.past ? props.past : false);
     const [presentModal, setPresentModal] = useState<boolean>(props.present ? props.present : false);
-    
+
     const axiosPrivate = useAxiosPrivate();
 
     const handleModals = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -37,7 +37,7 @@ const GetBooking = (props: IGetBooking) => {
                     if (res.data !== null) {
                         setBookings(res.data.client.bookings);
                     } else {
-                        setBookings([{message: "Pas de prestation"}])
+                        setBookings([{ message: "Pas de prestation" }])
                     }
                 })
         } else if (pastModal) {
@@ -46,7 +46,7 @@ const GetBooking = (props: IGetBooking) => {
                     if (res.data !== null) {
                         setBookings(res.data.client.bookings);
                     } else {
-                        setBookings([{message: "Pas de prestation"}])
+                        setBookings([{ message: "Pas de prestation" }])
                     }
                 })
         } else if (presentModal) {
@@ -55,7 +55,7 @@ const GetBooking = (props: IGetBooking) => {
                     if (res.data !== null) {
                         setBookings(res.data.client.bookings);
                     } else {
-                        setBookings([{message: "Pas de prestation"}])
+                        setBookings([{ message: "Pas de prestation" }])
                     }
                 })
         }

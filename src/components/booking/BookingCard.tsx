@@ -33,7 +33,7 @@ const BookingCard = ({ data }: IBooking) => {
                     <Typography variant="body1" textAlign="center" sx={{
                         color: "#023535",
                         backgroundColor: "#DBF227",
-                        borderRadius :"5px",
+                        borderRadius: "5px",
                         fontWeight: "bold"
                     }}>
                         {data?.message}

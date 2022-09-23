@@ -2,20 +2,24 @@ import { ReactNode } from "react"
 import moment from "moment";
 
 export interface IBooking {
+    id?: number,
     accepted?: boolean,
     appointmentDate?: string,
     description?: string,
     nbHours?: number,
     totalPrice?: number,
     idService?: number,
+    idClient?: number,
     data?: {
+        id?: number,
         accepted?: boolean,
         appointmentDate?: string,
         description?: string,
         nbHours?: number,
         totalPrice?: number,
         idService?: number,
-        message?: string
+        message?: string,
+        idClient?: number,
     },
 }
 
