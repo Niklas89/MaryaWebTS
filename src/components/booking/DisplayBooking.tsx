@@ -9,6 +9,10 @@ import ScheduleIcon from '@mui/icons-material/Schedule';
 import EuroIcon from '@mui/icons-material/Euro';
 import RoomServiceIcon from '@mui/icons-material/RoomService';
 import PersonIcon from '@mui/icons-material/Person';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import SmartphoneIcon from '@mui/icons-material/Smartphone';
+import TimelapseIcon from '@mui/icons-material/Timelapse';
+import ForumIcon from '@mui/icons-material/Forum';
 import moment from 'moment';
 import { IUser } from '../../interfaces/IUser';
 import { IService } from '../../interfaces/IService';
@@ -29,6 +33,7 @@ const DisplayBooking = () => {
                     totalPrice: res.data.totalPrice,
                     appointmentDate: res.data.appointmentDate,
                     idService: res.data.idService,
+                    description: res.data.description,
                 })
             })
     }, [])
@@ -58,16 +63,28 @@ const DisplayBooking = () => {
         }
     }, [booking])
 
-    //Avoir si on garde
-    const nbHoursTypo = (valueHours: number) => {
-        if (valueHours !== null) {
-            < Typography sx={{ mb: 1.5 }}>
-                <RoomServiceIcon /> : (booking?.nbHours)
-            </Typography >
+    const nbHoursTypo = () => {
+        if (booking?.nbHours === 1) {
+            return (
+                < Typography sx={{ mb: 1.5 }}>
+                    <TimelapseIcon /> : Pour {booking?.nbHours} Heure
+                </Typography >)
+        } else if (booking?.nbHours !== null) {
+            return (
+                < Typography sx={{ mb: 1.5 }}>
+                    <TimelapseIcon /> : Pour {booking?.nbHours} Heures
+                </Typography >)
+        }
+    }
+    const desciptionTypo = () => {
+        if (booking?.description !== null) {
+            return (
+                < Typography sx={{ mb: 1.5 }}>
+                    <ForumIcon /> : {booking?.description}
+                </Typography >)
         }
     }
 
-    //TODO a refaire
     const hour = moment(booking?.appointmentDate).format('LT')
     const date = moment(booking?.appointmentDate).format('Do MMMM YYYY')
 
@@ -79,6 +96,12 @@ const DisplayBooking = () => {
                         <PersonIcon /> : {userProfile?.lastName + " " + userProfile?.firstName}
                     </Typography>
                     <Typography sx={{ mb: 1.5 }}>
+                        <LocationOnIcon /> : {userProfile?.address + " " + userProfile?.postalCode + " " + userProfile?.city}
+                    </Typography>
+                    <Typography sx={{ mb: 1.5 }}>
+                        <SmartphoneIcon /> : {userProfile?.phone}
+                    </Typography>
+                    <Typography sx={{ mb: 1.5 }}>
                         <RoomServiceIcon /> : {service?.name}
                     </Typography>
                     <Typography sx={{ mb: 1.5 }}>
@@ -87,12 +110,11 @@ const DisplayBooking = () => {
                     <Typography sx={{ mb: 1.5 }}>
                         <ScheduleIcon /> : {hour}
                     </Typography>
+                    {nbHoursTypo()}
                     <Typography sx={{ mb: 1.5 }}>
-                        <EuroIcon /> : {booking?.totalPrice}
+                        <EuroIcon /> : {booking?.totalPrice} euros TTC
                     </Typography>
-                    <Typography sx={{ mb: 1.5 }}>
-                        <EuroIcon /> : nombre d'heure ?
-                    </Typography>
+                    {desciptionTypo()}
                 </CardContent>
             </Card>
         </div>

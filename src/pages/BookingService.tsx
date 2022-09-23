@@ -1,8 +1,6 @@
 import { Typography } from '@mui/material';
-import React from 'react';
 import DisplayBooking from '../components/booking/DisplayBooking';
-import FormBooking from '../components/booking/FormBooking';
-//<DisplayBooking />
+
 
 const BookingService = () => {
     return (
@@ -15,7 +13,6 @@ const BookingService = () => {
                 Ma réservation
             </Typography>
             <DisplayBooking />
-            <FormBooking />
         </div>
     );
 };
