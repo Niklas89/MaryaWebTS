@@ -21,7 +21,7 @@ import { toast } from "react-toastify";
 
 const DisplayBooking = () => {
     const { id } = useParams();
-    const { getQuery, postQuery } = AxiosFunction();
+    const { getQuery, postQuery, patchQuery } = AxiosFunction();
     const [booking, setBooking] = useState<IBooking>();
     const [userProfile, setUserProfile] = useState<IUser>();
     const [service, setService] = useState<IService>();
@@ -49,11 +49,26 @@ const DisplayBooking = () => {
     useEffect(() => {
     // Check to see if this is a redirect back from Checkout
     const query = new URLSearchParams(window.location.search);
-
-    if (query.get("success")) {
-        setMessage(
-            "Votre réservation a été payé avec succès. Le service a été envoyé à nos partenaires. Vous recevrez une confirmation par email dès qu'un partenaire aura accepté votre réservation."
-        );
+    
+        if (query.get("success")) {
+            const postData = { bookingId: id };
+            patchQuery(`booking/paid/${id}`, postData)
+                .then((res: AxiosResponse) => {
+                    setMessage(
+                        "Votre réservation a été payé avec succès. Le service a été envoyé à nos partenaires. Vous recevrez une confirmation par email dès qu'un partenaire aura accepté votre réservation."
+                    );
+                }).catch(() => {
+                    toast.error("Une erreur est survenue lors du changement de l'état de votre réservation à payé.", {
+                        position: "bottom-right",
+                        autoClose: 3000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        toastId: "submit-error"
+        
+                    });
+                });
         }
 
         getQuery(`booking/${id}`)

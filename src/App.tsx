@@ -50,7 +50,7 @@ function App() {
               <Route element={<RequireAuth allowedRoles={[ROLES.Client]} />}>
                 <Route path="profile" element={<Profile />} />
                 <Route path="booking" element={<Booking />} />
-                <Route path="formBooking/:id" element={<BookingService />} />
+                <Route path="booking/create/:id" element={<BookingService />} />
                 <Route path="profile/changepassword" element={<ChangePassword />} />
               </Route>
 
