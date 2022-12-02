@@ -9,3 +9,6 @@ services:
     container_name: web-reactjs
     ports:
       - "3000:3000"
+    volumes:
+      - ./:/home/node/front
+      - /home/node/front/node_modules
