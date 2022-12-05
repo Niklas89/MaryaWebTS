@@ -34,6 +34,10 @@ const FormRegister = () => {
         firstName: "",
         email: "",
         password: "",
+        phone: "",
+        address: "",
+        postalCode: "",
+        city: "",
     };
 
     const [userInfo, setUserInfos] = useState<IUser>(initialValues);
@@ -62,7 +66,8 @@ const FormRegister = () => {
             setUserInfos(response?.data);
             navigate(from, { replace: true });
         }).catch((error: AxiosError) => {
-            toast.error("Ce compte existe déjà, merci de vous connecter.", {
+            console.log(error);
+            toast.error(`${error.response?.data}`, {
                 position: "bottom-right",
                 autoClose: 3000,
                 hideProgressBar: true,
