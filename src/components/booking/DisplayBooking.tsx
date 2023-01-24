@@ -1,14 +1,11 @@
 import {
   Alert,
   Button,
-  Card,
-  CardContent,
   Grid,
-  TextField,
   Typography,
 } from "@mui/material";
 import { AxiosResponse } from "axios";
-import { useEffect, useCallback, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { AxiosFunction } from "../../api/AxiosFunction";
 import { IBooking } from "../../interfaces/IBooking";
@@ -44,8 +41,9 @@ const DisplayBooking = () => {
     postQuery("/checkout/create-stripe-session", postData)
       .then((response: AxiosResponse) => {
         window.location.href = response.data;
+        console.log(response.data);
       })
-      .catch(() => {
+      .catch((err) => {
         toast.error(
           "Une erreur est survenue lors de la redirection vers la page de paiement sécurisée.",
           {
@@ -62,7 +60,6 @@ const DisplayBooking = () => {
   };
 
   useEffect(() => {
-    // Check to see if this is a redirect back from Checkout
     const query = new URLSearchParams(window.location.search);
 
     if (query.get("success")) {
@@ -73,9 +70,9 @@ const DisplayBooking = () => {
             "Votre réservation a été payé avec succès. Le service a été envoyé à nos partenaires. Vous recevrez une confirmation par email dès qu'un partenaire aura accepté votre réservation."
           );
         })
-        .catch(() => {
+        .catch((err) => {
           toast.error(
-            "Une erreur est survenue lors du changement de l'état de votre réservation à payé.",
+            "Une erreur est survenue lors du paiement de votre réservation.",
             {
               position: "bottom-right",
               autoClose: 3000,
@@ -130,24 +127,39 @@ const DisplayBooking = () => {
   const nbHoursTypo = () => {
     if (booking?.nbHours === 1) {
       return (
-        <Typography sx={{ mb: 1.5 }}>
-          <TimelapseIcon /> : Pour {booking?.nbHours} Heure
-        </Typography>
+        <Grid container direction="row" alignItems="center" spacing={1}>
+          <Grid item>
+            <TimelapseIcon />
+          </Grid>
+          <Grid item>
+            <Typography>{booking?.nbHours} heure</Typography>
+          </Grid>
+        </Grid>
       );
     } else if (booking?.nbHours !== null) {
       return (
-        <Typography sx={{ mb: 1.5 }}>
-          <TimelapseIcon /> : Pour {booking?.nbHours} Heures
-        </Typography>
+        <Grid container direction="row" alignItems="center" spacing={1}>
+          <Grid item>
+            <TimelapseIcon />
+          </Grid>
+          <Grid item>
+            <Typography>{booking?.nbHours} heures</Typography>
+          </Grid>
+        </Grid>
       );
     }
   };
   const desciptionTypo = () => {
     if (booking?.description !== null) {
       return (
-        <Typography sx={{ mb: 1.5 }}>
-          <ForumIcon /> : {booking?.description}
-        </Typography>
+        <Grid container direction="row" alignItems="center" spacing={1}>
+          <Grid item>
+            <ForumIcon />
+          </Grid>
+          <Grid item>
+            <Typography>{booking?.description}</Typography>
+          </Grid>
+        </Grid>
       );
     }
   };
@@ -156,98 +168,271 @@ const DisplayBooking = () => {
   const date = moment(booking?.appointmentDate).format("Do MMMM YYYY");
 
   return message ? (
-    <div>
-      <Alert severity="success">{message}</Alert>
-      <Card sx={{ minWidth: 275 }}>
-        <CardContent>
-          <Typography sx={{ mb: 1.5 }}>
-            <PersonIcon /> :{" "}
-            {userProfile?.lastName + " " + userProfile?.firstName}
-          </Typography>
-          <Typography sx={{ mb: 1.5 }}>
-            <LocationOnIcon /> :{" "}
-            {userProfile?.address +
-              " " +
-              userProfile?.postalCode +
-              " " +
-              userProfile?.city}
-          </Typography>
-          <Typography sx={{ mb: 1.5 }}>
-            <SmartphoneIcon /> : {userProfile?.phone}
-          </Typography>
-          <Typography sx={{ mb: 1.5 }}>
-            <RoomServiceIcon /> : {service?.name}
-          </Typography>
-          <Typography sx={{ mb: 1.5 }}>
-            <CalendarMonthIcon /> : {date}
-          </Typography>
-          <Typography sx={{ mb: 1.5 }}>
-            <ScheduleIcon /> : {hour}
-          </Typography>
-          {nbHoursTypo()}
-          <Typography sx={{ mb: 1.5 }}>
-            <EuroIcon /> : {booking?.totalPrice} euros TTC
-          </Typography>
-          {desciptionTypo()}
-          <Grid container mb={5} ml={5} direction="row" justifyContent="left">
-            <Grid item xs={0} mt={1}>
-              <Button
-                variant="outlined"
-                color="success"
-                component={Link}
-                to="/booking"
-                size="medium"
-              >
-                Voir toutes mes réservations
-              </Button>
+    <>
+      <Alert severity="success" sx={{ marginY: 3 }}>
+        {message}
+      </Alert>
+      <Grid container mt={3} mb={3}>
+        <Grid
+          container
+          mt={2}
+          mb={2}
+          sx={{
+            width: { xs: "95%", sm: "85%", md: "70%", lg: "60%" },
+            paddingY: { xs: 2, sm: 3 },
+            paddingX: { xs: 0, sm: 1, md: 2 },
+            backgroundColor: "white",
+            marginX: "auto",
+            borderRadius: 12,
+            boxShadow: 1,
+            color: "#023535",
+          }}
+          spacing={2}
+        >
+          <Grid item container direction="row" alignItems="center" spacing={1}>
+            <Grid item>
+              <PersonIcon />
+            </Grid>
+            <Grid item>
+              <Typography>
+                {userProfile?.lastName + " " + userProfile?.firstName}
+              </Typography>
             </Grid>
           </Grid>
-        </CardContent>
-      </Card>
-    </div>
+          <Grid item container direction="row" alignItems="center" spacing={1}>
+            <Grid item>
+              <LocationOnIcon />
+            </Grid>
+            <Grid item>
+              <Grid container direction={{xs: "column", sm: "row"}} spacing={{xs: 0, sm:0.5}}>
+                <Grid item >
+                  <Typography>{userProfile?.address}</Typography>
+                </Grid>
+                <Grid item>
+                  <Typography>
+                    {userProfile?.postalCode} {userProfile?.city}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={7} sm={6}>
+            <Grid container direction="row" alignItems="center" spacing={1}>
+              <Grid item>
+                <SmartphoneIcon />
+              </Grid>
+              <Grid item>
+                <Typography>{userProfile?.phone}</Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={5} sm={6}>
+            <Grid container direction="row" alignItems="center" spacing={1}>
+              <Grid item>
+                <RoomServiceIcon />
+              </Grid>
+              <Grid item>
+                <Typography>{service?.name}</Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={8} sm={5} md={4}>
+            <Grid container direction="row" alignItems="center" spacing={1}>
+              <Grid item>
+                <CalendarMonthIcon />
+              </Grid>
+              <Grid item>
+                <Typography sx={{}}>{date}</Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={4} sm={3} md={4}>
+            <Grid container direction="row" alignItems="center" spacing={1}>
+              <Grid item>
+                <ScheduleIcon />
+              </Grid>
+              <Grid item>
+                <Typography>{hour}</Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={6} sm={4} md={4}>
+            {nbHoursTypo()}
+          </Grid>
+          <Grid item>
+            <Grid container direction="row" alignItems="center" spacing={1}>
+              <Grid item>
+                <EuroIcon />
+              </Grid>
+              <Grid item>
+                <Typography>{booking?.totalPrice} euros</Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+          {/* <Grid container direction="row" alignItems="center">
+            <Grid item>{desciptionTypo()}</Grid>
+          </Grid> */}
+        </Grid>
+      </Grid>
+      <Grid container mb={3} sx={{ width: "100%", textAlign: "center" }}>
+        <Grid item xs={12}>
+          <Button
+            component={Link}
+            to="/booking"
+            size="medium"
+            sx={{
+              width: { xs: "60%", sm: "50%", md: "35%", lg: "20%" },
+              paddingY: 1.5,
+              color: "white",
+              backgroundColor: "#0FC2C0",
+              textTransform: "none",
+              fontWeight: "bold",
+              fontSize: 16,
+              borderRadius: 5,
+              "&:hover": {
+                opacity: 0.9,
+                backgroundColor: "#0FC2C0",
+              },
+            }}
+          >
+            Voir toutes mes réservations
+          </Button>
+        </Grid>
+      </Grid>
+    </>
   ) : (
-    <div>
-      <Card sx={{ minWidth: 275 }}>
-        <CardContent>
-          <Typography sx={{ mb: 1.5 }}>
-            <PersonIcon /> :{" "}
-            {userProfile?.lastName + " " + userProfile?.firstName}
-          </Typography>
-          <Typography sx={{ mb: 1.5 }}>
-            <LocationOnIcon /> :{" "}
-            {userProfile?.address +
-              " " +
-              userProfile?.postalCode +
-              " " +
-              userProfile?.city}
-          </Typography>
-          <Typography sx={{ mb: 1.5 }}>
-            <SmartphoneIcon /> : {userProfile?.phone}
-          </Typography>
-          <Typography sx={{ mb: 1.5 }}>
-            <RoomServiceIcon /> : {service?.name}
-          </Typography>
-          <Typography sx={{ mb: 1.5 }}>
-            <CalendarMonthIcon /> : {date}
-          </Typography>
-          <Typography sx={{ mb: 1.5 }}>
-            <ScheduleIcon /> : {hour}
-          </Typography>
-          {nbHoursTypo()}
-          <Typography sx={{ mb: 1.5 }}>
-            <EuroIcon /> : {booking?.totalPrice} euros TTC
-          </Typography>
-          {desciptionTypo()}
-          <Grid container mb={5} ml={5} direction="row" justifyContent="left">
-            <Grid item xs={0} mt={1}>
-              <Button variant="contained" onClick={checkout} size="medium">
-                Payer en ligne
-              </Button>
+    <>
+      <Grid
+        container
+        mt={3}
+        mb={5}
+        py={3}
+        px={4}
+        sx={{
+          width: "60%",
+          marginX: "auto",
+          backgroundColor: "white",
+          borderRadius: 12,
+          boxShadow: 1,
+        }}
+      >
+        <Grid
+          container
+          spacing={2}
+          justifyContent="center"
+          alignItems="center"
+          sx={{ color: "#023535" }}
+        >
+          <Grid item xs={12}>
+            <Grid container direction="row" alignItems="center" spacing={1}>
+              <Grid item>
+                <PersonIcon />
+              </Grid>
+              <Grid item>
+                <Typography>
+                  {userProfile?.lastName + " " + userProfile?.firstName}
+                </Typography>
+              </Grid>
             </Grid>
           </Grid>
-        </CardContent>
-      </Card>
-    </div>
+          <Grid item xs={12}>
+            <Grid container direction="row" alignItems="center" spacing={1}>
+              <Grid item>
+                <LocationOnIcon />
+              </Grid>
+              <Grid item>
+                <Typography>
+                  {userProfile?.address +
+                    " " +
+                    userProfile?.postalCode +
+                    " " +
+                    userProfile?.city}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            <Grid container direction="row" alignItems="center" spacing={1}>
+              <Grid item>
+                <SmartphoneIcon />
+              </Grid>
+              <Grid item>
+                <Typography>{userProfile?.phone}</Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            <Grid container direction="row" alignItems="center" spacing={1}>
+              <Grid item>
+                <RoomServiceIcon />
+              </Grid>
+              <Grid item>
+                <Typography>{service?.name}</Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={4}>
+            <Grid container direction="row" alignItems="center" spacing={1}>
+              <Grid item>
+                <CalendarMonthIcon />
+              </Grid>
+              <Grid item>
+                <Typography>{date}</Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={4}>
+            <Grid container direction="row" alignItems="center" spacing={1}>
+              <Grid item>
+                <ScheduleIcon />
+              </Grid>
+              <Grid item>
+                <Typography>{hour}</Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={4}>
+            {nbHoursTypo()}
+          </Grid>
+          <Grid item xs={6}>
+            <Grid container direction="row" alignItems="center" spacing={1}>
+              <Grid item>
+                <EuroIcon />
+              </Grid>
+              <Grid item>
+                <Typography>{booking?.totalPrice} euros TTC</Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            {desciptionTypo()}
+          </Grid>
+          <Grid item xs={6}>
+            <Button
+              variant="contained"
+              onClick={checkout}
+              sx={{
+                textAlign: "center",
+                width: "100%",
+                backgroundColor: "#1C4A4A",
+                paddingY: 1.5,
+                marginTop: 2,
+                textTransform: "none",
+                fontWeight: "bold",
+                fontSize: 16,
+                borderRadius: 5,
+                "&:hover": {
+                  backgroundColor: "#1C4A4A",
+                  opacity: 0.9,
+                },
+              }}
+            >
+              Payer en ligne
+            </Button>
+          </Grid>
+        </Grid>
+      </Grid>
+    </>
   );
 };
 
