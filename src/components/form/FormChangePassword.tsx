@@ -4,9 +4,8 @@ import * as Yup from "yup";
 import { FormFieldType, useFormBuilder } from "./FormModel";
 import { FormikValues } from "formik";
 import { toast } from "react-toastify";
-import { Button, Grid, TextField, Typography } from "@mui/material";
+import { Grid, TextField, Typography } from "@mui/material";
 import { AxiosFunction } from "../../api/AxiosFunction";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AxiosError, AxiosResponse } from "axios";
 import useLogout from "../../hooks/useLogout";
@@ -33,7 +32,7 @@ const FormChangePassword = () => {
   const navigate = useNavigate();
   const logout = useLogout();
   const location: any = useLocation();
-  const goBack = () => navigate(-1);
+  // const goBack = () => navigate(-1);
   const from = location.state?.from?.pathname || "/profile";
 
   const initialValues = {

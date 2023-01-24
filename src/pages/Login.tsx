@@ -1,10 +1,11 @@
+import { Container } from "@mui/material"
 import FormLogin from "../components/form/FormLogin"
 
 const Login = () => {
     return (
-        <div>
+        <Container maxWidth={false}>
             <FormLogin />
-        </div>
+        </Container>
     )
 }
 

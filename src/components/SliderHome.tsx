@@ -1,6 +1,6 @@
 const SliderHome = () => {
        return (
-        <div>Carousel</div>
+        <div></div>
     );
 };
 

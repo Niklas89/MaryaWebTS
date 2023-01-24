@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { IService } from "../../interfaces/IService";
 import * as Yup from "yup";
 import { AxiosFunction } from "../../api/AxiosFunction";
@@ -9,11 +9,11 @@ import { FormFieldType, useFormBuilder } from "./FormModel";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { FormikValues } from "formik";
 import { toast } from "react-toastify";
-import { Select, TextField } from "@mui/material";
+import { Grid, Select, TextField } from "@mui/material";
 import useAuth from "../../hooks/useAuth";
 import { IBookings } from "../../interfaces/IBooking";
 
-const LOGIN_URL = "booking/add";
+const BOOKING_URL = "booking/add";
 const from = "/login";
 
 let formFields: FormFieldType[] = [];
@@ -25,10 +25,10 @@ const FormAddBooking = () => {
   const [services, setServices] = useState<Array<IService>>();
   const [booking, setBooking] = useState<IBookings>();
   const { id } = useParams();
-  const { getQuery } = AxiosFunction();
+  const { getQuery, postQuery } = AxiosFunction();
 
   const validationShema = Yup.object().shape({
-    appointmentDate: Yup.date().required("Merci de remplire la date et heure"),
+    appointmentDate: Yup.date().required("Merci de remplir la date et heure."),
   });
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const FormAddBooking = () => {
             {
               name: "idService",
               field: RadioGroup,
-              title: "Services à l'heure:",
+              title: "Services à l'heure :",
               fields: res.data?.map((item: IService) => {
                 return {
                   value: item.id,
@@ -53,8 +53,8 @@ const FormAddBooking = () => {
             {
               name: "appointmentDate",
               field: DateTimePicker,
-              title: "Pour le:",
-              label: "Date et heure:",
+              title: "Pour le :",
+              label: "Date et heure :",
               isMultiLine: true,
             },
             {
@@ -62,17 +62,17 @@ const FormAddBooking = () => {
               field: Select,
               label: "Nombre d'heure",
               menuItems: [
-                { value: "1", label: "1 Heure" },
-                { value: "2", label: "2 Heures" },
-                { value: "3", label: "3 Heures" },
-                { value: "4", label: "4 Heures" },
-                { value: "5", label: "5 Heures" },
+                { value: "1", label: "1 heure" },
+                { value: "2", label: "2 heures" },
+                { value: "3", label: "3 heures" },
+                { value: "4", label: "4 heures" },
+                { value: "5", label: "5 heures" },
               ],
             },
             {
               name: "description",
               field: TextField,
-              label: "Déscription",
+              label: "Description",
               isMultiLine: true,
               labelButton: "Réserver",
             },
@@ -82,7 +82,7 @@ const FormAddBooking = () => {
             {
               name: "idService",
               field: RadioGroup,
-              title: "Services à la prestation:",
+              title: "Services à la prestation :",
               fields: res.data?.map((item: IService) => {
                 return {
                   value: item.id,
@@ -94,14 +94,14 @@ const FormAddBooking = () => {
             {
               name: "appointmentDate",
               field: DateTimePicker,
-              title: "Pour le:",
-              label: "Date et heure:",
+              title: "Pour le :",
+              label: "Date et heure :",
               isMultiLine: true,
             },
             {
               name: "description",
               field: TextField,
-              label: "Déscription",
+              label: "Description",
               isMultiLine: true,
               labelButton: "Réserver",
             },
@@ -109,7 +109,15 @@ const FormAddBooking = () => {
         }
       })
       .catch((error: AxiosError) => {
-        toast.error("Une erreur c'est produite, vérifier vos identifiants.", {
+        console.log(error);
+      });
+  }, [id]);
+
+  const handleSubmit = useCallback(
+    (values: FormikValues, callback: any) => {
+      const idRole = auth?.role;      
+      if (idRole === undefined) {       
+        toast.error("Veuillez vous connecter pour pouvoir continuer la réservation.", {
           position: "bottom-right",
           autoClose: 3000,
           hideProgressBar: true,
@@ -118,16 +126,7 @@ const FormAddBooking = () => {
           draggable: true,
           toastId: "submit-file-error",
         });
-        return;
-      });
-  }, [id]);
-
-  const { postQuery } = AxiosFunction();
-  const handleSubmit = useCallback(
-    (values: FormikValues, callback: any) => {
-      const idRole = auth?.role;
-      if (idRole === undefined) {
-        navigate(from, { replace: true });
+        // navigate(from, { replace: true });
       } else {
         const date = values.appointmentDate;
         const idServiceNum = Number(values.idService);
@@ -141,17 +140,16 @@ const FormAddBooking = () => {
             idService: idServiceNum,
             appointmentDate: date,
             description: values.description,
-          };
-          postQuery(LOGIN_URL, postData)
+          };        
+          postQuery(BOOKING_URL, postData)
             .then((response: AxiosResponse) => {
               setBooking(response.data);
-              console.log(setBooking(response.data));
               const urlBooking =
                 "/booking/confirmation/" + response.data.booking;
               navigate(urlBooking, { replace: true });
             })
             .catch((error: AxiosError) => {
-              toast.error("Une erreur c'est produite.", {
+              toast.error("Une erreur s'est produite.", {
                 position: "bottom-right",
                 autoClose: 3000,
                 hideProgressBar: true,
@@ -173,7 +171,7 @@ const FormAddBooking = () => {
             appointmentDate: date,
             description: values.description,
           };
-          postQuery(LOGIN_URL, postData)
+          postQuery(BOOKING_URL, postData)
             .then((response: AxiosResponse) => {
               setBooking(response.data);
               const urlBooking =
@@ -204,7 +202,11 @@ const FormAddBooking = () => {
     formFields,
     { submit: handleSubmit }
   );
-  return <div>{renderForm}</div>;
+  return (
+    <Grid container mb={5} justifyContent="center">
+      <Grid item>{renderForm}</Grid>
+    </Grid>
+  );
 };
 
 export default FormAddBooking;

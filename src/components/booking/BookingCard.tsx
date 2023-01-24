@@ -12,13 +12,15 @@ import moment from "moment";
 
 const BookingCard = ({ data }: IBooking) => {
     const [serviceName, setServiceName] = useState<string>();
-    const [idBooking, setIdBooking] = useState<number>();
-    const [dateResult, setDateResult] = useState<boolean>();
+    // const [idBooking, setIdBooking] = useState<number>();
+    // const [dateResult, setDateResult] = useState<boolean>();
     const axiosPrivate = useAxiosPrivate();
-    let timestampAppointment: number;
+
+    console.log(data);
+    
 
     useEffect(() => {
-        setIdBooking(data?.id);
+        // setIdBooking(data?.id);
         if (!data?.message) {
             const idService = data?.idService?.toString();
             axios({
@@ -30,15 +32,15 @@ const BookingCard = ({ data }: IBooking) => {
                 })
         }
 
-        if (data?.appointmentDate) {
-            timestampAppointment = new Date(dateParser(data?.appointmentDate)).getTime();
-            setDateResult(timestampAppointment > Date.now());
-        }
-    });
+        // if (data?.appointmentDate) {
+        //     timestampAppointment = new Date(dateParser(data?.appointmentDate)).getTime();
+        //     setDateResult(timestampAppointment > Date.now());
+        // }
+    }, []);
 
     const deleteBooking = (id: number | undefined) => {
         axiosPrivate.patch(`/booking/cancel/${id}`)
-            .then(res => window.location.reload())
+            .then(() => window.location.reload())
     }
 
     return (
@@ -57,10 +59,10 @@ const BookingCard = ({ data }: IBooking) => {
                     <Card sx={{
                         backgroundColor: "#0FC2C0",
                         color: "white",
-                        minHeight: "365px"
+                        minHeight: "auto"
                     }} >
-                        <CardHeader title="Réservation" />
-                        <CardContent>
+                        <CardHeader title="Réservation" sx={{paddingBottom: 0}}/>
+                        <CardContent sx={{paddingTop: 0}}>
                             <List>
                                 <ListItem>
                                     <ListItemIcon>
@@ -91,7 +93,7 @@ const BookingCard = ({ data }: IBooking) => {
                                 <ListItem>
                                     <ListItemText primary={`${data?.description}`} />
                                 </ListItem>
-                                {!data?.accepted && dateResult && (
+                                {!data?.accepted && (
                                     <ListItem>
                                         <ListItemButton component="button" onClick={() => {
                                             deleteBooking(data?.id)

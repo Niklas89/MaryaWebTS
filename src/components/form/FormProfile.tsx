@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { IUser } from "../../interfaces/IUser";
 import * as Yup from "yup";
 import { FormFieldType, useFormBuilder } from "./FormModel";
@@ -6,7 +6,6 @@ import { FormikValues } from "formik";
 import { toast } from "react-toastify";
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import { AxiosFunction } from "../../api/AxiosFunction";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AxiosError, AxiosResponse } from "axios";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -37,9 +36,9 @@ const userFormFields: FormFieldType[] = [
 const FormProfile = () => {
   const { auth } = useAuth();
   const navigate = useNavigate();
-  const logout = useLogout();
+  // const logout = useLogout();
   const location = useLocation();
-  const goBack = () => navigate(-1);
+  // const goBack = () => navigate(-1);
   const axiosPrivate = useAxiosPrivate();
 
   const initialValues = {
@@ -114,7 +113,7 @@ const FormProfile = () => {
     { submit: handleSubmit }
   );
 
-  console.log(auth?.role);
+  // console.log(auth?.role);
 
   useEffect(() => {
     axiosPrivate

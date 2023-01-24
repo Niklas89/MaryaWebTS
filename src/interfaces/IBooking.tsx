@@ -5,6 +5,7 @@ export interface IBooking {
     id?: number,
     accepted?: boolean,
     appointmentDate?: string,
+    isPaid?: boolean,
     description?: string,
     nbHours?: number,
     totalPrice?: number,
@@ -19,6 +20,7 @@ export interface IBooking {
         totalPrice?: number,
         idService?: number,
         message?: string,
+        isPaid?: boolean,
         idClient?: number,
     },
 }

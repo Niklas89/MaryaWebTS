@@ -1,9 +1,9 @@
-import { Typography } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import DisplayBooking from "../components/booking/DisplayBooking";
 
 const DisplayBookingConfirmation = () => {
   return (
-    <div>
+    <Container maxWidth={false}>
       <Typography
         textAlign="center"
         mt={3}
@@ -11,12 +11,12 @@ const DisplayBookingConfirmation = () => {
           color: "#0CABA8",
           fontWeight: "bold",
         }}
-        variant="h3"
+        variant="h4"
       >
-        Ma réservation
+        Récapitulatif de ma réservation
       </Typography>
       <DisplayBooking />
-    </div>
+    </Container>
   );
 };
 

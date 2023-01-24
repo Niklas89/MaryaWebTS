@@ -18,11 +18,11 @@ import { AccountCircle } from "@mui/icons-material";
 const Navigation = () => {
   const { auth } = useAuth();
   const logout = useLogout();
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(
     null
   );
   const [anchorElProfil, setAnchorElProfil] =
-    React.useState<null | HTMLElement>(null);
+   useState<null | HTMLElement>(null);
 
   const pages = [
     { name: "Coiffure", path: "booking/create/1" },
@@ -69,7 +69,7 @@ const Navigation = () => {
               textDecoration: "none",
             }}
           >
-            MARYA
+            Marya
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -187,7 +187,7 @@ const Navigation = () => {
                 to="login"
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                Se connecter
+                Connexion
               </Button>
             )}
           </Box>
