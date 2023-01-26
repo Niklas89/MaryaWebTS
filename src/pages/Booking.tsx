@@ -44,12 +44,12 @@ const Booking = () => {
       setBookingNotPaid(count1 + count2);
       setCountDone(true);
       console.log(count1, count2);
-      
     });
   }, []);
 
   useEffect(() => {
     countDone &&
+      bookingNotPaid >= 1 &&
       toast.error(
         `Vous avez ${bookingNotPaid} ${
           bookingNotPaid > 1 ? "prestations" : "prestation"

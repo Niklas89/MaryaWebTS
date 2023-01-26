@@ -19,10 +19,18 @@ const Home = () => {
 
   return (
     <Grid container>
-      <Grid item>
+      <Grid
+        item
+        xs={12}
+        sx={{
+          //minHeight: "80%",
+          alignItems: "center",
+          width: "100%",
+        }}
+      >
         <SliderHome />
       </Grid>
-      <Grid item>
+      <Grid item marginTop={20} marginBottom={20} textAlign="center">
         <CardCategory />
       </Grid>
     </Grid>

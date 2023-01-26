@@ -15,7 +15,11 @@ const Footer = () => {
         className="footer"
       >
         <Grid item xs={4} lg={3}>
-          <Typography sx={{textAlign: "left", fontSize: 15, fontWeight: "bold"}}>Informations utiles</Typography>
+          <Typography
+            sx={{ textAlign: "left", fontSize: 15, fontWeight: "bold" }}
+          >
+            Informations utiles
+          </Typography>
           <List disablePadding>
             <ListItem disablePadding>
               <ListItemText
@@ -127,6 +131,7 @@ const Footer = () => {
                 sx={{
                   color: "#DBF227",
                   cursor: "pointer",
+                  fontSize: 35,
                   "&:hover": {
                     opacity: 0.9,
                   },
@@ -138,6 +143,7 @@ const Footer = () => {
                 sx={{
                   color: "#DBF227",
                   cursor: "pointer",
+                  fontSize: 35,
                   "&:hover": {
                     opacity: 0.9,
                   },
@@ -149,6 +155,7 @@ const Footer = () => {
                 sx={{
                   color: "#DBF227",
                   cursor: "pointer",
+                  fontSize: 35,
                   "&:hover": {
                     opacity: 0.9,
                   },
