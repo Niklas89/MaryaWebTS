@@ -1,4 +1,11 @@
-import { CardHeader, Grid, Card, CardMedia, Box } from "@mui/material";
+import {
+  CardHeader,
+  Grid,
+  Card,
+  CardMedia,
+  Box,
+  Typography,
+} from "@mui/material";
 import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -27,60 +34,72 @@ const CardCategory = () => {
   }, []);
 
   return (
-    <Grid
-      container
-      textAlign="center"
-      columnSpacing={2}
-      rowSpacing={3}
-      justifyContent="center"
-      sx={{
-        width: 0.9,
-        margin: "10px auto 40px auto",
-      }}
-    >
-      {categories?.map((category: ICategory, index: number) => {
-        return (
-          <Grid item key={category.id} sm={8} md={6} lg={4}>
-            <Card
-              component={Link}
-              to={`/booking/create/${category.id}`}
-              sx={{
-                backgroundColor: colorArray[index],
-                display: "flex",
-                flexDirection: "column",
-                padding: "5px 10px",
-                textDecoration: "none",
-                "&:hover": { transform: "scale(1.02)" },
-              }}
-            >
-              <Box
+    <>
+      <Typography
+        sx={{
+          alignContent: "center",
+          color: "#0FC2C0",
+          fontWeight: "bold",
+        }}
+        variant="h3"
+      >
+        Nos services:
+      </Typography>
+      <Grid
+        container
+        textAlign="center"
+        columnSpacing={2}
+        rowSpacing={3}
+        justifyContent="center"
+        sx={{
+          width: 0.9,
+          margin: "10px auto 40px auto",
+        }}
+      >
+        {categories?.map((category: ICategory, index: number) => {
+          return (
+            <Grid item key={category.id} sm={8} md={6} lg={4}>
+              <Card
+                component={Link}
+                to={`/booking/create/${category.id}`}
                 sx={{
+                  backgroundColor: colorArray[index],
                   display: "flex",
-                  justifyContent: "space-evenly",
+                  flexDirection: "column",
+                  padding: "5px 10px",
+                  textDecoration: "none",
+                  "&:hover": { transform: "scale(1.02)" },
                 }}
               >
-                <CardHeader
-                  title={category.name}
+                <Box
                   sx={{
-                    color: "white",
+                    display: "flex",
+                    justifyContent: "space-evenly",
                   }}
-                />
-                <CardMedia
-                  component="img"
-                  sx={{
-                    maxHeight: 220,
-                    maxWidth: 220,
-                    objectFit: "contain",
-                  }}
-                  image={`./assets/img/categorie/${category.name}.png`}
-                  alt={`${category.name}`}
-                />
-              </Box>
-            </Card>
-          </Grid>
-        );
-      })}
-    </Grid>
+                >
+                  <CardHeader
+                    title={category.name}
+                    sx={{
+                      color: "white",
+                    }}
+                  />
+                  <CardMedia
+                    component="img"
+                    sx={{
+                      maxHeight: 220,
+                      maxWidth: 220,
+                      objectFit: "contain",
+                    }}
+                    image={`./assets/img/categorie/${category.name}.png`}
+                    alt={`${category.name}`}
+                  />
+                </Box>
+              </Card>
+            </Grid>
+          );
+        })}
+      </Grid>
+    </>
   );
 };
 
