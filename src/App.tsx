@@ -48,8 +48,8 @@ function App() {
               minHeight: "80%",
               alignItems: "center",
               width: "100%",
-              backgroundImage: "url(./assets/img/pattern.jpg)",
-              backgroundSize: "cover"
+              backgroundImage: "url(/assets/img/pattern.jpg)",
+              backgroundSize: "cover",
             }}
           >
             <Routes>

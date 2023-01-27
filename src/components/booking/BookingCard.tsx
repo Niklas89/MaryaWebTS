@@ -16,6 +16,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import TodayIcon from "@mui/icons-material/Today";
 import EuroIcon from "@mui/icons-material/Euro";
 import LayersIcon from "@mui/icons-material/Layers";
+import CommentIcon from "@mui/icons-material/Comment";
 import { useEffect, useState } from "react";
 import axios from "../../api/axios";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -26,8 +27,6 @@ const BookingCard = ({ data }: IBooking) => {
   // const [idBooking, setIdBooking] = useState<number>();
   // const [dateResult, setDateResult] = useState<boolean>();
   const axiosPrivate = useAxiosPrivate();
-
-  console.log(data);
 
   useEffect(() => {
     // setIdBooking(data?.id);
@@ -45,7 +44,7 @@ const BookingCard = ({ data }: IBooking) => {
     //     timestampAppointment = new Date(dateParser(data?.appointmentDate)).getTime();
     //     setDateResult(timestampAppointment > Date.now());
     // }
-  }, []);
+  }, [data?.message]);
 
   const deleteBooking = (id: number | undefined) => {
     axiosPrivate
@@ -56,6 +55,9 @@ const BookingCard = ({ data }: IBooking) => {
   if (data?.description) {
     description = (
       <ListItem>
+        <ListItemIcon>
+          <CommentIcon />
+        </ListItemIcon>
         <ListItemText primary={`${data?.description}`} />
       </ListItem>
     );

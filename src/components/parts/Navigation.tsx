@@ -67,7 +67,7 @@ const Navigation = () => {
       <Container maxWidth={false}>
         <Toolbar disableGutters>
           <Box sx={{ paddingTop: 1 }}>
-            <img src="./assets/logo/marya.png" height="60" alt="" />
+            <img src="/assets/logo/marya.png" height="60" alt="" />
           </Box>
           <Typography
             variant="h6"

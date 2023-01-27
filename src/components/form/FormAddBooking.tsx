@@ -115,17 +115,20 @@ const FormAddBooking = () => {
 
   const handleSubmit = useCallback(
     (values: FormikValues, callback: any) => {
-      const idRole = auth?.role;      
-      if (idRole === undefined) {       
-        toast.error("Veuillez vous connecter pour pouvoir continuer la réservation.", {
-          position: "bottom-right",
-          autoClose: 3000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          toastId: "submit-file-error",
-        });
+      const idRole = auth?.role;
+      if (idRole === undefined) {
+        toast.error(
+          "Veuillez vous connecter pour pouvoir continuer la réservation.",
+          {
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            toastId: "submit-file-error",
+          }
+        );
         // navigate(from, { replace: true });
       } else {
         const date = values.appointmentDate;
@@ -140,7 +143,7 @@ const FormAddBooking = () => {
             idService: idServiceNum,
             appointmentDate: date,
             description: values.description,
-          };        
+          };
           postQuery(BOOKING_URL, postData)
             .then((response: AxiosResponse) => {
               setBooking(response.data);
