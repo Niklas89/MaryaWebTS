@@ -1,9 +1,4 @@
-import {
-  Alert,
-  Button,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Alert, Button, Grid, Typography } from "@mui/material";
 import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -172,51 +167,56 @@ const DisplayBooking = () => {
       <Alert severity="success" sx={{ marginY: 3 }}>
         {message}
       </Alert>
-      <Grid container mt={3} mb={3}>
+      <Grid
+        container
+        mt={3}
+        mb={5}
+        py={3}
+        px={4}
+        sx={{
+          width: "60%",
+          marginX: "auto",
+          backgroundColor: "white",
+          borderRadius: 12,
+          boxShadow: 1,
+        }}
+      >
         <Grid
           container
-          mt={2}
-          mb={2}
-          sx={{
-            width: { xs: "95%", sm: "85%", md: "70%", lg: "60%" },
-            paddingY: { xs: 2, sm: 3 },
-            paddingX: { xs: 0, sm: 1, md: 2 },
-            backgroundColor: "white",
-            marginX: "auto",
-            borderRadius: 12,
-            boxShadow: 1,
-            color: "#023535",
-          }}
           spacing={2}
+          justifyContent="center"
+          alignItems="center"
+          sx={{ color: "#023535" }}
         >
-          <Grid item container direction="row" alignItems="center" spacing={1}>
-            <Grid item>
-              <PersonIcon />
-            </Grid>
-            <Grid item>
-              <Typography>
-                {userProfile?.lastName + " " + userProfile?.firstName}
-              </Typography>
-            </Grid>
-          </Grid>
-          <Grid item container direction="row" alignItems="center" spacing={1}>
-            <Grid item>
-              <LocationOnIcon />
-            </Grid>
-            <Grid item>
-              <Grid container direction={{xs: "column", sm: "row"}} spacing={{xs: 0, sm:0.5}}>
-                <Grid item >
-                  <Typography>{userProfile?.address}</Typography>
-                </Grid>
-                <Grid item>
-                  <Typography>
-                    {userProfile?.postalCode} {userProfile?.city}
-                  </Typography>
-                </Grid>
+          <Grid item xs={12} md={6}>
+            <Grid container direction="row" alignItems="center" spacing={1}>
+              <Grid item>
+                <PersonIcon />
+              </Grid>
+              <Grid item>
+                <Typography>
+                  {userProfile?.lastName + " " + userProfile?.firstName}
+                </Typography>
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={7} sm={6}>
+          <Grid item xs={12} md={6}>
+            <Grid container direction="row" alignItems="center" spacing={1}>
+              <Grid item>
+                <LocationOnIcon />
+              </Grid>
+              <Grid item>
+                <Typography>
+                  {userProfile?.address +
+                    " " +
+                    userProfile?.postalCode +
+                    " " +
+                    userProfile?.city}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={12} md={6}>
             <Grid container direction="row" alignItems="center" spacing={1}>
               <Grid item>
                 <SmartphoneIcon />
@@ -226,7 +226,7 @@ const DisplayBooking = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={5} sm={6}>
+          <Grid item xs={12} md={6}>
             <Grid container direction="row" alignItems="center" spacing={1}>
               <Grid item>
                 <RoomServiceIcon />
@@ -236,17 +236,17 @@ const DisplayBooking = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={8} sm={5} md={4}>
+          <Grid item xs={12} md={6}>
             <Grid container direction="row" alignItems="center" spacing={1}>
               <Grid item>
                 <CalendarMonthIcon />
               </Grid>
               <Grid item>
-                <Typography sx={{}}>{date}</Typography>
+                <Typography>{date}</Typography>
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={4} sm={3} md={4}>
+          <Grid item xs={12} md={6}>
             <Grid container direction="row" alignItems="center" spacing={1}>
               <Grid item>
                 <ScheduleIcon />
@@ -256,22 +256,22 @@ const DisplayBooking = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={6} sm={4} md={4}>
-            {nbHoursTypo()}
-          </Grid>
-          <Grid item>
+          <Grid item xs={12} md={6}>
             <Grid container direction="row" alignItems="center" spacing={1}>
               <Grid item>
                 <EuroIcon />
               </Grid>
               <Grid item>
-                <Typography>{booking?.totalPrice} euros</Typography>
+                <Typography>{booking?.totalPrice} euros TTC</Typography>
               </Grid>
             </Grid>
           </Grid>
-          {/* <Grid container direction="row" alignItems="center">
-            <Grid item>{desciptionTypo()}</Grid>
-          </Grid> */}
+          <Grid item xs={12} md={6}>
+            {nbHoursTypo()}
+          </Grid>
+          <Grid item xs={12}>
+            {desciptionTypo()}
+          </Grid>
         </Grid>
       </Grid>
       <Grid container mb={3} sx={{ width: "100%", textAlign: "center" }}>
@@ -323,7 +323,7 @@ const DisplayBooking = () => {
           alignItems="center"
           sx={{ color: "#023535" }}
         >
-          <Grid item xs={12}>
+          <Grid item xs={12} md={6}>
             <Grid container direction="row" alignItems="center" spacing={1}>
               <Grid item>
                 <PersonIcon />
@@ -335,7 +335,7 @@ const DisplayBooking = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} md={6}>
             <Grid container direction="row" alignItems="center" spacing={1}>
               <Grid item>
                 <LocationOnIcon />
@@ -351,7 +351,7 @@ const DisplayBooking = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <Grid container direction="row" alignItems="center" spacing={1}>
               <Grid item>
                 <SmartphoneIcon />
@@ -361,7 +361,7 @@ const DisplayBooking = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <Grid container direction="row" alignItems="center" spacing={1}>
               <Grid item>
                 <RoomServiceIcon />
@@ -371,7 +371,7 @@ const DisplayBooking = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12} md={6}>
             <Grid container direction="row" alignItems="center" spacing={1}>
               <Grid item>
                 <CalendarMonthIcon />
@@ -381,7 +381,7 @@ const DisplayBooking = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12} md={6}>
             <Grid container direction="row" alignItems="center" spacing={1}>
               <Grid item>
                 <ScheduleIcon />
@@ -391,10 +391,7 @@ const DisplayBooking = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={4}>
-            {nbHoursTypo()}
-          </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <Grid container direction="row" alignItems="center" spacing={1}>
               <Grid item>
                 <EuroIcon />
@@ -404,10 +401,13 @@ const DisplayBooking = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
+            {nbHoursTypo()}
+          </Grid>
+          <Grid item xs={12}>
             {desciptionTypo()}
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={3}>
             <Button
               variant="contained"
               onClick={checkout}
