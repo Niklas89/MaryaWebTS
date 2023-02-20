@@ -5,53 +5,25 @@ const SliderHome = () => {
   return (
     <Carousel>
       <Carousel.Item>
-        <img
-          className="w-100"
-          src="./assets/img/slider/img1.jpg"
-          alt="First slide"
-        />
+        <img className="w-100" src="./assets/img/slider/img7.jpg" alt="slide" />
       </Carousel.Item>
       <Carousel.Item>
-        <img
-          className="w-100"
-          src="./assets/img/slider/img2.jpg"
-          alt="First slide"
-        />
+        <img className="w-100" src="./assets/img/slider/img1.jpg" alt="slide" />
       </Carousel.Item>
       <Carousel.Item>
-        <img
-          className="w-100"
-          src="./assets/img/slider/img3.jpg"
-          alt="First slide"
-        />
+        <img className="w-100" src="./assets/img/slider/img2.jpg" alt="slide" />
       </Carousel.Item>
       <Carousel.Item>
-        <img
-          className="w-100"
-          src="./assets/img/slider/img4.jpg"
-          alt="First slide"
-        />
+        <img className="w-100" src="./assets/img/slider/img3.jpg" alt="slide" />
       </Carousel.Item>
       <Carousel.Item>
-        <img
-          className="w-100"
-          src="./assets/img/slider/img5.jpg"
-          alt="First slide"
-        />
+        <img className="w-100" src="./assets/img/slider/img4.jpg" alt="slide" />
       </Carousel.Item>
       <Carousel.Item>
-        <img
-          className="w-100"
-          src="./assets/img/slider/img6.jpg"
-          alt="First slide"
-        />
+        <img className="w-100" src="./assets/img/slider/img5.jpg" alt="slide" />
       </Carousel.Item>
       <Carousel.Item>
-        <img
-          className="w-100"
-          src="./assets/img/slider/img7.jpg"
-          alt="First slide"
-        />
+        <img className="w-100" src="./assets/img/slider/img6.jpg" alt="slide" />
       </Carousel.Item>
     </Carousel>
   );

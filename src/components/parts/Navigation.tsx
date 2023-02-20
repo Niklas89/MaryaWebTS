@@ -14,7 +14,6 @@ import "../../styles/Navigation.css";
 import useAuth from "../../hooks/useAuth";
 import useLogout from "../../hooks/useLogout";
 import { AccountCircle } from "@mui/icons-material";
-import { padding } from "@mui/system";
 import RoomServiceIcon from "@mui/icons-material/RoomService";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
@@ -144,7 +143,7 @@ const Navigation = () => {
               textDecoration: "none",
             }}
           >
-            MARYA
+            Marya
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <IconButton
@@ -265,12 +264,6 @@ const Navigation = () => {
                 }}
               >
                 Connexion
-                <VpnKeyIcon
-                  sx={{
-                    fontSize: 30,
-                    marginLeft: 1,
-                  }}
-                />
               </Button>
             )}
           </Box>

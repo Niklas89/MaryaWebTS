@@ -43,7 +43,7 @@ const CardCategory = () => {
         }}
         variant="h3"
       >
-        Nos services:
+        Nos services
       </Typography>
       <Grid
         container
