@@ -21,7 +21,6 @@ const Home = () => {
     <Grid container>
       <Grid
         item
-        marginTop={5}
         xs={12}
         sx={{
           alignItems: "center",
