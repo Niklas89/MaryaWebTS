@@ -90,7 +90,7 @@ const CardCategory = () => {
                       maxWidth: 220,
                       objectFit: "contain",
                     }}
-                    image={`./assets/img/categorie/${category.name}.png`}
+                    image={`./assets/img/categorie/${category.name?.toLowerCase()}.png`}
                     alt={`${category.name}`}
                   />
                 </Box>
