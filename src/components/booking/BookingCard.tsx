@@ -1,5 +1,4 @@
 import {
-  Button,
   Card,
   CardContent,
   CardHeader,
@@ -21,9 +20,6 @@ import { useEffect, useState } from "react";
 import axios from "../../api/axios";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import WarningIcon from "@mui/icons-material/Warning";
-import { Link } from "react-router-dom";
-import moment from "moment";
-import { date } from "yup";
 
 const BookingCard = ({ data }: IBooking) => {
   const [serviceName, setServiceName] = useState<string>();
@@ -32,7 +28,6 @@ const BookingCard = ({ data }: IBooking) => {
   const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
-    // setIdBooking(data?.id);
     if (!data?.message) {
       const idService = data?.idService?.toString();
       axios({
@@ -42,10 +37,6 @@ const BookingCard = ({ data }: IBooking) => {
         setServiceName(res.data.name);
       });
     }
-    // if (data?.appointmentDate) {
-    //     timestampAppointment = new Date(dateParser(data?.appointmentDate)).getTime();
-    //     setDateResult(timestampAppointment > Date.now());
-    // }
   }, [data?.message]);
 
   const deleteBooking = (id: number | undefined) => {
@@ -53,6 +44,7 @@ const BookingCard = ({ data }: IBooking) => {
       .patch(`/booking/cancel/${id}`)
       .then(() => window.location.reload());
   };
+
   let description;
   if (data?.description) {
     description = (
@@ -79,23 +71,23 @@ const BookingCard = ({ data }: IBooking) => {
           fontWeight: "bold",
         }}
       >
-        <Typography
-          textAlign="center"
-          sx={{
-            color: "#023535",
-            backgroundColor: "#DBF227",
-            borderRadius: "5px",
-            fontWeight: "bold",
-          }}
-        >
+        <ListItemIcon>
           <WarningIcon
             sx={{
+              color: "#023535",
               fontSize: 30,
-              color: "wait",
             }}
-          />{" "}
-          Attention prestation impayée.
-        </Typography>
+          />
+        </ListItemIcon>
+        <ListItemText
+          sx={{
+            color: "#023535",
+          }}
+          primaryTypographyProps={{
+            fontWeight: "bold"
+          }}
+          primary="Attention, cette prestation est impayée."
+        />
       </ListItem>
     );
     isPaid = (
@@ -103,22 +95,18 @@ const BookingCard = ({ data }: IBooking) => {
         component="a"
         href={id}
         sx={{
-          color: "#023535",
-          backgroundColor: "#DBF227",
-          fontWeight: "bold",
+          backgroundColor: "#1B4F4F",
+          color: "#ffff",
           textAlign: "center",
           borderRadius: "5px",
           "&:hover": {
-            backgroundColor: "#DBF227",
+            backgroundColor: "#023535",
           },
         }}
       >
         <ListItemText
-          sx={{
-            color: "#023535",
-            backgroundColor: "#DBF227",
-            borderRadius: "5px",
-            fontWeight: "bold",
+          primaryTypographyProps={{
+            fontWeight: "bold"
           }}
           primary="Payer"
         />
@@ -191,17 +179,17 @@ const BookingCard = ({ data }: IBooking) => {
                         deleteBooking(data?.id);
                       }}
                       sx={{
-                        backgroundColor: "#1B4F4F",
+                        backgroundColor: "#008F8C",
                         textAlign: "center",
                         borderRadius: "5px",
                         marginLeft: "15px",
                         marginRight: "15px",
                         "&:hover": {
-                          backgroundColor: "#023535",
+                          backgroundColor: "#089C99",
                         },
                       }}
                     >
-                      <ListItemText primary="Supprimer" />
+                      <ListItemText primary="Annuler" />
                     </ListItemButton>
                   </ListItem>
                 </>
