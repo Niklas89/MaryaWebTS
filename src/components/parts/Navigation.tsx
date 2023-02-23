@@ -15,7 +15,6 @@ import useAuth from "../../hooks/useAuth";
 import useLogout from "../../hooks/useLogout";
 import { AccountCircle } from "@mui/icons-material";
 import RoomServiceIcon from "@mui/icons-material/RoomService";
-import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
 
 const Navigation = () => {
@@ -146,13 +145,12 @@ const Navigation = () => {
             Marya
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <IconButton
-              size="small"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenMenuService}
-              color="inherit"
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                marginLeft: 5,
+              }}
             >
               <RoomServiceIcon
                 sx={{
@@ -161,57 +159,72 @@ const Navigation = () => {
                   marginLeft: 5,
                 }}
               />
-              Nos services
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElService}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElService)}
-              onClose={handleCloseMenuService}
-            >
-              {pages.map((page, index) => (
-                <MenuItem
-                  key={index}
-                  component={Link}
-                  to={page.path}
-                  onClick={handleCloseMenuService}
-                >
-                  <Typography textAlign="center">{page.name}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-            {auth?.role ? (
-              <Button
-                component={Link}
-                to={"/booking"}
+              <IconButton
+                size="small"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenMenuService}
+                color="inherit"
+              >
+                Nos services
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElService}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElService)}
+                onClose={handleCloseMenuService}
+              >
+                {pages.map((page, index) => (
+                  <MenuItem
+                    key={index}
+                    component={Link}
+                    to={page.path}
+                    onClick={handleCloseMenuService}
+                  >
+                    <Typography textAlign="center">{page.name}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+            {auth?.role && (
+              <Box
                 sx={{
-                  my: 2,
-                  color: "white",
-                  display: "block",
-                  fontSize: 17,
-                  textTransform: "none",
+                  display: "flex",
+                  alignItems: "center",
+                  marginLeft: 5,
                 }}
               >
                 <LocalLibraryIcon
                   sx={{
                     fontSize: 30,
-                    marginLeft: 5,
+                    alignItems: "center",
                     marginRight: 1,
                   }}
                 />
-                Mes reservations
-              </Button>
-            ) : (
-              ""
+                <Button
+                  component={Link}
+                  to={"/booking"}
+                  sx={{
+                    color: "white",
+                    display: "block",
+                    fontSize: 17,
+                    textTransform: "none",
+                    marginTop: .5,
+                  }}
+                >
+                  Mes réservations
+                </Button>
+              </Box>
             )}
           </Box>
           <Box sx={{ flexGrow: 0 }}>

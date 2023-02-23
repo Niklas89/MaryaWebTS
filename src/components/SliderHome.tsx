@@ -3,7 +3,7 @@ import Carousel from "react-bootstrap/Carousel";
 
 const SliderHome = () => {
   return (
-    <Carousel>
+    <Carousel controls={false} indicators={false} slide={true}>
       <Carousel.Item>
         <img className="w-100" src="./assets/img/slider/img7.jpg" alt="slide" />
       </Carousel.Item>
