@@ -36,7 +36,6 @@ const DisplayBooking = () => {
     postQuery("/checkout/create-stripe-session", postData)
       .then((response: AxiosResponse) => {
         window.location.href = response.data;
-        console.log(response.data);
       })
       .catch((err) => {
         toast.error(

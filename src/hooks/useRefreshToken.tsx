@@ -6,25 +6,6 @@ import useAuth from "./useAuth";
 const useRefreshToken = () => {
   const { auth, setAuth } = useAuth();
 
-  /*
-    const [accessToken, setAccessToken] = useState<string>();
-    const refresh = () => {
-        axios({
-            method: "get",
-            url: "/refresh",
-            withCredentials: true 
-        })
-        .then((res: AxiosResponse) => {setAuth?.({
-            ...auth,
-            role: res.data.idRole, // we add role for the PersistLogin function (page refresh), we get it at login normally
-            accessToken: res.data.accessToken
-        });
-        console.log("res.data.accessToken: "+ res.data.accessToken);
-        setAccessToken(res.data.accessToken)});
-        console.log("const accessToken: "+ accessToken);
-        return accessToken; 
-        */
-
   const refresh = async () => {
     const response = await axios.get("/refresh", {
       withCredentials: true,
@@ -32,23 +13,11 @@ const useRefreshToken = () => {
       // the request is going to send the secure cookie (not accessible with javascript) that has the response token.
       // Axios sends it to the backend endpoint
     });
-    // console.log("refreshtoken recu: " + response.data.accessToken);
     setAuth?.({
       ...auth,
       role: response.data.idRole, // we add role for the PersistLogin function (page refresh), we get it at login normally
       accessToken: response.data.accessToken,
     });
-    // console.log("role recu: " + response.data.idRole);
-
-    /*
-         setAuth?.((prev) => { // previous state
-             console.log(JSON.stringify(prev));
-             // accesstoken that we get back after our refresh token is verified
-             console.log(response.data.accessToken); 
-             // return the previous state and override the accesstoken with the new accesstoken
-             return { ...prev, accessToken: response.data.accessToken }
-         });   */
-
     return response.data.accessToken;
   };
   return refresh;

@@ -68,6 +68,7 @@ const FormLogin = () => {
         .then((response: AxiosResponse) => {
           const accessToken = response.data.accessToken;
           const role = response.data.idRole;
+          
           setUserInfos(response.data);
           setAuth?.({ role, accessToken });
           navigate(from, { replace: true });

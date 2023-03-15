@@ -11,39 +11,36 @@ const Booking = () => {
 
   const axiosPrivate = useAxiosPrivate();
 
-  let count1 = 0;
-  let count2 = 0;
+  let countFutureFalse = 0;
+  let countFutureTrue = 0;
 
   useEffect(() => {
-    const promise1 = axiosPrivate
+    const promiseFutureFalse = axiosPrivate
       .get("/client/booking/future/false")
       .then((res) => {
         if (res.data !== null) {
           res.data.bookings.map((booking: IBooking) => {
-            console.log("test1");
             if (!booking.isPaid) {
-              count1 += 1;
+              countFutureFalse += 1;
             }
           });
         }
       });
-    const promise2 = axiosPrivate
+    const promiseFutureTrue = axiosPrivate
       .get("/client/booking/future/true")
       .then((res) => {
         if (res.data !== null) {
           res.data.bookings.map((booking: IBooking) => {
-            console.log("test2");
             if (!booking.isPaid) {
-              count2 += 1;
+              countFutureTrue += 1;
             }
           });
         }
       });
 
-    Promise.all([promise1, promise2]).then(() => {
-      setBookingNotPaid(count1 + count2);
+    Promise.all([promiseFutureFalse, promiseFutureTrue]).then(() => {
+      setBookingNotPaid(countFutureFalse + countFutureTrue);
       setCountDone(true);
-      console.log(count1, count2);
     });
   }, []);
 
@@ -81,15 +78,9 @@ const Booking = () => {
           Mes réservations
         </Typography>
         <GetBooking
-          present={true}
-          future={false}
-          past={false}
           accepted={true}
         />
         <GetBooking
-          present={true}
-          future={false}
-          past={false}
           accepted={false}
         />
       </Container>

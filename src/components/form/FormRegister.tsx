@@ -97,7 +97,6 @@ const FormRegister = () => {
           navigate(from, { replace: true });
         })
         .catch((error: AxiosError) => {
-          console.log(error);
           toast.error(`${error.response?.data}`, {
             position: "bottom-right",
             autoClose: 3000,

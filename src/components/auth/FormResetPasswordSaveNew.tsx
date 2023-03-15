@@ -33,12 +33,7 @@ const FormResetPasswordSaveNew = () => {
     });
 
     const handleSubmit = useCallback((values: FormikValues, callback: any) => {
-
-        console.log("values:");
-        console.log(values);
         const postData = { ...values, id: userToken.id, resetToken: userToken.resetToken };
-        console.log("postData:");
-        console.log(postData);
 
         postQuery("/auth/new-password/", postData).then(() => {
             navigate(from, { replace: true });
@@ -62,7 +57,6 @@ const FormResetPasswordSaveNew = () => {
     );
 
     useEffect(() => {
-        console.log(token);
             getQuery(`auth/reset/${token}`).then((response: AxiosResponse) => {
                 setUserToken({
                     id: response.data.user.id,

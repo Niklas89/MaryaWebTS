@@ -113,8 +113,6 @@ const FormProfile = () => {
     { submit: handleSubmit }
   );
 
-  // console.log(auth?.role);
-
   useEffect(() => {
     axiosPrivate
       .get("/client/profile/")
